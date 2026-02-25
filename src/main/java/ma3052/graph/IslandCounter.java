@@ -3,7 +3,7 @@ package ma3052.graph;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class Island {
+public class IslandCounter {
     public static int getTotalIsland(GridGraph graph, char landChar) {
         if (graph == null) {
             return 0;

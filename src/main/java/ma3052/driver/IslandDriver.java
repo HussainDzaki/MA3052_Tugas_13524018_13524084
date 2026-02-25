@@ -3,7 +3,7 @@ package ma3052.driver;
 import java.util.Scanner;
 
 import ma3052.graph.GridGraph;
-import ma3052.graph.Island;
+import ma3052.graph.IslandCounter;
 
 public class IslandDriver {
     public static void main(String[] args) {
@@ -21,7 +21,7 @@ public class IslandDriver {
             }
         }
 
-        System.out.print("Total pulau: " + Island.getTotalIsland(g, '#'));
+        System.out.print("Total pulau: " + IslandCounter.getTotalIsland(g, '#'));
 
         scanner.close();
     }
