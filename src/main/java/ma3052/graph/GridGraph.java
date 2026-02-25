@@ -8,28 +8,27 @@ import javafx.util.Pair;
 public class GridGraph {
     public static final char defaultNodeType = '.';
     private Graph graph;
-    private ArrayList<ArrayList<Character>> grid;
+    private char[][] grid;
     private HashMap<Pair<Integer, Integer>, Node> positionToNode;
     private int rowSize;
     private int colSize;
 
     public GridGraph(int rows, int cols) {
-        if (rows < 0 || cols < 0) {
+        if (rows <= 0 || cols <= 0) {
             throw new IllegalArgumentException("Illegal row or col size: rows = " + rows + "; cols = " + cols);
         }
 
         graph = new Graph();
-        grid = new ArrayList<>(rows);
+        grid = new char[rows][cols];
         positionToNode = new HashMap<>();
         rowSize = rows;
         colSize = cols;
 
         for (int i = 0; i < rows; i++) {
-            grid.add(new ArrayList<>(cols));
             for (int j = 0; j < cols; j++) {
                 Node node = new Node(Integer.toString(i * rows + j));
                 graph.addNode(node);
-                grid.get(i).set(j, defaultNodeType);
+                grid[i][j] = defaultNodeType;
                 positionToNode.put(new Pair<Integer, Integer>(i, j), node);
             }
         }
@@ -66,22 +65,22 @@ public class GridGraph {
         return new Pair<Integer, Integer>(code / rowSize, code % rowSize);
     }
 
-    public Character getNodeType(int row, int col) {
+    public char getNodeType(int row, int col) {
         if (row < 0 || row >= rowSize || col < 0 || col >= colSize) {
             throw new IndexOutOfBoundsException();
         }
 
-        return grid.get(row).get(col);
+        return grid[row][col];
     }
 
-    public Character getNodeType(Node node) {
+    public char getNodeType(Node node) {
         if (!graph.hasNode(node)) {
             throw new IllegalArgumentException();
         }
 
         Pair<Integer, Integer> pos = getNodePosition(node);
 
-        return grid.get(pos.getKey()).get(pos.getValue());
+        return grid[pos.getKey()][pos.getValue()];
     }
 
     public void setNodeType(int row, int col, char type) {
@@ -89,7 +88,7 @@ public class GridGraph {
             throw new IndexOutOfBoundsException();
         }
 
-        grid.get(row).set(col, type);
+        grid[row][col] = type;
     }
 
     public void setNodeType(Node node, char type) {
@@ -99,6 +98,6 @@ public class GridGraph {
 
         Pair<Integer, Integer> pos = getNodePosition(node);
 
-        grid.get(pos.getKey()).set(pos.getValue(), type);
+        grid[pos.getKey()][pos.getValue()] = type;
     }
 }
