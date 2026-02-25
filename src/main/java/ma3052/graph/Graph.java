@@ -31,7 +31,7 @@ public class Graph {
 
     public Node getNode(String nodeName) {
         for (Node node : nodeList) {
-            if (node.getNodeName() == nodeName) {
+            if (node.getNodeName().equals(nodeName)) {
                 return node;
             }
         }
