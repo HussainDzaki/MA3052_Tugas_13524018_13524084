@@ -61,6 +61,11 @@ public class GridGraph {
         return positionToNode.get(new Pair<Integer, Integer>(row, col));
     }
 
+    public Pair<Integer, Integer> getNodePosition(Node node) {
+        int code = Integer.parseInt(node.getNodeName());
+        return new Pair<Integer, Integer>(code / rowSize, code % rowSize);
+    }
+
     public Character getNodeType(int row, int col) {
         if (row < 0 || row >= rowSize || col < 0 || col >= colSize) {
             throw new IndexOutOfBoundsException();
@@ -69,11 +74,31 @@ public class GridGraph {
         return grid.get(row).get(col);
     }
 
+    public Character getNodeType(Node node) {
+        if (!graph.hasNode(node)) {
+            throw new IllegalArgumentException();
+        }
+
+        Pair<Integer, Integer> pos = getNodePosition(node);
+
+        return grid.get(pos.getKey()).get(pos.getValue());
+    }
+
     public void setNodeType(int row, int col, char type) {
         if (row < 0 || row >= rowSize || col < 0 || col >= colSize) {
             throw new IndexOutOfBoundsException();
         }
 
         grid.get(row).set(col, type);
+    }
+
+    public void setNodeType(Node node, char type) {
+        if (!graph.hasNode(node)) {
+            throw new IllegalArgumentException();
+        }
+
+        Pair<Integer, Integer> pos = getNodePosition(node);
+
+        grid.get(pos.getKey()).set(pos.getValue(), type);
     }
 }
