@@ -7,7 +7,11 @@ import java.util.List;
 
 public class GraphTraversal {
     public static List<Node> traversalOrderBFS(Graph graph, String startNodeName) {
-        return traversalOrderBFS(graph, graph.getNode(startNodeName));
+        if (graph == null) {
+            return null;
+        } else {
+            return traversalOrderBFS(graph, graph.getNode(startNodeName));
+        }
     }
 
     public static List<Node> traversalOrderBFS(Graph graph, Node startNode) {
@@ -38,7 +42,11 @@ public class GraphTraversal {
     }
 
     public static List<Node> traversalOrderDFS(Graph graph, String startNodeName) {
-        return traversalOrderDFS(graph, graph.getNode(startNodeName));
+        if (graph == null) {
+            return null;
+        } else {
+            return traversalOrderDFS(graph, graph.getNode(startNodeName));
+        }
     }
 
     public static List<Node> traversalOrderDFS(Graph graph, Node startNode) {

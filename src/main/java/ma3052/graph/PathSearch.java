@@ -1,15 +1,17 @@
 package ma3052.graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PathSearch {
     public static List<Node> searchPathBFS(Graph graph, String startNodeName, String endNodeName) {
-        return searchPathBFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        if (graph == null) {
+            return null;
+        } else {
+            return searchPathBFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        }
     }
 
     public static List<Node> searchPathBFS(Graph graph, Node startNode, Node endNode) {
@@ -49,7 +51,11 @@ public class PathSearch {
     }
 
     public static List<Node> searchPathDFS(Graph graph, String startNodeName, String endNodeName) {
-        return searchPathDFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        if (graph == null) {
+            return null;
+        } else {
+            return searchPathDFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        }
     }
 
     public static List<Node> searchPathDFS(Graph graph, Node startNode, Node endNode) {
@@ -89,7 +95,11 @@ public class PathSearch {
     }
 
     public static boolean hasPathBFS(Graph graph, String startNodeName, String endNodeName) {
-        return hasPathBFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        if (graph == null) {
+            return false;
+        } else {
+            return hasPathBFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        }
     }
 
     public static boolean hasPathBFS(Graph graph, Node startNode, Node endNode) {
@@ -125,7 +135,11 @@ public class PathSearch {
     }
 
     public static boolean hasPathDFS(Graph graph, String startNodeName, String endNodeName) {
-        return hasPathDFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        if (graph == null) {
+            return false;
+        } else {
+            return hasPathDFS(graph, graph.getNode(startNodeName), graph.getNode(endNodeName));
+        }
     }
 
     public static boolean hasPathDFS(Graph graph, Node startNode, Node endNode) {
