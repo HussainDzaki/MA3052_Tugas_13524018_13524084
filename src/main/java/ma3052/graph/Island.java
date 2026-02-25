@@ -29,7 +29,7 @@ public class Island {
                     visitedNodes.add(currentNode.getNodeID());
 
                     for (Node nextNode : currentNode.getAdjacencyList()) {
-                        if (graph.getNodeType(node) != landChar)
+                        if (graph.getNodeType(nextNode) != landChar)
                             continue;
                         if (visitedNodes.contains(nextNode.getNodeID()))
                             continue;

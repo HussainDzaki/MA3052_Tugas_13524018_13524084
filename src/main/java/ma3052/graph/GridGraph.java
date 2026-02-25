@@ -1,6 +1,5 @@
 package ma3052.graph;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.util.Pair;
@@ -26,7 +25,7 @@ public class GridGraph {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                Node node = new Node(Integer.toString(i * rows + j));
+                Node node = new Node(Integer.toString(i * cols + j));
                 graph.addNode(node);
                 grid[i][j] = defaultNodeType;
                 positionToNode.put(new Pair<Integer, Integer>(i, j), node);
@@ -62,7 +61,7 @@ public class GridGraph {
 
     public Pair<Integer, Integer> getNodePosition(Node node) {
         int code = Integer.parseInt(node.getNodeName());
-        return new Pair<Integer, Integer>(code / rowSize, code % rowSize);
+        return new Pair<Integer, Integer>(code / colSize, code % colSize);
     }
 
     public char getNodeType(int row, int col) {
