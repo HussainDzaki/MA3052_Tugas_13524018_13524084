@@ -89,4 +89,8 @@ public class Graph {
         }
         return false;
     }
+
+    public int size() {
+        return nodeList.size();
+    }
 }
