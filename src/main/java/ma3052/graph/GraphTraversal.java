@@ -11,7 +11,7 @@ public class GraphTraversal {
     }
 
     public static List<Node> traversalOrderBFS(Graph graph, Node startNode) {
-        if (!graph.hasNode(startNode)) {
+        if (graph == null || !graph.hasNode(startNode)) {
             return null;
         }
 
@@ -42,7 +42,7 @@ public class GraphTraversal {
     }
 
     public static List<Node> traversalOrderDFS(Graph graph, Node startNode) {
-        if (!graph.hasNode(startNode)) {
+        if (graph == null || !graph.hasNode(startNode)) {
             return null;
         }
 

@@ -14,7 +14,7 @@ public class PathSearch {
 
     public static List<Node> searchPathBFS(Graph graph, Node startNode, Node endNode) {
         // If start node or end node is nowhere in the graph
-        if (!graph.hasNode(startNode) || !graph.hasNode(endNode)) {
+        if (graph == null || !graph.hasNode(startNode) || !graph.hasNode(endNode)) {
             return null;
         }
 
@@ -54,7 +54,7 @@ public class PathSearch {
 
     public static List<Node> searchPathDFS(Graph graph, Node startNode, Node endNode) {
         // If start node or end node is nowhere in the graph
-        if (!graph.hasNode(startNode) || !graph.hasNode(endNode)) {
+        if (graph == null || !graph.hasNode(startNode) || !graph.hasNode(endNode)) {
             return null;
         }
 
@@ -94,7 +94,7 @@ public class PathSearch {
 
     public static boolean hasPathBFS(Graph graph, Node startNode, Node endNode) {
         // If start node or end node is nowhere in the graph
-        if (!graph.hasNode(startNode) || !graph.hasNode(endNode)) {
+        if (graph == null || !graph.hasNode(startNode) || !graph.hasNode(endNode)) {
             return false;
         }
 
@@ -130,7 +130,7 @@ public class PathSearch {
 
     public static boolean hasPathDFS(Graph graph, Node startNode, Node endNode) {
         // If start node or end node is nowhere in the graph
-        if (!graph.hasNode(startNode) || !graph.hasNode(endNode)) {
+        if (graph == null || !graph.hasNode(startNode) || !graph.hasNode(endNode)) {
             return false;
         }
 

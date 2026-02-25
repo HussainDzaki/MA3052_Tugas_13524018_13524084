@@ -5,6 +5,10 @@ import java.util.LinkedList;
 
 public class GraphComponent {
     public static boolean isOneComponent(Graph graph) {
+        if (graph == null) {
+            return false;
+        }
+
         HashSet<Long> visitedNodes = new HashSet<>();
         LinkedList<Node> queue = new LinkedList<Node>();
         queue.add(graph.getNodeList().getFirst());
@@ -24,6 +28,10 @@ public class GraphComponent {
     }
 
     public static int getTotalComponent(Graph graph) {
+        if (graph == null) {
+            return 0;
+        }
+
         int totalComponent = 0;
         HashSet<Long> visitedNodes = new HashSet<>();
         LinkedList<Node> queue = new LinkedList<Node>();
@@ -49,6 +57,10 @@ public class GraphComponent {
     }
 
     public static int getBiggestComponentSize(Graph graph) {
+        if (graph == null) {
+            return 0;
+        }
+
         int biggestComponentSize = 0;
         HashSet<Long> visitedNodes = new HashSet<>();
         LinkedList<Node> queue = new LinkedList<Node>();
