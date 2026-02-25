@@ -54,19 +54,39 @@ public class Graph {
         nodeList.removeAll(node);
     }
 
+    public void addUndirectedEdge(String node1, String node2) {
+        addUndirectedEdge(node1, node2);
+        addUndirectedEdge(node2, node1);
+    }
+
     public void addUndirectedEdge(Node node1, Node node2) {
         addDirectedEdge(node1, node2);
         addDirectedEdge(node2, node1);
     }
 
-    public void addDirectedEdge(Node sourceNode, Node destinationNode) {
-        if (!hasNode(sourceNode)) {
-            addNode(sourceNode);
+    public void addDirectedEdge(String startNode, String endNode) {
+        Node n1, n2;
+        if (hasNode(startNode)) {
+            n1 = getNode(startNode);
+        } else {
+            n1 = new Node(startNode);
         }
-        if (!hasNode(destinationNode)) {
-            addNode(destinationNode);
+        if (hasNode(endNode)) {
+            n2 = getNode(endNode);
+        } else {
+            n2 = new Node(endNode);
         }
-        sourceNode.addAdjacentNode(destinationNode);
+        addDirectedEdge(n1, n2);
+    }
+
+    public void addDirectedEdge(Node startNode, Node endNode) {
+        if (!hasNode(startNode)) {
+            addNode(startNode);
+        }
+        if (!hasNode(endNode)) {
+            addNode(endNode);
+        }
+        startNode.addAdjacentNode(endNode);
     }
 
     public void clear() {
