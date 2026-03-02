@@ -1,8 +1,8 @@
 package ma3052.graph;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 public class PathSearch {
@@ -23,7 +23,7 @@ public class PathSearch {
         ArrayList<Node> nodeOrder = new ArrayList<Node>(graph.size());
 
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        ArrayDeque<Node> queue = new ArrayDeque<Node>();
         queue.add(startNode);
         while (!queue.isEmpty()) {
             Node currentNode = queue.pop();
@@ -43,7 +43,7 @@ public class PathSearch {
             }
         }
 
-        if (nodeOrder.getLast() == endNode) {
+        if (nodeOrder.get(nodeOrder.size() - 1) == endNode) {
             return nodeOrder;
         } else {
             return null;
@@ -67,7 +67,7 @@ public class PathSearch {
         ArrayList<Node> nodeOrder = new ArrayList<Node>(graph.size());
 
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        ArrayDeque<Node> queue = new ArrayDeque<Node>();
         queue.push(startNode);
         while (!queue.isEmpty()) {
             Node currentNode = queue.pop();
@@ -87,7 +87,7 @@ public class PathSearch {
             }
         }
 
-        if (nodeOrder.getLast() == endNode) {
+        if (nodeOrder.get(nodeOrder.size() - 1) == endNode) {
             return nodeOrder;
         } else {
             return null;
@@ -111,7 +111,7 @@ public class PathSearch {
         boolean hasPath = false;
 
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        ArrayDeque<Node> queue = new ArrayDeque<Node>();
         queue.add(startNode);
         while (!queue.isEmpty()) {
             Node currentNode = queue.pop();
@@ -151,7 +151,7 @@ public class PathSearch {
         boolean hasPath = false;
 
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        ArrayDeque<Node> queue = new ArrayDeque<Node>();
         queue.push(startNode);
         while (!queue.isEmpty()) {
             Node currentNode = queue.pop();

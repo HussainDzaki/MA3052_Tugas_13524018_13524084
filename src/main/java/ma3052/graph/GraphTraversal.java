@@ -1,9 +1,12 @@
 package ma3052.graph;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class GraphTraversal {
     public static List<Node> traversalOrderBFS(Graph graph, String startNodeName) {
@@ -22,10 +25,10 @@ public class GraphTraversal {
         ArrayList<Node> nodeOrder = new ArrayList<Node>(graph.size());
 
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        Queue<Node> queue = new ArrayDeque<Node>();
         queue.add(startNode);
         while (!queue.isEmpty()) {
-            Node currentNode = queue.pop();
+            Node currentNode = queue.remove();
             if (visitedNodes.contains(currentNode.getNodeID()))
                 continue;
             visitedNodes.add(currentNode.getNodeID());
@@ -57,7 +60,7 @@ public class GraphTraversal {
         ArrayList<Node> nodeOrder = new ArrayList<Node>(graph.size());
 
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        Deque<Node> queue = new LinkedList<Node>();
         queue.push(startNode);
         while (!queue.isEmpty()) {
             Node currentNode = queue.pop();
