@@ -2,6 +2,8 @@ package ma3052.graph;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Queue;
+import java.util.function.Function;
 
 public class GraphComponent {
     public static boolean isOneComponent(Graph graph) {
@@ -10,10 +12,10 @@ public class GraphComponent {
         }
 
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
-        queue.add(graph.getNodeList().getFirst());
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.add(graph.getNodeList().get(0));
         while (!queue.isEmpty()) {
-            Node currentNode = queue.pop();
+            Node currentNode = queue.remove();
             if (visitedNodes.contains(currentNode.getNodeID()))
                 continue;
             visitedNodes.add(currentNode.getNodeID());
@@ -34,14 +36,14 @@ public class GraphComponent {
 
         int totalComponent = 0;
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        Queue<Node> queue = new LinkedList<Node>();
         for (Node node : graph.getNodeList()) {
             if (visitedNodes.contains(node.getNodeID()))
                 continue;
             totalComponent++;
             queue.add(node);
             while (!queue.isEmpty()) {
-                Node currentNode = queue.pop();
+                Node currentNode = queue.remove();
                 if (visitedNodes.contains(currentNode.getNodeID()))
                     continue;
                 visitedNodes.add(currentNode.getNodeID());
@@ -63,7 +65,7 @@ public class GraphComponent {
 
         int biggestComponentSize = 0;
         HashSet<Long> visitedNodes = new HashSet<>();
-        LinkedList<Node> queue = new LinkedList<Node>();
+        Queue<Node> queue = new LinkedList<Node>();
         for (Node node : graph.getNodeList()) {
             if (visitedNodes.contains(node.getNodeID()))
                 continue;
@@ -71,7 +73,7 @@ public class GraphComponent {
             int currentComponentSize = 0;
             queue.add(node);
             while (!queue.isEmpty()) {
-                Node currentNode = queue.pop();
+                Node currentNode = queue.remove();
                 if (visitedNodes.contains(currentNode.getNodeID()))
                     continue;
                 visitedNodes.add(currentNode.getNodeID());
