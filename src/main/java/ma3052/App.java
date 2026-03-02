@@ -1,23 +1,41 @@
 package ma3052;
 
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ma3052.driver.MainDriver;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
-
-import java.io.IOException;
-import java.util.Scanner;
 
 /**
- * JavaFX App
+ * JavaFX Application Entry Point
+ * Launches the Graph Visualization GUI
  */
-public class App {
+public class App extends Application {
 
-    public static void main(String[] args) {
-        MainDriver.main(args);
+    /**
+     * Start the JavaFX application
+     */
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Load the FXML file
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("graphvisualization.fxml"));
+        Parent root = loader.load();
+        
+        // Create scene
+        Scene scene = new Scene(root, 1100, 600);
+        
+        // Setup stage
+        primaryStage.setTitle("Graph Visualization - DFS/BFS Algorithm");
+        primaryStage.setScene(scene);
+        primaryStage.setWidth(1100);
+        primaryStage.setHeight(700);
+        primaryStage.show();
     }
 
+    /**
+     * Main method to launch the application
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
