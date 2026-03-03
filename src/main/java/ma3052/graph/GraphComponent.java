@@ -3,7 +3,6 @@ package ma3052.graph;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.function.Function;
 
 public class GraphComponent {
     public static boolean isOneComponent(Graph graph) {

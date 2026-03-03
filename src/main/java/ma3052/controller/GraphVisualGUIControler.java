@@ -6,6 +6,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
@@ -712,7 +714,7 @@ public class GraphVisualGUIControler {
         
         // Draw label centered in node
         gc.setFill(Color.BLACK);
-        gc.setFont(new javafx.scene.text.Font("Arial", 12));
+        gc.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
         
         // Center the text
         double textWidth = label.length() * 7;
