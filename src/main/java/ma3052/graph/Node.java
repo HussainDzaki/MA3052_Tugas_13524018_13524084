@@ -60,6 +60,15 @@ public class Node {
         return Collections.unmodifiableList(adjacencyList);
     }
 
+    public Edge getEdge(Node destination) {
+        for (Edge edge : adjacencyList) {
+            if (edge.getDestination() == destination) {
+                return edge;
+            }
+        }
+        return null;
+    }
+
     public void addEdge(Node otherNode) {
         adjacencyList.add(new Edge(this, otherNode));
     }
