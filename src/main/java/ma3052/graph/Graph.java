@@ -7,13 +7,27 @@ import java.util.List;
 
 public class Graph {
     private ArrayList<Node> nodeList;
+    private ArrayList<Edge> edgeList;
+    private boolean directed = false;
 
     public Graph() {
         nodeList = new ArrayList<Node>();
+        directed = false;
+    }
+
+    public Graph(boolean directed) {
+        nodeList = new ArrayList<Node>();
+        this.directed = directed;
     }
 
     public Graph(Collection<Node> nodes) {
         nodeList = new ArrayList<Node>(nodes);
+        directed = false;
+    }
+
+    public Graph(Collection<Node> nodes, boolean directed) {
+        nodeList = new ArrayList<Node>(nodes);
+        this.directed = directed;
     }
 
     public List<Node> getNodeList() {
@@ -52,6 +66,60 @@ public class Graph {
 
     public void removeNodes(Collection<Node> node) {
         nodeList.removeAll(node);
+    }
+
+    public List<Edge> getEdgeList() {
+        return Collections.unmodifiableList(edgeList);
+    }
+
+    public Edge getEdge(String node1, String node2) {
+        for (Edge edge : edgeList) {
+            if (edge.getSource().getNodeName().equals(node1) && edge.getDestination().getNodeName().equals(node2)) {
+                return edge;
+            }
+        }
+        return null;
+    }
+
+    public Edge getEdge(Node node1, Node node2) {
+        for (Edge edge : edgeList) {
+            if (edge.getSource() == node1 && edge.getDestination() == node2) {
+                return edge;
+            }
+        }
+        return null;
+    }
+
+    public void addEdge(String node1, String node2) {
+        if (isDirected()) {
+            addDirectedEdge(node1, node2);
+        } else {
+            addUndirectedEdge(node1, node2);
+        }
+    }
+
+    public void addEdge(String node1, String node2, double weight) {
+        if (isDirected()) {
+            addDirectedEdge(node1, node2, weight);
+        } else {
+            addUndirectedEdge(node1, node2, weight);
+        }
+    }
+
+    public void addEdge(Node node1, Node node2) {
+        if (isDirected()) {
+            addDirectedEdge(node1, node2);
+        } else {
+            addUndirectedEdge(node1, node2);
+        }
+    }
+
+    public void addEdge(Node node1, Node node2, double weight) {
+        if (isDirected()) {
+            addDirectedEdge(node1, node2, weight);
+        } else {
+            addUndirectedEdge(node1, node2, weight);
+        }
     }
 
     public void addUndirectedEdge(String node1, String node2) {
@@ -124,6 +192,42 @@ public class Graph {
         source.addEdge(destination, weight);
     }
 
+    public void removeEdge(String source, String destination) {
+        if (hasNode(source) && hasNode(destination)) {
+            Node sourceNode = getNode(source);
+            Node destinationNode = getNode(destination);
+            sourceNode.removeEdge(destinationNode);
+            if (!isDirected()) {
+                destinationNode.removeEdge(sourceNode);
+            }
+            edgeList.removeIf((e) -> {
+                return e.getSource() == sourceNode && e.getDestination() == destinationNode;
+            });
+        }
+    }
+
+    public void removeEdge(Node source, Node destination) {
+        if (hasNode(source) && hasNode(destination)) {
+            source.removeEdge(destination);
+            if (!isDirected()) {
+                destination.removeEdge(source);
+            }
+            edgeList.removeIf((e) -> {
+                return e.getSource() == source && e.getDestination() == destination;
+            });
+        }
+    }
+
+    public void removeEdge(Edge edge) {
+        if (hasEdge(edge)) {
+            edgeList.remove(edge);
+            edge.getSource().removeEdge(edge.getDestination());
+            if (!isDirected()) {
+                edge.getDestination().removeEdge(edge.getSource());
+            }
+        }
+    }
+
     public void clear() {
         nodeList.clear();
     }
@@ -132,20 +236,70 @@ public class Graph {
         return nodeList.isEmpty();
     }
 
+    public int size() {
+        return nodeList.size();
+    }
+
+    public boolean hasNode(String nodeName) {
+        return getNode(nodeName) != null;
+    }
+
     public boolean hasNode(Node node) {
         return nodeList.contains(node);
     }
 
-    public boolean hasNode(String nodeName) {
-        for (Node node : nodeList) {
-            if (node.getNodeName() == nodeName) {
-                return true;
-            }
+    public boolean hasEdge(String source, String destination) {
+        Node sourceNode = getNode(source);
+        Node destinationNode = getNode(destination);
+        if (sourceNode != null && destination != null) {
+            return sourceNode.isNodeAdjacent(destinationNode);
         }
         return false;
     }
 
-    public int size() {
-        return nodeList.size();
+    public boolean hasEdge(Node source, Node destination) {
+        return nodeList.contains(source) && source.isNodeAdjacent(destination);
+    }
+
+    public boolean hasEdge(Edge edge) {
+        return edgeList.contains(edge);
+    }
+
+    public boolean isDirected() {
+        return directed;
+    }
+
+    public void setDirected(boolean directed) {
+        if (directed != this.directed) {
+            if (directed)
+                convertToDirected();
+            else
+                convertToUndirected();
+        }
+        this.directed = directed;
+    }
+
+    private void convertToDirected() {
+        ArrayList<Edge> edgeToRemove = new ArrayList<>();
+        for (Node node : nodeList) {
+            for (Edge edge : node.getAdjacencyList()) {
+                if (!edgeList.contains(edge)) {
+                    edgeToRemove.add(edge);
+                }
+            }
+        }
+        for (Edge edge : edgeToRemove) {
+            edge.getSource().removeEdge(edge.getDestination());
+        }
+    }
+
+    private void convertToUndirected() {
+        for (Node node : nodeList) {
+            for (Edge edge : node.getAdjacencyList()) {
+                if (!hasEdge(edge.getDestination(), edge.getSource())) {
+                    addEdge(edge.getDestination(), edge.getSource());
+                }
+            }
+        }
     }
 }
