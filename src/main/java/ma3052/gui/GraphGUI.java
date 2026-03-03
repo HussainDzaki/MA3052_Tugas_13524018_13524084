@@ -30,9 +30,9 @@ public class GraphGUI {
     private Map<Edge, EdgeGUI> edgeMap;
 
     // Animation parameters
-    private static final double MIN_DISTANCE = 110;
+    private static final double MIN_DISTANCE = 100;
     private static final double COULOMB_CONSTANT = 400;
-    private static final double CENTER_GRAVITY_CONSTANT = 200;
+    private static final double CENTER_GRAVITY_CONSTANT = 400;
 
     // Force-directed layout parameters
     private static final double FIXED_DELTA_TIME = 0.02; // 50 fps
@@ -77,12 +77,19 @@ public class GraphGUI {
         for (Node node : graph.getNodeList()) {
             NodeGUI nodeGUI = new NodeGUI(node);
             nodeMap.put(node, nodeGUI);
+            nodeGUIList.add(nodeGUI);
+
+            // Randomize position
+            double width = canvas.getWidth();
+            double height = canvas.getHeight();
+            double randomX = Math.random() * (width - 100) + 50;
+            double randomY = Math.random() * (height - 100) + 50;
+            nodeGUI.setPosition(new Point2D(randomX, randomY));
         }
-        for (Node node : graph.getNodeList()) {
-            for (Edge edge : node.getAdjacencyList()) {
-                EdgeGUI edgeGUI = new EdgeGUI(edge, getNodeGUI(edge.getSource()), getNodeGUI(edge.getDestination()));
-                edgeMap.put(edge, edgeGUI);
-            }
+        for (Edge edge : graph.getEdgeList()) {
+            EdgeGUI edgeGUI = new EdgeGUI(edge, getNodeGUI(edge.getSource()), getNodeGUI(edge.getDestination()));
+            edgeMap.put(edge, edgeGUI);
+            edgeGUIList.add(edgeGUI);
         }
     }
 
@@ -100,6 +107,13 @@ public class GraphGUI {
             NodeGUI nodeGUI = new NodeGUI(node);
             nodeGUIList.add(nodeGUI);
             nodeMap.put(node, nodeGUI);
+
+            // Randomize position
+            double width = canvas.getWidth();
+            double height = canvas.getHeight();
+            double randomX = Math.random() * (width - 100) + 50;
+            double randomY = Math.random() * (height - 100) + 50;
+            nodeGUI.setPosition(new Point2D(randomX, randomY));
         }
     }
 
@@ -169,6 +183,9 @@ public class GraphGUI {
         for (NodeGUI nodeGUI : nodeGUIList) {
             nodeGUI.update(FIXED_DELTA_TIME);
             nodeGUI.setForce(Point2D.ZERO); // Reset force
+            nodeGUI.clampPosition(
+                    nodeGUI.getRadius(), nodeGUI.getRadius(),
+                    canvas.getWidth() - nodeGUI.getRadius(), canvas.getHeight() - nodeGUI.getRadius());
         }
     }
 
@@ -180,6 +197,9 @@ public class GraphGUI {
 
     private void drawEdges() {
         for (EdgeGUI edgeGUI : edgeGUIList) {
+            System.out.println(
+                    "Drawing edge: " + edgeGUI.getSourceGUI().getNode().getNodeName() + " <-> "
+                            + edgeGUI.getDestinationGUI().getNode().getNodeName());
             edgeGUI.draw(graphicsContext, false, false);
         }
     }

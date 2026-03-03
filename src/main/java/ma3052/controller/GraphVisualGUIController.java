@@ -69,7 +69,7 @@ public class GraphVisualGUIController {
 
     @FXML
     private TextField startNodeInput;
-    
+
     /**
      * Initialize the controller
      * Called after FXML file has been loaded
@@ -78,7 +78,6 @@ public class GraphVisualGUIController {
     public void initialize() {
         // Initialize graph
         graphGUI = new GraphGUI(graphCanvas);
-        ;
 
         // Setup algorithm options
         if (algorithmCombo != null) {
@@ -291,33 +290,30 @@ public class GraphVisualGUIController {
         reader.close();
 
         // Add all nodes to the graph
-        Map<String, Node> nodeMap = new HashMap<>();
+        Graph newGraph = new Graph();
         for (String nodeName : nodeNames) {
-            Node newNode = new Node(nodeName);
-            graphGUI.addNode(newNode);
-            nodeMap.put(nodeName, newNode);
-
-            // Initialize position and velocity for new node
-            double width = graphCanvas.getWidth();
-            double height = graphCanvas.getHeight();
-            double randomX = Math.random() * (width - 100) + 50;
-            double randomY = Math.random() * (height - 100) + 50;
+            if (!newGraph.hasNode(nodeName)) {
+                Node newNode = new Node(nodeName);
+                newGraph.addNode(newNode);
+            }
         }
 
         // Add all edges to the graph
         for (String[] edge : edges) {
-            Node startNode = nodeMap.get(edge[0]);
-            Node endNode = nodeMap.get(edge[1]);
+            Node startNode = newGraph.getNode(edge[0]);
+            Node endNode = newGraph.getNode(edge[1]);
 
             if (startNode == null || endNode == null) {
                 throw new IllegalArgumentException("Edge references non-existent node: " +
                         (startNode == null ? edge[0] : edge[1]));
             }
 
-            graphGUI.addEdge(startNode, endNode);
+            newGraph.addEdge(startNode, endNode);
         }
 
-        logMessage("Loaded " + nodeNames.size() + " nodes and " + edges.size() + " edges");
+        graphGUI.setGraph(newGraph);
+
+        logMessage("Loaded " + newGraph.size() + " nodes and " + edges.size() + " edges");
     }
 
     /**

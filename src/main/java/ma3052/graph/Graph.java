@@ -184,6 +184,7 @@ public class Graph {
             addNode(destination);
         }
         source.addEdge(destination);
+        edgeList.add(source.getEdge(destination));
     }
 
     public void addDirectedEdge(Node source, Node destination, double weight) {
@@ -194,6 +195,7 @@ public class Graph {
             addNode(destination);
         }
         source.addEdge(destination, weight);
+        edgeList.add(source.getEdge(destination));
     }
 
     public void removeEdge(String source, String destination) {

@@ -20,7 +20,7 @@ public class EdgeGUI {
     private double arrowHeadSize;
 
     // Physics config
-    private static final double SPRING_CONSTANT = 10;
+    private static final double SPRING_CONSTANT = 400;
     private static final double SPRING_LENGTH = 100;
 
     public EdgeGUI(Edge edge, NodeGUI sourceGUI, NodeGUI destinationGUI) {
@@ -31,6 +31,14 @@ public class EdgeGUI {
         this.lineColor = Color.BLACK;
         this.textColor = Color.BLACK;
         this.arrowHeadSize = 7;
+    }
+
+    public NodeGUI getSourceGUI() {
+        return sourceGUI;
+    }
+
+    public NodeGUI getDestinationGUI() {
+        return destinationGUI;
     }
 
     public double getLineWidth() {

@@ -29,7 +29,7 @@ public class NodeGUI {
     // Physics config
     private static final double DEFAULT_RADIUS = 20; // Default node radius
     private static final double DAMPENING = 0.9; // Friction/dampening
-    private static final double MAX_VELOCITY = 31110.0; // Maximum node velocity
+    private static final double MAX_VELOCITY = 30.0; // Maximum node velocity
 
     public NodeGUI(Node node) {
         this.node = node;
@@ -184,7 +184,6 @@ public class NodeGUI {
     }
 
     public void update(double deltaTime) {
-        System.out.println("Velocity: " + velocity.toString());
         velocity = velocity.add(force.multiply(deltaTime)).multiply(DAMPENING);
 
         if (velocity.magnitude() > MAX_VELOCITY) {
