@@ -21,6 +21,14 @@ public class Node {
         nodeIDCount++;
     }
 
+    public Node(double value) {
+        this.nodeID = nodeIDCount;
+        this.nodeName = Long.toString(nodeIDCount);
+        this.value = value;
+        this.adjacencyList = new ArrayList<Edge>();
+        nodeIDCount++;
+    }
+
     public Node(String nodeName) {
         this.nodeID = nodeIDCount;
         this.nodeName = nodeName;
