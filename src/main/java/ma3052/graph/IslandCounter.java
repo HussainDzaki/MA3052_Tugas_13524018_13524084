@@ -28,7 +28,8 @@ public class IslandCounter {
                         continue;
                     visitedNodes.add(currentNode.getNodeID());
 
-                    for (Node nextNode : currentNode.getAdjacencyList()) {
+                    for (Edge edge : currentNode.getAdjacencyList()) {
+                        Node nextNode = edge.getDestination();
                         if (graph.getNodeType(nextNode) != landChar)
                             continue;
                         if (visitedNodes.contains(nextNode.getNodeID()))

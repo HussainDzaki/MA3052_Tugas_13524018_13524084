@@ -20,7 +20,8 @@ public class GraphComponent {
                 continue;
             visitedNodes.add(currentNode.getNodeID());
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.add(nextNode);
@@ -48,7 +49,8 @@ public class GraphComponent {
                     continue;
                 visitedNodes.add(currentNode.getNodeID());
 
-                for (Node nextNode : currentNode.getAdjacencyList()) {
+                for (Edge edge : currentNode.getAdjacencyList()) {
+                    Node nextNode = edge.getDestination();
                     if (visitedNodes.contains(nextNode.getNodeID()))
                         continue;
                     queue.add(nextNode);
@@ -79,7 +81,8 @@ public class GraphComponent {
                 visitedNodes.add(currentNode.getNodeID());
                 currentComponentSize++;
 
-                for (Node nextNode : currentNode.getAdjacencyList()) {
+                for (Edge edge : currentNode.getAdjacencyList()) {
+                    Node nextNode = edge.getDestination();
                     if (visitedNodes.contains(nextNode.getNodeID()))
                         continue;
                     queue.add(nextNode);

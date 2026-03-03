@@ -10,19 +10,29 @@ public class Node {
 
     private long nodeID;
     private String nodeName;
-    private ArrayList<Node> adjacencyList;
+    private double value;
+    private ArrayList<Edge> adjacencyList;
 
     public Node() {
         this.nodeID = nodeIDCount;
         this.nodeName = Long.toString(nodeIDCount);
-        this.adjacencyList = new ArrayList<Node>();
+        this.value = 0;
+        this.adjacencyList = new ArrayList<Edge>();
         nodeIDCount++;
     }
 
     public Node(String nodeName) {
         this.nodeID = nodeIDCount;
         this.nodeName = nodeName;
-        this.adjacencyList = new ArrayList<Node>();
+        this.adjacencyList = new ArrayList<Edge>();
+        nodeIDCount++;
+    }
+
+    public Node(String nodeName, double value) {
+        this.nodeID = nodeIDCount;
+        this.nodeName = nodeName;
+        this.value = value;
+        this.adjacencyList = new ArrayList<Edge>();
         nodeIDCount++;
     }
 
@@ -38,31 +48,58 @@ public class Node {
         this.nodeName = nodeName;
     }
 
-    public List<Node> getAdjacencyList() {
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public List<Edge> getAdjacencyList() {
         return Collections.unmodifiableList(adjacencyList);
     }
 
-    public void addAdjacentNode(Node otherNode) {
-        adjacencyList.add(otherNode);
+    public void addEdge(Node otherNode) {
+        adjacencyList.add(new Edge(this, otherNode));
     }
 
-    public void addAdjacentNodes(Collection<Node> otherNode) {
-        adjacencyList.addAll(otherNode);
+    public void addEdge(Node otherNode, double edgeWeight) {
+        adjacencyList.add(new Edge(this, otherNode, edgeWeight));
     }
 
-    public void removeAdjacentNode(Node otherNode) {
-        adjacencyList.remove(otherNode);
+    public void addEdges(Collection<Node> otherNodes) {
+        for (Node node : otherNodes) {
+            addEdge(node);
+        }
     }
 
-    public void removeAdjacentNodes(Collection<Node> otherNode) {
-        adjacencyList.removeAll(otherNode);
+    public void addEdges(Collection<Node> otherNodes, double edgeWeight) {
+        for (Node node : otherNodes) {
+            addEdge(node, edgeWeight);
+        }
     }
 
-    public void clearAdjacencyList() {
+    public void removeEdge(Node otherNode) {
+        adjacencyList.removeIf(e -> e.getDestination() == otherNode);
+    }
+
+    public void removeEdges(Collection<Node> otherNode) {
+        for (Node node : otherNode) {
+            removeEdge(node);
+        }
+    }
+
+    public void clearEdges() {
         adjacencyList.clear();
     }
 
     public boolean isNodeAdjacent(Node otherNode) {
-        return adjacencyList.contains(otherNode);
+        for (Edge edge : adjacencyList) {
+            if (edge.getDestination() == otherNode) {
+                return true;
+            }
+        }
+        return false;
     }
 }

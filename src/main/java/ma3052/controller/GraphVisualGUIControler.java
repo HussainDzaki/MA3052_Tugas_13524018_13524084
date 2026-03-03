@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
 import ma3052.graph.GraphComponent;
@@ -536,9 +537,9 @@ public class GraphVisualGUIControler {
                 Thread.sleep((long)(3000 - speedSlider.getValue()));
                 
                 // Add neighbors in reverse order for DFS stack (so they're processed in order)
-                List<Node> neighbors = new ArrayList<>(current.getAdjacencyList());
+                List<Edge> neighbors = new ArrayList<>(current.getAdjacencyList());
                 for (int i = neighbors.size() - 1; i >= 0; i--) {
-                    Node neighbor = neighbors.get(i);
+                    Node neighbor = neighbors.get(i).getDestination();
                     if (!visited.contains(neighbor)) {
                         stack.push(neighbor);
                     }
@@ -593,7 +594,8 @@ public class GraphVisualGUIControler {
                 // Wait based on speed slider
                 Thread.sleep((long)(3000 - speedSlider.getValue()));
                 
-                for (Node neighbor : current.getAdjacencyList()) {
+                for (Edge edge : current.getAdjacencyList()) {
+                    Node neighbor = edge.getDestination();
                     if (!visited.contains(neighbor)) {
                         visited.add(neighbor);
                         queue.add(neighbor);
@@ -678,7 +680,8 @@ public class GraphVisualGUIControler {
             javafx.geometry.Point2D pos1 = nodePositions.get(node);
             if (pos1 == null) continue;
             
-            for (Node neighbor : node.getAdjacencyList()) {
+            for (Edge edge : node.getAdjacencyList()) {
+                Node neighbor = edge.getDestination();
                 javafx.geometry.Point2D pos2 = nodePositions.get(neighbor);
                 if (pos2 == null) continue;
                 
@@ -825,7 +828,8 @@ public class GraphVisualGUIControler {
      */
     private void dfsCountComponent(Node node, Set<Node> visited) {
         visited.add(node);
-        for (Node neighbor : node.getAdjacencyList()) {
+        for (Edge edge : node.getAdjacencyList()) {
+            Node neighbor = edge.getDestination();
             if (!visited.contains(neighbor)) {
                 dfsCountComponent(neighbor, visited);
             }
