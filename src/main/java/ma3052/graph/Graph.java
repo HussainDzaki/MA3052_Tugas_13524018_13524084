@@ -12,21 +12,25 @@ public class Graph {
 
     public Graph() {
         nodeList = new ArrayList<Node>();
+        edgeList = new ArrayList<Edge>();
         directed = false;
     }
 
     public Graph(boolean directed) {
         nodeList = new ArrayList<Node>();
+        edgeList = new ArrayList<Edge>();
         this.directed = directed;
     }
 
     public Graph(Collection<Node> nodes) {
         nodeList = new ArrayList<Node>(nodes);
+        edgeList = new ArrayList<Edge>();
         directed = false;
     }
 
     public Graph(Collection<Node> nodes, boolean directed) {
         nodeList = new ArrayList<Node>(nodes);
+        edgeList = new ArrayList<Edge>();
         this.directed = directed;
     }
 
