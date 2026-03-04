@@ -6,6 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ma3052.graph.GridGraph;
+import ma3052.graph.IslandCounter;
 
 
 import java.util.*;
@@ -115,6 +116,15 @@ public class GridGraphGUI {
         graphicsContext.strokeRect(startX, startY, gridWidth, gridHeight);
     }
 
+    /**
+     * Get total island count in the grid
+     */
+    public int getTotalIsland(){
+        if (gridGraph == null) {
+            return 0;
+        }
+        return IslandCounter.getTotalIsland(gridGraph, '#');
+    }
 
     /**
      * Stop the rendering thread
