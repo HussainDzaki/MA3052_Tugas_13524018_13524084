@@ -2,7 +2,10 @@ package ma3052.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -10,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
@@ -30,6 +34,7 @@ import java.util.*;
  * with animated DFS/BFS algorithm visualization and force-directed layout
  */
 public class GraphVisualGUIController {
+    public static GraphVisualGUIController instance = null;
 
     // Graph data structure
     private GraphGUI graphGUI;
@@ -65,6 +70,9 @@ public class GraphVisualGUIController {
     private Button addFromFile;
 
     @FXML
+    private Button advancedInput;
+  
+    @FXML
     private Button btnNodeAndEdges;
 
     @FXML
@@ -99,6 +107,10 @@ public class GraphVisualGUIController {
     }
 
     private ModeGUI mode = ModeGUI.NODE_AND_EDGES_MODE;
+  
+    public void setGraph(Graph graph) {
+        graphGUI.setGraph(graph);
+    }
 
     /**
      * Initialize the controller
@@ -106,6 +118,8 @@ public class GraphVisualGUIController {
      */
     @FXML
     public void initialize() {
+        instance = this;
+
         // Initialize graph
         graphGUI = new GraphGUI(graphCanvas);
         gridGraphGUI = new GridGraphGUI(graphCanvas);
@@ -153,6 +167,12 @@ public class GraphVisualGUIController {
             addFromFile.setOnAction(event -> handleAddFromFile());
         }
 
+        if (advancedInput != null) {
+            advancedInput.setOnAction(event -> handleAdvancedInput());
+        }
+        // if (executeButton != null) {
+        // executeButton.setOnAction(event -> handleExecuteAlgorithm());
+        // }
         // Button handlers are connected via FXML (onAction attributes)
         // switchToNodeAndEdges and switchToGrid are FXML-connected
     }
@@ -248,6 +268,28 @@ public class GraphVisualGUIController {
                 break;
         }
 
+    }
+
+    @FXML
+    private void handleAdvancedInput() {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ma3052/advancedinput.fxml"));
+            Parent root = loader.load();
+
+            // Create scene
+            Scene scene = new Scene(root, 700, 500);
+
+            // Setup stage
+            Stage stage = new Stage();
+            stage.setTitle("Advanced Input");
+            stage.setScene(scene);
+            stage.setWidth(700);
+            stage.setHeight(500);
+            stage.showAndWait();
+        } catch (IOException e) {
+            showError(e.getMessage());
+        }
     }
 
     /**

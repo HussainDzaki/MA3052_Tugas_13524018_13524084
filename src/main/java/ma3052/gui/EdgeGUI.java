@@ -20,8 +20,8 @@ public class EdgeGUI {
     private double arrowHeadSize;
 
     // Physics config
-    private static final double SPRING_CONSTANT = 400;
-    private static final double SPRING_LENGTH = 100;
+    private static final double SPRING_CONSTANT = 200;
+    private static final double SPRING_LENGTH = 120;
 
     public EdgeGUI(Edge edge, NodeGUI sourceGUI, NodeGUI destinationGUI) {
         this.edge = edge;

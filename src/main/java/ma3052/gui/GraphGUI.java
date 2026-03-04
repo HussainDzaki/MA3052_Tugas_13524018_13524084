@@ -1,9 +1,12 @@
 package ma3052.gui;
 
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
@@ -14,9 +17,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Controller for Graph Visualization GUI
  * Manages the visualization and interaction with graph data structure
- * with animated DFS/BFS algorithm visualization and force-directed layout
  */
 
 public class GraphGUI {
@@ -29,10 +30,14 @@ public class GraphGUI {
     private Map<Node, NodeGUI> nodeMap;
     private Map<Edge, EdgeGUI> edgeMap;
 
+    // Draw options
+    private boolean drawNodeValue = false;
+    private boolean drawEdgeWeight = false;
+
     // Animation parameters
-    private static final double MIN_DISTANCE = 100;
-    private static final double COULOMB_CONSTANT = 200;
-    private static final double CENTER_GRAVITY_CONSTANT = 400;
+    private static final double MIN_DISTANCE = 120;
+    private static final double COULOMB_CONSTANT = 400;
+    private static final double CENTER_GRAVITY_CONSTANT = 200;
 
     // Force-directed layout parameters
     private static final double FIXED_DELTA_TIME = 0.02; // 50 fps
@@ -44,6 +49,11 @@ public class GraphGUI {
     private volatile boolean isDrawing = true;
 
     private ScheduledThreadPoolExecutor threadPoolExecutor;
+
+    // Node dragging
+    private boolean isDragging = false;
+    private Point2D dragOffset;
+    private NodeGUI draggedNodeGUI;
 
     public GraphGUI(Canvas canvas) {
         graph = new Graph();
@@ -58,10 +68,32 @@ public class GraphGUI {
             if (isPhysicEnabled)
                 updatePhysics();
         }, 0, FIXED_DELTA_TIME_MS, TimeUnit.MILLISECONDS);
-        threadPoolExecutor.scheduleAtFixedRate(() -> {
+        threadPoolExecutor.scheduleWithFixedDelay(() -> {
             if (isDrawing)
                 updateCanvas();
-        }, 0, FIXED_DELTA_TIME_MS, TimeUnit.MILLISECONDS);
+        }, 0, 16, TimeUnit.MILLISECONDS);
+
+        canvas.setOnMousePressed(event -> {
+            onCanvasDragStart(event);
+        });
+
+        canvas.setOnMouseDragged(event -> {
+            onCanvasDragMove(event);
+        });
+
+        canvas.setOnMouseClicked(event -> {
+            onCanvasDragEnd(event);
+        });
+
+        canvas.setOnMouseExited(event -> {
+            onCanvasDragEnd(event);
+        });
+
+        Platform.runLater(() -> {
+            canvas.getScene().getWindow().setOnCloseRequest(event -> {
+                threadPoolExecutor.shutdown();
+            });
+        });
     }
 
     public Graph getGraph() {
@@ -91,6 +123,10 @@ public class GraphGUI {
             edgeMap.put(edge, edgeGUI);
             edgeGUIList.add(edgeGUI);
         }
+    }
+
+    public void clearGraph() {
+        setGraph(new Graph());
     }
 
     public NodeGUI getNodeGUI(Node node) {
@@ -149,6 +185,22 @@ public class GraphGUI {
         this.canvas = canvas;
     }
 
+    public boolean isDrawEdgeWeight() {
+        return drawEdgeWeight;
+    }
+
+    public void setDrawEdgeWeight(boolean drawEdgeWeight) {
+        this.drawEdgeWeight = drawEdgeWeight;
+    }
+
+    public boolean isDrawNodeValue() {
+        return drawNodeValue;
+    }
+
+    public void setDrawNodeValue(boolean drawNodeValue) {
+        this.drawNodeValue = drawNodeValue;
+    }
+
     private void updatePhysics() {
         // System.out.println("Updating physics");
         // Add force to the center
@@ -184,23 +236,20 @@ public class GraphGUI {
             nodeGUI.update(FIXED_DELTA_TIME);
             nodeGUI.setForce(Point2D.ZERO); // Reset force
             nodeGUI.clampPosition(
-                    nodeGUI.getRadius(), nodeGUI.getRadius(),
-                    canvas.getWidth() - nodeGUI.getRadius(), canvas.getHeight() - nodeGUI.getRadius());
+                    nodeGUI.getRadius() + 10, nodeGUI.getRadius() + 10,
+                    canvas.getWidth() - nodeGUI.getRadius() - 10, canvas.getHeight() - nodeGUI.getRadius() - 10);
         }
     }
 
     private void drawNodes() {
         for (NodeGUI nodeGUI : nodeGUIList) {
-            nodeGUI.draw(graphicsContext, false);
+            nodeGUI.draw(graphicsContext, drawNodeValue);
         }
     }
 
     private void drawEdges() {
         for (EdgeGUI edgeGUI : edgeGUIList) {
-            System.out.println(
-                    "Drawing edge: " + edgeGUI.getSourceGUI().getNode().getNodeName() + " <-> "
-                            + edgeGUI.getDestinationGUI().getNode().getNodeName());
-            edgeGUI.draw(graphicsContext, true, true);
+            edgeGUI.draw(graphicsContext, drawEdgeWeight, graph.isDirected());
         }
     }
 
@@ -216,5 +265,37 @@ public class GraphGUI {
             drawEdges();
             drawNodes();
         });
+    }
+
+    private void onCanvasDragStart(MouseEvent event) {
+        for (NodeGUI nodeGUI : nodeGUIList) {
+            if (nodeGUI.getPosition().subtract(new Point2D(event.getX(), event.getY())).magnitude() <= nodeGUI
+                    .getRadius()) {
+                isDragging = true;
+                draggedNodeGUI = nodeGUI;
+                Point2D dragPosition = new Point2D(event.getX(), event.getY());
+                dragOffset = nodeGUI.getPosition().subtract(dragPosition);
+                draggedNodeGUI.setLockPosition(true);
+                break;
+            }
+        }
+    }
+
+    private void onCanvasDragMove(MouseEvent event) {
+        if (isDragging) {
+            Point2D currentPosition = new Point2D(event.getX(), event.getY());
+            draggedNodeGUI.setPosition(currentPosition.add(dragOffset));
+            draggedNodeGUI.clampPosition(
+                    draggedNodeGUI.getRadius() + 10, draggedNodeGUI.getRadius() + 10,
+                    canvas.getWidth() - draggedNodeGUI.getRadius() - 10,
+                    canvas.getHeight() - draggedNodeGUI.getRadius() - 10);
+        }
+    }
+
+    private void onCanvasDragEnd(MouseEvent event) {
+        if (isDragging) {
+            draggedNodeGUI.setLockPosition(false);
+            isDragging = false;
+        }
     }
 }
