@@ -1,7 +1,6 @@
 package ma3052.gui;
 
 import javafx.application.Platform;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -9,7 +8,6 @@ import ma3052.graph.GridGraph;
 import ma3052.graph.IslandCounter;
 
 
-import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 

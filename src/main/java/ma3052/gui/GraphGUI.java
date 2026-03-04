@@ -1,11 +1,9 @@
 package ma3052.gui;
 
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import ma3052.graph.Edge;
@@ -44,7 +42,6 @@ public class GraphGUI {
     private static final long FIXED_DELTA_TIME_MS = 20; // 50 fps
 
     // Animation
-    private volatile boolean isRunningAlgorithm = false;
     private volatile boolean isPhysicEnabled = true;
     private volatile boolean isDrawing = true;
 

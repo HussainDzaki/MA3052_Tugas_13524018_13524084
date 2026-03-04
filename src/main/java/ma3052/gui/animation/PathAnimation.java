@@ -1,21 +1,16 @@
 package ma3052.gui.animation;
 
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import ma3052.controller.GraphVisualGUIController;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
-import ma3052.graph.GraphComponent;
 import ma3052.graph.Node;
 import ma3052.gui.EdgeGUI;
 import ma3052.gui.GraphGUI;
