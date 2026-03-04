@@ -33,7 +33,7 @@
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #1976d2;" text="Add Node" />
                     <HBox spacing="8">
                         <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
-                        <Button fx:id="addNodeButton" minWidth="80.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
+                        <Button fx:id="addNodeButton" onAction="#handleAddNode" minWidth="80.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
                     </HBox>
                 </VBox>
                 
@@ -46,11 +46,10 @@
                     <HBox spacing="8">
                         <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
                         <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
-                        <Button fx:id="addEdgeButton" minWidth="60.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
+                        <Button fx:id="addEdgeButton" onAction="#handleAddEdge" minWidth="60.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
                     </HBox>
-                    <Button fx:id="clearButton" maxWidth="Infinity" style="-fx-padding: 10; -fx-text-fill: #d32f2f; -fx-font-weight: bold;" text="Clear Graph" />
-                    <Button fx:id="addFromFile" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add Graph From .txt File" />
-                    <Button fx:id="advancedInput" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" text="Advanced Input" />
+                    <Button fx:id="clearButton" onAction="#handleClear" maxWidth="Infinity" style="-fx-padding: 10; -fx-text-fill: #d32f2f; -fx-font-weight: bold;" text="Clear Graph" />
+                    <Button fx:id="advancedInput" onAction="#handleAdvancedInput" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Advanced Input" />
                 </VBox>
                 
                 <!-- Separator -->

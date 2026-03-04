@@ -20,13 +20,17 @@ import ma3052.graph.Graph;
 import ma3052.graph.Node;
 import ma3052.gui.GraphGUI;
 import ma3052.gui.GridGraphGUI;
+import ma3052.gui.animation.PathAnimation;
+import ma3052.gui.animation.TraversalAnimation;
 import ma3052.graph.GraphComponent;
 import ma3052.graph.GridGraph;
 import ma3052.graph.IslandCounter;
 
 import java.io.*;
 import java.util.*;
-
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Controller for Graph Visualization GUI
@@ -71,7 +75,7 @@ public class GraphVisualGUIController {
 
     @FXML
     private Button advancedInput;
-  
+
     @FXML
     private Button btnNodeAndEdges;
 
@@ -107,7 +111,9 @@ public class GraphVisualGUIController {
     }
 
     private ModeGUI mode = ModeGUI.NODE_AND_EDGES_MODE;
-  
+
+    private ScheduledThreadPoolExecutor threadPoolExecutor;
+
     public void setGraph(Graph graph) {
         graphGUI.setGraph(graph);
     }
@@ -133,10 +139,12 @@ public class GraphVisualGUIController {
             speedSlider.setMax(2000);
             speedSlider.setValue(500);
             speedSlider.setBlockIncrement(100);
-        }
 
-        // Setup event handlers
-        setupEventHandlers();
+            speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+                TraversalAnimation.setAnimationStepTime(newValue.longValue());
+                PathAnimation.setAnimationStepTime(newValue.longValue());
+            });
+        }
 
         // Setup canvas
         if (graphCanvas != null) {
@@ -145,36 +153,17 @@ public class GraphVisualGUIController {
 
         // Log initialization
         logMessage("Graph Visualization initialized successfully");
-    }
 
-    /**
-     * Setup event handlers for buttons
-     */
-    private void setupEventHandlers() {
-        if (addNodeButton != null) {
-            addNodeButton.setOnAction(event -> handleAddNode());
-        }
+        threadPoolExecutor = new ScheduledThreadPoolExecutor(1);
 
-        if (addEdgeButton != null) {
-            addEdgeButton.setOnAction(event -> handleAddEdge());
-        }
-
-        if (clearButton != null) {
-            clearButton.setOnAction(event -> handleClear());
-        }
-
-        if (addFromFile != null) {
-            addFromFile.setOnAction(event -> handleAddFromFile());
-        }
-
-        if (advancedInput != null) {
-            advancedInput.setOnAction(event -> handleAdvancedInput());
-        }
-        // if (executeButton != null) {
-        // executeButton.setOnAction(event -> handleExecuteAlgorithm());
-        // }
-        // Button handlers are connected via FXML (onAction attributes)
-        // switchToNodeAndEdges and switchToGrid are FXML-connected
+        // Stop both drawing thread
+        Platform.runLater(() -> {
+            graphCanvas.getScene().getWindow().setOnCloseRequest(e -> {
+                graphGUI.stop();
+                gridGraphGUI.stop();
+                threadPoolExecutor.shutdown();
+            });
+        });
     }
 
     /**
@@ -395,7 +384,7 @@ public class GraphVisualGUIController {
     /**
      * Add a message to the log area
      */
-    private void logMessage(String message) {
+    public void logMessage(String message) {
         if (logArea != null) {
             Platform.runLater(() -> logArea.appendText(message + "\n"));
         }
@@ -404,7 +393,7 @@ public class GraphVisualGUIController {
     /**
      * Show an error message
      */
-    private void showError(String message) {
+    public void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
@@ -467,10 +456,8 @@ public class GraphVisualGUIController {
         }
 
         // Run animation in background thread
-        String finalStartNodeName = startNodeName;
-        Thread animationThread = new Thread(() -> executeAlgorithm(selectedAlgorithm, finalStartNodeName));
-        animationThread.setDaemon(true);
-        animationThread.start();
+        final String finalStartNode = startNodeName;
+        threadPoolExecutor.schedule(() -> executeAlgorithm(selectedAlgorithm, finalStartNode), 0, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -481,7 +468,7 @@ public class GraphVisualGUIController {
         boolean hasGridGraph = gridGraphGUI.getGridGraph() != null;
 
         if ((mode == ModeGUI.NODE_AND_EDGES_MODE && !hasNodeEdgeGraph) ||
-            (mode == ModeGUI.GRID_MODE && !hasGridGraph)) {
+                (mode == ModeGUI.GRID_MODE && !hasGridGraph)) {
             showError("Graph is empty. Add nodes first.");
             return false;
         }
@@ -507,6 +494,7 @@ public class GraphVisualGUIController {
             isAnimating = true;
             switch (mode) {
                 case NODE_AND_EDGES_MODE:
+                    graphGUI.resetColors();
                     executeNodeAndEdgesAlgorithm(selectedAlgorithm, startNodeName);
                     break;
                 case GRID_MODE:
@@ -517,6 +505,7 @@ public class GraphVisualGUIController {
             }
         } catch (Exception e) {
             Platform.runLater(() -> showError("Algorithm execution error: " + e.getMessage()));
+            e.printStackTrace();
         } finally {
             isAnimating = false;
         }
@@ -528,10 +517,10 @@ public class GraphVisualGUIController {
     private void executeNodeAndEdgesAlgorithm(String algorithm, String startNodeName) {
         switch (algorithm) {
             case "DFS Traversal":
-                // animateDFS(startNodeName);
+                TraversalAnimation.animateDFS(graphGUI, startNodeName);
                 break;
             case "BFS Traversal":
-                // animateBFS(startNodeName);
+                TraversalAnimation.animateBFS(graphGUI, startNodeName);
                 break;
             case "Connectivity":
                 // connectivity();
@@ -619,7 +608,6 @@ public class GraphVisualGUIController {
         speedSlider.setVisible(false);
         speedSlider.setManaged(false);
         updateAlgorithmComboForMode();
-
 
         addFromFile.setText("Add island from .txt file");
         logMessage("═══════════════════════════════════");
