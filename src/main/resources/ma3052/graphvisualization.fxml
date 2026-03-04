@@ -91,5 +91,18 @@
             </VBox>
         </HBox>
     </center>
+   <top>
+      <VBox prefHeight="109.0" prefWidth="1075.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="122.0" prefWidth="1074.0" style="-fx-font-size: 40;" text="Graph Visualization" textAlignment="CENTER" VBox.vgrow="SOMETIMES" />
+            <HBox prefHeight="45.0" prefWidth="1075.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="btnNodeAndEdges" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#switchToNodeAndEdges" prefHeight="86.0" prefWidth="150.0" text="Node and Edges" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnSwitchToGrid" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#switchToGrid" prefHeight="86.0" prefWidth="150.0" text="Grid" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
     
 </BorderPane>

@@ -12,6 +12,14 @@ public class GridGraph {
     private int rowSize;
     private int colSize;
 
+    public GridGraph(){
+        this.graph = null;
+        grid = new char[1][1];
+        this.positionToNode = new HashMap<>();
+        this.rowSize = 0;
+        this.colSize = 0;
+    }
+
     public GridGraph(int rows, int cols) {
         if (rows <= 0 || cols <= 0) {
             throw new IllegalArgumentException("Illegal row or col size: rows = " + rows + "; cols = " + cols);
