@@ -137,6 +137,7 @@ public class GraphVisualGUIController {
         if (addFromFile != null) {
             addFromFile.setOnAction(event -> handleAddFromFile());
         }
+        
 
         // Button handlers are connected via FXML (onAction attributes)
         // switchToNodeAndEdges and switchToGrid are FXML-connected
