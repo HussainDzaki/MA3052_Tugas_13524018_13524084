@@ -2,7 +2,10 @@ package ma3052.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -10,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
@@ -25,6 +29,7 @@ import java.util.*;
  * with animated DFS/BFS algorithm visualization and force-directed layout
  */
 public class GraphVisualGUIController {
+    public static GraphVisualGUIController instance = null;
 
     // Graph data structure
     private GraphGUI graphGUI;
@@ -59,6 +64,9 @@ public class GraphVisualGUIController {
     private Button addFromFile;
 
     @FXML
+    private Button advancedInput;
+
+    @FXML
     private ComboBox<String> algorithmCombo;
 
     @FXML
@@ -70,12 +78,18 @@ public class GraphVisualGUIController {
     @FXML
     private TextField startNodeInput;
 
+    public void setGraph(Graph graph) {
+        graphGUI.setGraph(graph);
+    }
+
     /**
      * Initialize the controller
      * Called after FXML file has been loaded
      */
     @FXML
     public void initialize() {
+        instance = this;
+
         // Initialize graph
         graphGUI = new GraphGUI(graphCanvas);
 
@@ -130,8 +144,11 @@ public class GraphVisualGUIController {
             addFromFile.setOnAction(event -> handleAddFromFile());
         }
 
+        if (advancedInput != null) {
+            advancedInput.setOnAction(event -> handleAdvancedInput());
+        }
         // if (executeButton != null) {
-        //     executeButton.setOnAction(event -> handleExecuteAlgorithm());
+        // executeButton.setOnAction(event -> handleExecuteAlgorithm());
         // }
     }
 
@@ -159,8 +176,7 @@ public class GraphVisualGUIController {
                 graphGUI.getNodeGUI(newNode).setPosition(new Point2D(randomX, randomY));
 
                 logMessage("Added node: " + nodeName);
-            }
-            else {
+            } else {
                 logMessage("Node already present: " + nodeName);
             }
 
@@ -215,6 +231,28 @@ public class GraphVisualGUIController {
         logMessage("═══════════════════════════════════");
         logMessage("Graph cleared");
         logMessage("═══════════════════════════════════");
+    }
+
+    @FXML
+    private void handleAdvancedInput() {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ma3052/advancedinput.fxml"));
+            Parent root = loader.load();
+
+            // Create scene
+            Scene scene = new Scene(root, 700, 500);
+
+            // Setup stage
+            Stage stage = new Stage();
+            stage.setTitle("Advanced Input");
+            stage.setScene(scene);
+            stage.setWidth(700);
+            stage.setHeight(500);
+            stage.showAndWait();
+        } catch (IOException e) {
+            showError(e.getMessage());
+        }
     }
 
     /**

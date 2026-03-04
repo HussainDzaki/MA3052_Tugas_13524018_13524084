@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController">
+<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController">
     
     <!-- Center: HBox with Left Menu and Right Canvas+Log -->
     <center>
@@ -50,6 +50,7 @@
                     </HBox>
                     <Button fx:id="clearButton" maxWidth="Infinity" style="-fx-padding: 10; -fx-text-fill: #d32f2f; -fx-font-weight: bold;" text="Clear Graph" />
                     <Button fx:id="addFromFile" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" text="Add Graph From .txt File" />
+                    <Button fx:id="advancedInput" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" text="Advanced Input" />
                 </VBox>
                 
                 <!-- Separator -->

@@ -1,0 +1,222 @@
+package ma3052.controller;
+
+import java.io.File;
+import java.io.IOException;
+
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import ma3052.gui.FormatGraphInput;
+
+public class GraphInputController {
+    @FXML
+    private ComboBox<String> nodeLabel;
+
+    @FXML
+    private ComboBox<String> inputCount;
+
+    @FXML
+    private CheckBox directed;
+
+    @FXML
+    private CheckBox nodeValue;
+
+    @FXML
+    private CheckBox edgeWeight;
+
+    @FXML
+    private CheckBox addNodeFromEdge;
+
+    @FXML
+    private CheckBox randomNodeEgde;
+
+    @FXML
+    private Button addFromFileButton;
+
+    @FXML
+    private Button getCurrentGraphButton;
+
+    @FXML
+    private Button applyInputButton;
+
+    @FXML
+    private TextArea formatTextArea;
+
+    @FXML
+    private TextArea inputTextArea;
+
+    @FXML
+    public void initialize() {
+        initOptions();
+        initButtons();
+        initTextAreas();
+    }
+
+    private void initOptions() {
+        nodeLabel.getItems().addAll(
+                "Zero Indexed",
+                "One Indexed",
+                "Custom Label");
+        nodeLabel.setValue("One Indexed");
+
+        switch (FormatGraphInput.getCurrentNameOption()) {
+            case ZeroIndexed:
+                nodeLabel.setValue("Zero Indexed");
+                break;
+            case OneIndexed:
+                nodeLabel.setValue("One Indexed");
+                break;
+            case CustomNodeName:
+                nodeLabel.setValue("Custom Label");
+                break;
+        }
+        nodeLabel.setOnAction(e -> {
+            String str = nodeLabel.getValue();
+            if (str.equals("Zero Indexed")) {
+                FormatGraphInput.setCurrentNameOption(FormatGraphInput.NodeNameOption.ZeroIndexed);
+            } else if (str.equals("One Indexed")) {
+                FormatGraphInput.setCurrentNameOption(FormatGraphInput.NodeNameOption.OneIndexed);
+            } else if (str.equals("Custom Label")) {
+                FormatGraphInput.setCurrentNameOption(FormatGraphInput.NodeNameOption.CustomNodeName);
+            }
+        });
+
+        inputCount.getItems().addAll(
+                "Node and Edge Count",
+                "Only Node Count",
+                "Only Edge Count",
+                "No Explicit Count");
+
+        switch (FormatGraphInput.getCurrentCountOption()) {
+            case NodeAndEdgeCount:
+                inputCount.setValue("Node and Edge Count");
+                break;
+            case OnlyNodeCount:
+                inputCount.setValue("Only Node Count");
+                break;
+            case OnlyEdgeCount:
+                inputCount.setValue("Only Edge Count");
+                break;
+            case NoExplicitCount:
+                inputCount.setValue("No Explicit Count");
+                break;
+        }
+
+        inputCount.setOnAction(e -> {
+            String str = inputCount.getValue();
+            if (str.equals("Node and Edge Count")) {
+                FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.NodeAndEdgeCount);
+            } else if (str.equals("Only Node Count")) {
+                FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.OnlyNodeCount);
+            } else if (str.equals("Only Edge Count")) {
+                FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.OnlyEdgeCount);
+            } else if (str.equals("No Explicit Count")) {
+                FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.NoExplicitCount);
+            }
+        });
+
+        directed.setSelected(FormatGraphInput.isGraphDirected());
+        directed.setOnAction(e -> {
+            FormatGraphInput.setIsGraphDirected(directed.isSelected());
+        });
+
+        nodeValue.setSelected(FormatGraphInput.isInputNodeValue());
+        nodeValue.setOnAction(e -> {
+            FormatGraphInput.setInputNodeValue(nodeValue.isSelected());
+        });
+
+        edgeWeight.setSelected(FormatGraphInput.isInputEdgeWeight());
+        edgeWeight.setOnAction(e -> {
+            FormatGraphInput.setInputEdgeWeight(edgeWeight.isSelected());
+        });
+
+        addNodeFromEdge.setSelected(FormatGraphInput.isNewNodeFromEdge());
+        addNodeFromEdge.setOnAction(e -> {
+            FormatGraphInput.setNewNodeFromEdge(addNodeFromEdge.isSelected());
+        });
+
+        randomNodeEgde.setSelected(FormatGraphInput.isRandomNodeOrEdge());
+        randomNodeEgde.setOnAction(e -> {
+            FormatGraphInput.setRandomNodeOrEdge(randomNodeEgde.isSelected());
+        });
+    }
+
+    private void initButtons() {
+        addFromFileButton.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Load Graph from File");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                    new FileChooser.ExtensionFilter("All Files", "*.*"));
+
+            File selectedFile = fileChooser.showOpenDialog(addFromFileButton.getScene().getWindow());
+            if (selectedFile != null) {
+                try {
+                    if (GraphVisualGUIController.instance != null) {
+                        GraphVisualGUIController.instance
+                                .setGraph(FormatGraphInput.inputGraphFromFile(selectedFile));
+                        ((Stage) (applyInputButton.getScene().getWindow())).close();
+                    }
+                } catch (IOException e) {
+                    showError("Error reading file: " + e.getMessage());
+                } catch (IllegalArgumentException e) {
+                    showError("Invalid file format: " + e.getMessage());
+                }
+            }
+        });
+
+        getCurrentGraphButton.setOnAction(event -> {
+            showError("This feature is not yet implemented");
+        });
+
+        applyInputButton.setOnAction(event -> {
+            try {
+                if (GraphVisualGUIController.instance != null) {
+                    GraphVisualGUIController.instance
+                            .setGraph(FormatGraphInput.inputGraphFromString(inputTextArea.getText()));
+                    ((Stage) (applyInputButton.getScene().getWindow())).close();
+                }
+            } catch (IOException e) {
+                showError("Error reading file: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                showError("Invalid file format: " + e.getMessage());
+            }
+        });
+    }
+
+    private void initTextAreas() {
+        formatTextArea.setEditable(false);
+         formatTextArea.setText("" +
+                "<node-count(n)> <edge-count(m)>\n" +
+                "<edge-1> <edge-1>\n" +
+                "<edge-2> <edge-2>\n" +
+                "<edge-3> <edge-3>\n" +
+                "...\n" +
+                "<edge-m> <edge-m>");
+        inputTextArea.setEditable(true);
+        inputTextArea.setText("" +
+                "4 5\n" +
+                "1 4\n" +
+                "4 3\n" +
+                "2 3\n" +
+                "3 5\n" +
+                "2 5");
+    }
+
+    /**
+     * Show an error message
+     */
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+}

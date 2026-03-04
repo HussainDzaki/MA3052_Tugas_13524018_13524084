@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphInputController">
+    <HBox spacing = "15" prefWidth="Infinity" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10" left="10" right="10" top="10" />
+        </padding>
+        <!-- Input Option -->
+        <VBox prefWidth="200" spacing = "10">
+            <Label text="Options"/>
+            <Label text="Node Label:" />
+            <ComboBox fx:id="nodeLabel" prefWidth="Infinity" />
+            <Label text="Input Count:" />
+            <ComboBox fx:id="inputCount" prefWidth="Infinity" />
+            <HBox spacing = "5">
+                <CheckBox fx:id="directed"/>
+                <Label text="Directed"/>
+            </HBox>
+            <HBox spacing = "5">
+                <CheckBox fx:id="nodeValue"/>
+                <Label text="Node Value"/>
+                <CheckBox fx:id="edgeWeight"/>
+                <Label text="Edge Weight"/>
+            </HBox>
+            <HBox spacing = "5">
+                <CheckBox fx:id="addNodeFromEdge"/>
+                <Label text="Add Node From Edge"/>
+            </HBox>
+            <HBox spacing = "5">
+                <CheckBox fx:id="randomNodeEgde"/>
+                <Label text="Random Node/Edge"/>
+            </HBox>
+            <Button fx:id="addFromFileButton" prefWidth="Infinity" text="Add Graph From .txt File" />
+            <Button fx:id="getCurrentGraphButton" prefWidth="Infinity" text="Get Current Graph" />
+            <Button fx:id="applyInputButton" prefWidth="Infinity" text="Apply Input" />
+        </VBox>
+        <!-- Format -->
+        <VBox prefWidth="200" spacing = "10" VBox.vgrow="ALWAYS">
+            <Label>
+                Format
+            </Label>
+            <TextArea fx:id="formatTextArea" editable="false" prefHeight="350" VBox.vgrow="ALWAYS" text="node-count edge-count"/>
+        </VBox>
+        <!-- Input Text Box -->
+        <VBox prefWidth="200" spacing = "10" VBox.vgrow="ALWAYS">
+            <Label>
+                Input
+            </Label>
+            <TextArea fx:id="inputTextArea" editable="true" prefHeight="350" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </HBox>
+</VBox>
