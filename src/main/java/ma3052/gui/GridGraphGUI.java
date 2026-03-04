@@ -45,6 +45,12 @@ public class GridGraphGUI {
                 updateCanvas();
             }
         }, 0, 90000, TimeUnit.NANOSECONDS); // 60 FPS
+
+        Platform.runLater(() -> {
+            canvas.getScene().getWindow().setOnCloseRequest(event -> {
+                threadPoolExecutor.shutdown();
+            });
+        });
     }
 
     /**

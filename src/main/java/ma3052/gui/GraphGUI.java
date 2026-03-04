@@ -253,6 +253,16 @@ public class GraphGUI {
         }
     }
 
+    public void resetColors() {
+        for (NodeGUI nodeGUI : nodeGUIList) {
+            nodeGUI.setColor(Color.WHITE);
+            nodeGUI.setBorderColor(Color.BLACK);
+        }
+        for (EdgeGUI edgeGUI : edgeGUIList) {
+            edgeGUI.setLineColor(Color.BLACK);
+        }
+    }
+
     private void clearCanvas() {
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -297,5 +307,13 @@ public class GraphGUI {
             draggedNodeGUI.setLockPosition(false);
             isDragging = false;
         }
+    }
+
+    /**
+     * Stop the rendering thread
+     */
+    public void stop() {
+        isDrawing = false;
+        threadPoolExecutor.shutdown();
     }
 }
