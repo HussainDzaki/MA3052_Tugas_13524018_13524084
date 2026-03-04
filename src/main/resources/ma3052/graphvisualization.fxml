@@ -59,11 +59,14 @@
                 <VBox spacing="8">
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #388e3c;" text="Algorithm" />
                     
-                    <Label fx:id="labelStartNode" style="-fx-font-size: 11;" text="Start Node:" />
-                    <TextField fx:id="startNodeInput" promptText="Enter starting node" />
-                    
                     <Label style="-fx-font-size: 11;" text="Algorithm Type:" />
                     <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" />
+
+                    <Label fx:id="labelStartNode" style="-fx-font-size: 11;" text="Start Node:" />
+                    <TextField fx:id="startNodeInput" promptText="Enter starting node" />
+
+                    <Label fx:id="labelEndNode" style="-fx-font-size: 11;" text="End Node:" />
+                    <TextField fx:id="endNodeInput" promptText="Enter ending node" />
                     
                     <Label fx:id="labelSpeedSlider" style="-fx-font-size: 11;" text="Speed:" />
                     <Slider fx:id="speedSlider" max="2000.0" min="100.0" showTickLabels="false" value="500.0" />

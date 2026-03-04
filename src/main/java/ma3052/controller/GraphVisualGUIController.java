@@ -98,6 +98,12 @@ public class GraphVisualGUIController {
     private Label labelStartNode;
 
     @FXML
+    private TextField endNodeInput;
+
+    @FXML
+    private Label labelEndNode;
+
+    @FXML
     private Label labelAddEdge;
 
     @FXML
@@ -132,6 +138,8 @@ public class GraphVisualGUIController {
 
         // Setup algorithm options based on initial mode
         updateAlgorithmComboForMode();
+        switchAlgorithm(algorithmCombo.getValue());
+        algorithmCombo.valueProperty().addListener((obs, oldVal, newVal) -> switchAlgorithm(newVal));
 
         // Setup speed slider
         if (speedSlider != null) {
@@ -416,6 +424,8 @@ public class GraphVisualGUIController {
                 algorithmCombo.getItems().addAll(
                         "DFS Traversal",
                         "BFS Traversal",
+                        "DFS Path Search",
+                        "BFS Path Search",
                         "Connectivity");
                 break;
             case GRID_MODE:
@@ -443,10 +453,12 @@ public class GraphVisualGUIController {
 
         String selectedAlgorithm = algorithmCombo.getValue();
         String startNodeName = null;
+        String endNodeName = null;
 
         // Validate mode-specific requirements
         if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
             startNodeName = startNodeInput.getText().trim();
+            endNodeName = endNodeInput.getText().trim();
             if (!validateStartingNode(startNodeName)) {
                 return;
             }
@@ -457,7 +469,9 @@ public class GraphVisualGUIController {
 
         // Run animation in background thread
         final String finalStartNode = startNodeName;
-        threadPoolExecutor.schedule(() -> executeAlgorithm(selectedAlgorithm, finalStartNode), 0, TimeUnit.MILLISECONDS);
+        final String finalEndNode = endNodeName;
+        threadPoolExecutor.schedule(() -> executeAlgorithm(selectedAlgorithm, finalStartNode, finalEndNode), 0,
+                TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -489,13 +503,13 @@ public class GraphVisualGUIController {
     /**
      * Execute the selected algorithm based on mode and algorithm type
      */
-    private void executeAlgorithm(String selectedAlgorithm, String startNodeName) {
+    private void executeAlgorithm(String selectedAlgorithm, String startNodeName, String endNodeName) {
         try {
             isAnimating = true;
             switch (mode) {
                 case NODE_AND_EDGES_MODE:
                     graphGUI.resetColors();
-                    executeNodeAndEdgesAlgorithm(selectedAlgorithm, startNodeName);
+                    executeNodeAndEdgesAlgorithm(selectedAlgorithm, startNodeName, endNodeName);
                     break;
                 case GRID_MODE:
                     executeGridAlgorithm(selectedAlgorithm);
@@ -514,13 +528,19 @@ public class GraphVisualGUIController {
     /**
      * Execute algorithms for Node and Edges mode
      */
-    private void executeNodeAndEdgesAlgorithm(String algorithm, String startNodeName) {
+    private void executeNodeAndEdgesAlgorithm(String algorithm, String startNodeName, String endNodeName) {
         switch (algorithm) {
             case "DFS Traversal":
                 TraversalAnimation.animateDFS(graphGUI, startNodeName);
                 break;
             case "BFS Traversal":
                 TraversalAnimation.animateBFS(graphGUI, startNodeName);
+                break;
+            case "DFS Path Search":
+                PathAnimation.animateDFS(graphGUI, startNodeName, endNodeName);
+                break;
+            case "BFS Path Search":
+                PathAnimation.animateBFS(graphGUI, startNodeName, endNodeName);
                 break;
             case "Connectivity":
                 // connectivity();
@@ -547,6 +567,73 @@ public class GraphVisualGUIController {
         }
     }
 
+    public void switchAlgorithm(String algorithm) {
+        switch (mode) {
+            case NODE_AND_EDGES_MODE:
+                switch (algorithm) {
+                    case "DFS Traversal":
+                        startNodeInput.setVisible(true);
+                        startNodeInput.setManaged(true);
+                        labelStartNode.setVisible(true);
+                        labelStartNode.setManaged(true);
+                        endNodeInput.setVisible(false);
+                        endNodeInput.setManaged(false);
+                        labelEndNode.setVisible(false);
+                        labelEndNode.setManaged(false);
+                        break;
+                    case "BFS Traversal":
+                        startNodeInput.setVisible(true);
+                        startNodeInput.setManaged(true);
+                        labelStartNode.setVisible(true);
+                        labelStartNode.setManaged(true);
+                        endNodeInput.setVisible(false);
+                        endNodeInput.setManaged(false);
+                        labelEndNode.setVisible(false);
+                        labelEndNode.setManaged(false);
+                        break;
+                    case "DFS Path Search":
+                        startNodeInput.setVisible(true);
+                        startNodeInput.setManaged(true);
+                        labelStartNode.setVisible(true);
+                        labelStartNode.setManaged(true);
+                        endNodeInput.setVisible(true);
+                        endNodeInput.setManaged(true);
+                        labelEndNode.setVisible(true);
+                        labelEndNode.setManaged(true);
+                        break;
+                    case "BFS Path Search":
+                        startNodeInput.setVisible(true);
+                        startNodeInput.setManaged(true);
+                        labelStartNode.setVisible(true);
+                        labelStartNode.setManaged(true);
+                        endNodeInput.setVisible(true);
+                        endNodeInput.setManaged(true);
+                        labelEndNode.setVisible(true);
+                        labelEndNode.setManaged(true);
+                        break;
+                    case "Connectivity":
+                        startNodeInput.setVisible(false);
+                        startNodeInput.setManaged(false);
+                        labelStartNode.setVisible(false);
+                        labelStartNode.setManaged(false);
+                        endNodeInput.setVisible(false);
+                        endNodeInput.setManaged(false);
+                        labelEndNode.setVisible(false);
+                        labelEndNode.setManaged(false);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+
+            case GRID_MODE:
+                break;
+
+            default:
+                break;
+        }
+    }
+
     /**
      * Switch to Node and Edges visualization mode
      */
@@ -558,6 +645,10 @@ public class GraphVisualGUIController {
         startNodeInput.setManaged(true);
         labelStartNode.setVisible(true);
         labelStartNode.setManaged(true);
+        endNodeInput.setVisible(true);
+        endNodeInput.setManaged(true);
+        labelEndNode.setVisible(true);
+        labelEndNode.setManaged(true);
         addNodeVbox.setVisible(true);
         addNodeVbox.setManaged(true);
         edgeStartInput.setVisible(true);
@@ -591,6 +682,10 @@ public class GraphVisualGUIController {
         startNodeInput.setManaged(false);
         labelStartNode.setVisible(false);
         labelStartNode.setManaged(false);
+        endNodeInput.setVisible(false);
+        endNodeInput.setManaged(false);
+        labelEndNode.setVisible(false);
+        labelEndNode.setManaged(false);
         addNodeVbox.setVisible(false);
         addNodeVbox.setManaged(false);
 
