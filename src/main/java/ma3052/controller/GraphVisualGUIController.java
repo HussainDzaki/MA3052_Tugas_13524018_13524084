@@ -10,14 +10,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.scene.layout.VBox;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
 import ma3052.gui.GraphGUI;
+import ma3052.gui.GridGraphGUI;
 import ma3052.graph.GraphComponent;
+import ma3052.graph.GridGraph;
+import ma3052.graph.IslandCounter;
 
 import java.io.*;
 import java.util.*;
+
 
 /**
  * Controller for Graph Visualization GUI
@@ -28,6 +33,7 @@ public class GraphVisualGUIController {
 
     // Graph data structure
     private GraphGUI graphGUI;
+    private GridGraphGUI gridGraphGUI;
     private volatile boolean isAnimating = false;
 
     // FXML UI Components
@@ -59,6 +65,12 @@ public class GraphVisualGUIController {
     private Button addFromFile;
 
     @FXML
+    private Button btnNodeAndEdges;
+
+    @FXML
+    private Button btnSwitchToGrid;
+
+    @FXML
     private ComboBox<String> algorithmCombo;
 
     @FXML
@@ -70,6 +82,24 @@ public class GraphVisualGUIController {
     @FXML
     private TextField startNodeInput;
 
+    @FXML
+    private Label labelStartNode;
+
+    @FXML
+    private Label labelAddEdge;
+
+    @FXML
+    private VBox addNodeVbox;
+
+    @FXML
+    private Label labelSpeedSlider;
+
+    public enum ModeGUI {
+        NODE_AND_EDGES_MODE, GRID_MODE;
+    }
+
+    private ModeGUI mode = ModeGUI.NODE_AND_EDGES_MODE;
+
     /**
      * Initialize the controller
      * Called after FXML file has been loaded
@@ -78,17 +108,10 @@ public class GraphVisualGUIController {
     public void initialize() {
         // Initialize graph
         graphGUI = new GraphGUI(graphCanvas);
+        gridGraphGUI = new GridGraphGUI(graphCanvas);
 
-        // Setup algorithm options
-        if (algorithmCombo != null) {
-            algorithmCombo.getItems().addAll(
-                    "DFS Traversal",
-                    "BFS Traversal",
-                    "Connectivity"
-
-            );
-            algorithmCombo.getSelectionModel().selectFirst();
-        }
+        // Setup algorithm options based on initial mode
+        updateAlgorithmComboForMode();
 
         // Setup speed slider
         if (speedSlider != null) {
@@ -130,9 +153,8 @@ public class GraphVisualGUIController {
             addFromFile.setOnAction(event -> handleAddFromFile());
         }
 
-        // if (executeButton != null) {
-        //     executeButton.setOnAction(event -> handleExecuteAlgorithm());
-        // }
+        // Button handlers are connected via FXML (onAction attributes)
+        // switchToNodeAndEdges and switchToGrid are FXML-connected
     }
 
     /**
@@ -159,8 +181,7 @@ public class GraphVisualGUIController {
                 graphGUI.getNodeGUI(newNode).setPosition(new Point2D(randomX, randomY));
 
                 logMessage("Added node: " + nodeName);
-            }
-            else {
+            } else {
                 logMessage("Node already present: " + nodeName);
             }
 
@@ -210,20 +231,32 @@ public class GraphVisualGUIController {
             showError("Cannot clear while animation is running");
             return;
         }
-
         graphGUI.setGraph(new Graph());
-        logMessage("═══════════════════════════════════");
-        logMessage("Graph cleared");
-        logMessage("═══════════════════════════════════");
+        gridGraphGUI.setGridGraph(new GridGraph());
+        switch (mode) {
+            case NODE_AND_EDGES_MODE:
+                logMessage("═══════════════════════════════════");
+                logMessage("Graph cleared");
+                logMessage("═══════════════════════════════════");
+                break;
+            case GRID_MODE:
+                logMessage("═══════════════════════════════════");
+                logMessage("Grid Graph Cleared");
+                logMessage("═══════════════════════════════════");
+                break;
+            default:
+                break;
+        }
+
     }
 
     /**
-     * Handle loading graph from file
+     * Handle loading graph or grid from file based on current mode
      */
     @FXML
     private void handleAddFromFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load Graph from File");
+        fileChooser.setTitle("Load File");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Text Files", "*.txt"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
@@ -231,10 +264,11 @@ public class GraphVisualGUIController {
         File selectedFile = fileChooser.showOpenDialog(addFromFile.getScene().getWindow());
         if (selectedFile != null) {
             try {
-                loadGraphFromFile(selectedFile);
-                logMessage("═══════════════════════════════════");
-                logMessage("Graph loaded from: " + selectedFile.getName());
-                logMessage("═══════════════════════════════════");
+                if (mode == ModeGUI.GRID_MODE) {
+                    loadGridFromFile(selectedFile);
+                } else {
+                    loadGraphFromFile(selectedFile);
+                }
             } catch (IOException e) {
                 showError("Error reading file: " + e.getMessage());
             } catch (IllegalArgumentException e) {
@@ -336,4 +370,302 @@ public class GraphVisualGUIController {
         alert.showAndWait();
         logMessage("[ERROR] " + message);
     }
+
+    /**
+     * Update algorithm combo options based on current mode
+     */
+    private void updateAlgorithmComboForMode() {
+        if (algorithmCombo == null)
+            return;
+
+        algorithmCombo.getItems().clear();
+
+        switch (mode) {
+            case NODE_AND_EDGES_MODE:
+                algorithmCombo.getItems().addAll(
+                        "DFS Traversal",
+                        "BFS Traversal",
+                        "Connectivity");
+                break;
+            case GRID_MODE:
+                algorithmCombo.getItems().addAll(
+                        "Count Component",
+                        "Biggest Component");
+                break;
+            default:
+                break;
+        }
+
+        algorithmCombo.getSelectionModel().selectFirst();
+    }
+
+    @FXML
+    private void handleExecuteAlgorithm() {
+        if (isAnimating) {
+            showError("Animation already in progress");
+            return;
+        }
+
+        if (!validateGraphData()) {
+            return;
+        }
+
+        String selectedAlgorithm = algorithmCombo.getValue();
+        String startNodeName = null;
+
+        // Validate mode-specific requirements
+        if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
+            startNodeName = startNodeInput.getText().trim();
+            if (!validateStartingNode(startNodeName)) {
+                return;
+            }
+            logMessage("═══════════════════════════════════");
+            logMessage("Starting " + selectedAlgorithm + " from node: " + startNodeName);
+            logMessage("═══════════════════════════════════");
+        }
+
+        // Run animation in background thread
+        String finalStartNodeName = startNodeName;
+        Thread animationThread = new Thread(() -> executeAlgorithm(selectedAlgorithm, finalStartNodeName));
+        animationThread.setDaemon(true);
+        animationThread.start();
+    }
+
+    /**
+     * Validate if graph data is available
+     */
+    private boolean validateGraphData() {
+        boolean hasNodeEdgeGraph = graphGUI.getGraph() != null && graphGUI.getGraph().size() > 0;
+        boolean hasGridGraph = gridGraphGUI.getGridGraph() != null;
+
+        if ((mode == ModeGUI.NODE_AND_EDGES_MODE && !hasNodeEdgeGraph) ||
+            (mode == ModeGUI.GRID_MODE && !hasGridGraph)) {
+            showError("Graph is empty. Add nodes first.");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Validate starting node for NODE_AND_EDGES_MODE
+     */
+    private boolean validateStartingNode(String startNodeName) {
+        if (startNodeName.isEmpty()) {
+            showError("Please specify a starting node");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Execute the selected algorithm based on mode and algorithm type
+     */
+    private void executeAlgorithm(String selectedAlgorithm, String startNodeName) {
+        try {
+            isAnimating = true;
+            switch (mode) {
+                case NODE_AND_EDGES_MODE:
+                    executeNodeAndEdgesAlgorithm(selectedAlgorithm, startNodeName);
+                    break;
+                case GRID_MODE:
+                    executeGridAlgorithm(selectedAlgorithm);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            Platform.runLater(() -> showError("Algorithm execution error: " + e.getMessage()));
+        } finally {
+            isAnimating = false;
+        }
+    }
+
+    /**
+     * Execute algorithms for Node and Edges mode
+     */
+    private void executeNodeAndEdgesAlgorithm(String algorithm, String startNodeName) {
+        switch (algorithm) {
+            case "DFS Traversal":
+                // animateDFS(startNodeName);
+                break;
+            case "BFS Traversal":
+                // animateBFS(startNodeName);
+                break;
+            case "Connectivity":
+                // connectivity();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Execute algorithms for Grid mode
+     */
+    private void executeGridAlgorithm(String algorithm) {
+        switch (algorithm) {
+            case "Count Component":
+                logMessage(String.format("Total component is %d", gridGraphGUI.getTotalIsland()));
+                break;
+            case "Biggest Component":
+                int biggestIslandSize = IslandCounter.getBiggestIsland(gridGraphGUI.getGridGraph(), '#');
+                logMessage(String.format("Biggest island size is %d", biggestIslandSize));
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Switch to Node and Edges visualization mode
+     */
+    @FXML
+    public void switchToNodeAndEdges() {
+        mode = ModeGUI.NODE_AND_EDGES_MODE;
+        updateAlgorithmComboForMode();
+        startNodeInput.setVisible(true);
+        startNodeInput.setManaged(true);
+        labelStartNode.setVisible(true);
+        labelStartNode.setManaged(true);
+        addNodeVbox.setVisible(true);
+        addNodeVbox.setManaged(true);
+        edgeStartInput.setVisible(true);
+        edgeStartInput.setManaged(true);
+        edgeEndInput.setVisible(true);
+        edgeEndInput.setManaged(true);
+        addEdgeButton.setVisible(true);
+        addEdgeButton.setManaged(true);
+        labelSpeedSlider.setVisible(true);
+        labelSpeedSlider.setManaged(true);
+
+        speedSlider.setVisible(true);
+        speedSlider.setManaged(true);
+        labelAddEdge.setText("Add Edge: ");
+
+        addFromFile.setText("Add Graph From .txt File");
+        graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
+        logMessage("═══════════════════════════════════");
+        logMessage("Switched to Node and Edges view");
+        logMessage("═══════════════════════════════════");
+    }
+
+    /**
+     * Switch to Grid visualization mode
+     */
+    @FXML
+    public void switchToGrid() {
+        mode = ModeGUI.GRID_MODE;
+        gridGraphGUI.setGridGraph(new GridGraph());
+        startNodeInput.setVisible(false);
+        startNodeInput.setManaged(false);
+        labelStartNode.setVisible(false);
+        labelStartNode.setManaged(false);
+        addNodeVbox.setVisible(false);
+        addNodeVbox.setManaged(false);
+
+        edgeStartInput.setVisible(false);
+        edgeStartInput.setManaged(false);
+        edgeEndInput.setVisible(false);
+        edgeEndInput.setManaged(false);
+        labelSpeedSlider.setVisible(false);
+        labelSpeedSlider.setManaged(false);
+        labelAddEdge.setText("Grid Set Up");
+
+        addEdgeButton.setVisible(false);
+        addEdgeButton.setManaged(false);
+
+        speedSlider.setVisible(false);
+        speedSlider.setManaged(false);
+        updateAlgorithmComboForMode();
+
+
+        addFromFile.setText("Add island from .txt file");
+        logMessage("═══════════════════════════════════");
+        logMessage("Switched to Grid view");
+        logMessage("═══════════════════════════════════");
+    }
+
+    /**
+     * Parse grid input from text format
+     * Format: Each row is a line with characters like . and #
+     * Example:
+     * .#.
+     * #.#
+     * ###
+     */
+    private GridGraph parseGridFromText(String text) throws IllegalArgumentException {
+        String[] lines = text.trim().split("\n");
+
+        if (lines.length == 0) {
+            throw new IllegalArgumentException("Grid cannot be empty");
+        }
+
+        int rows = lines.length;
+        int cols = lines[0].length();
+
+        // Validate all rows have same length
+        for (int i = 0; i < rows; i++) {
+            if (lines[i].length() != cols) {
+                throw new IllegalArgumentException(
+                        "Row " + (i + 1) + " has " + lines[i].length() +
+                                " columns, expected " + cols);
+            }
+        }
+
+        // Create GridGraph
+        GridGraph newGrid = new GridGraph(rows, cols);
+
+        // Parse grid content
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                char cellType = lines[i].charAt(j);
+
+                // Validate character
+                if (cellType != '.' && cellType != '#' && cellType != ' ') {
+                    throw new IllegalArgumentException(
+                            "Invalid character '" + cellType + "' at row " + (i + 1) +
+                                    ", col " + (j + 1) + ". Only '.', '#', and ' ' are allowed.");
+                }
+
+                if (cellType != '.') {
+                    newGrid.setNodeType(i, j, cellType);
+                }
+            }
+        }
+
+        return newGrid;
+    }
+
+    /**
+     * Load grid from file
+     * Modified version of loadGraphFromFile for grid format
+     */
+    private void loadGridFromFile(File file) throws IOException, IllegalArgumentException {
+        if (isAnimating) {
+            throw new IllegalArgumentException("Cannot load file while animation is running");
+        }
+
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        StringBuilder gridContent = new StringBuilder();
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            line = line.replaceAll("\\s+$", ""); // Remove trailing whitespace
+            if (!line.isEmpty()) {
+                gridContent.append(line).append("\n");
+            }
+        }
+        reader.close();
+
+        // Parse grid from content
+        GridGraph loadedGrid = parseGridFromText(gridContent.toString());
+        gridGraphGUI.setGridGraph(loadedGrid);
+        mode = ModeGUI.GRID_MODE;
+
+        logMessage("═══════════════════════════════════");
+        logMessage("Grid loaded from: " + file.getName());
+        logMessage("Grid size: " + loadedGrid.getRowSize() + " rows x " + loadedGrid.getColSize() + " cols");
+        logMessage("═══════════════════════════════════");
+    }
+
 }
