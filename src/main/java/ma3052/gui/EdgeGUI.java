@@ -21,7 +21,7 @@ public class EdgeGUI {
 
     // Physics config
     private static final double SPRING_CONSTANT = 400;
-    private static final double SPRING_LENGTH = 100;
+    private static final double SPRING_LENGTH = 120;
 
     public EdgeGUI(Edge edge, NodeGUI sourceGUI, NodeGUI destinationGUI) {
         this.edge = edge;
