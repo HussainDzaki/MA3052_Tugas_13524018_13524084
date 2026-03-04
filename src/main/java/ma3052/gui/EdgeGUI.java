@@ -30,7 +30,7 @@ public class EdgeGUI {
         this.lineWidth = 2;
         this.lineColor = Color.BLACK;
         this.textColor = Color.BLACK;
-        this.arrowHeadSize = 7;
+        this.arrowHeadSize = 10;
     }
 
     public NodeGUI getSourceGUI() {
@@ -74,7 +74,8 @@ public class EdgeGUI {
     }
 
     public void draw(GraphicsContext context, boolean drawWeight, boolean isDirected) {
-        double angleRad = sourceGUI.getPosition().angle(destinationGUI.getPosition());
+        Point2D angleVector = sourceGUI.getPosition().subtract(destinationGUI.getPosition());
+        double angleRad = Math.atan2(angleVector.getY(), angleVector.getX());
 
         // Draw line between two nodes
         context.setStroke(lineColor);
@@ -102,13 +103,15 @@ public class EdgeGUI {
         if (isDirected) {
             // Draw arrow head
             Point2D offset1 = new Point2D(Math.cos(angleRad), Math.sin(angleRad))
-                    .multiply(-1 * destinationGUI.getRadius());
+                    .multiply(destinationGUI.getRadius());
             Point2D point1 = destinationGUI.getPosition().add(offset1);
 
-            Point2D offset2 = new Point2D(Math.cos(angleRad + 30), Math.sin(angleRad + 30)).multiply(arrowHeadSize);
+            Point2D offset2 = new Point2D(Math.cos(angleRad + Math.toRadians(30)),
+                    Math.sin(angleRad + Math.toRadians(30))).multiply(arrowHeadSize);
             Point2D point2 = point1.add(offset2);
 
-            Point2D offset3 = new Point2D(Math.cos(angleRad - 30), Math.sin(angleRad - 30)).multiply(arrowHeadSize);
+            Point2D offset3 = new Point2D(Math.cos(angleRad - Math.toRadians(30)),
+                    Math.sin(angleRad - Math.toRadians(30))).multiply(arrowHeadSize);
             Point2D point3 = point1.add(offset3);
 
             context.setFill(lineColor);
