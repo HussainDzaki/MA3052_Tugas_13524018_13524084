@@ -17,9 +17,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Controller for Graph Visualization GUI
  * Manages the visualization and interaction with graph data structure
- * with animated DFS/BFS algorithm visualization and force-directed layout
  */
 
 public class GraphGUI {
@@ -89,6 +87,12 @@ public class GraphGUI {
 
         canvas.setOnMouseExited(event -> {
             onCanvasDragEnd(event);
+        });
+
+        Platform.runLater(() -> {
+            canvas.getScene().getWindow().setOnCloseRequest(event -> {
+                threadPoolExecutor.shutdown();
+            });
         });
     }
 
