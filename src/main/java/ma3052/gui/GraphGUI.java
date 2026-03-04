@@ -31,7 +31,7 @@ public class GraphGUI {
 
     // Animation parameters
     private static final double MIN_DISTANCE = 100;
-    private static final double COULOMB_CONSTANT = 400;
+    private static final double COULOMB_CONSTANT = 200;
     private static final double CENTER_GRAVITY_CONSTANT = 400;
 
     // Force-directed layout parameters
@@ -200,7 +200,7 @@ public class GraphGUI {
             System.out.println(
                     "Drawing edge: " + edgeGUI.getSourceGUI().getNode().getNodeName() + " <-> "
                             + edgeGUI.getDestinationGUI().getNode().getNodeName());
-            edgeGUI.draw(graphicsContext, false, false);
+            edgeGUI.draw(graphicsContext, true, true);
         }
     }
 
