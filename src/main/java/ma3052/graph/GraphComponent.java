@@ -3,7 +3,6 @@ package ma3052.graph;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.function.Function;
 
 public class GraphComponent {
     public static boolean isOneComponent(Graph graph) {
@@ -20,7 +19,8 @@ public class GraphComponent {
                 continue;
             visitedNodes.add(currentNode.getNodeID());
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.add(nextNode);
@@ -48,7 +48,8 @@ public class GraphComponent {
                     continue;
                 visitedNodes.add(currentNode.getNodeID());
 
-                for (Node nextNode : currentNode.getAdjacencyList()) {
+                for (Edge edge : currentNode.getAdjacencyList()) {
+                    Node nextNode = edge.getDestination();
                     if (visitedNodes.contains(nextNode.getNodeID()))
                         continue;
                     queue.add(nextNode);
@@ -79,7 +80,8 @@ public class GraphComponent {
                 visitedNodes.add(currentNode.getNodeID());
                 currentComponentSize++;
 
-                for (Node nextNode : currentNode.getAdjacencyList()) {
+                for (Edge edge : currentNode.getAdjacencyList()) {
+                    Node nextNode = edge.getDestination();
                     if (visitedNodes.contains(nextNode.getNodeID()))
                         continue;
                     queue.add(nextNode);

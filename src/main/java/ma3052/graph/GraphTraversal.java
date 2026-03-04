@@ -34,7 +34,8 @@ public class GraphTraversal {
             visitedNodes.add(currentNode.getNodeID());
             nodeOrder.add(currentNode);
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.add(nextNode);
@@ -69,7 +70,8 @@ public class GraphTraversal {
             visitedNodes.add(currentNode.getNodeID());
             nodeOrder.add(currentNode);
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.push(nextNode);

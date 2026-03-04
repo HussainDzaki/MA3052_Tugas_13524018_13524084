@@ -36,7 +36,8 @@ public class PathSearch {
                 break;
             }
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.add(nextNode);
@@ -80,7 +81,8 @@ public class PathSearch {
                 break;
             }
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.push(nextNode);
@@ -124,7 +126,8 @@ public class PathSearch {
                 break;
             }
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.add(nextNode);
@@ -164,7 +167,8 @@ public class PathSearch {
                 break;
             }
 
-            for (Node nextNode : currentNode.getAdjacencyList()) {
+            for (Edge edge : currentNode.getAdjacencyList()) {
+                Node nextNode = edge.getDestination();
                 if (visitedNodes.contains(nextNode.getNodeID()))
                     continue;
                 queue.push(nextNode);
