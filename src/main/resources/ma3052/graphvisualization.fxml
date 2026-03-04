@@ -29,11 +29,11 @@
                 </padding>
                 
                 <!-- Node Management Section -->
-                <VBox spacing="8">
+                <VBox fx:id="addNodeVbox" spacing="8">
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #1976d2;" text="Add Node" />
                     <HBox spacing="8">
                         <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
-                        <Button fx:id="addNodeButton" minWidth="80.0" style="-fx-padding: 8; -fx-font-weight: bold;" text="Add" />
+                        <Button fx:id="addNodeButton" minWidth="80.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
                     </HBox>
                 </VBox>
                 
@@ -42,14 +42,14 @@
                 
                 <!-- Edge Management Section -->
                 <VBox spacing="8">
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #1976d2;" text="Add Edge" />
+                    <Label fx:id="labelAddEdge" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #1976d2;" text="Add Edge" />
                     <HBox spacing="8">
                         <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
                         <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
-                        <Button fx:id="addEdgeButton" minWidth="60.0" style="-fx-padding: 8; -fx-font-weight: bold;" text="Add" />
+                        <Button fx:id="addEdgeButton" minWidth="60.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
                     </HBox>
                     <Button fx:id="clearButton" maxWidth="Infinity" style="-fx-padding: 10; -fx-text-fill: #d32f2f; -fx-font-weight: bold;" text="Clear Graph" />
-                    <Button fx:id="addFromFile" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" text="Add Graph From .txt File" />
+                    <Button fx:id="addFromFile" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add Graph From .txt File" />
                     <Button fx:id="advancedInput" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" text="Advanced Input" />
                 </VBox>
                 
@@ -60,16 +60,16 @@
                 <VBox spacing="8">
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #388e3c;" text="Algorithm" />
                     
-                    <Label style="-fx-font-size: 11;" text="Start Node:" />
+                    <Label fx:id="labelStartNode" style="-fx-font-size: 11;" text="Start Node:" />
                     <TextField fx:id="startNodeInput" promptText="Enter starting node" />
                     
                     <Label style="-fx-font-size: 11;" text="Algorithm Type:" />
                     <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" />
                     
-                    <Label style="-fx-font-size: 11;" text="Speed:" />
+                    <Label fx:id="labelSpeedSlider" style="-fx-font-size: 11;" text="Speed:" />
                     <Slider fx:id="speedSlider" max="2000.0" min="100.0" showTickLabels="false" value="500.0" />
                     
-                    <Button fx:id="executeButton" maxWidth="Infinity" style="-fx-padding: 12; -fx-font-weight: bold; -fx-font-size: 12; -fx-text-fill: #ffffff; -fx-background-color: #388e3c;" text="Execute" />
+                    <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" style="-fx-padding: 12; -fx-font-weight: bold; -fx-font-size: 12; -fx-text-fill: #ffffff; -fx-background-color: #388e3c;" stylesheets="@GUI.css" text="Execute" />
                 </VBox>
                 
                 <VBox VBox.vgrow="ALWAYS" />
@@ -81,7 +81,7 @@
                 <!-- Canvas Section -->
                 <VBox prefHeight="400.0" spacing="5" VBox.vgrow="ALWAYS">
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #0d47a1;" text="Graph Visualization" />
-                    <Canvas fx:id="graphCanvas" height="530.0" style="-fx-border-color: #999; -fx-border-width: 1;" width="660.0" VBox.vgrow="ALWAYS" />
+                    <Canvas fx:id="graphCanvas" height="400.0" style="-fx-border-color: #999; -fx-border-width: 1;" width="640.0" VBox.vgrow="ALWAYS" />
                 </VBox>
                 
                 <!-- Log Section -->
@@ -92,5 +92,18 @@
             </VBox>
         </HBox>
     </center>
+   <top>
+      <VBox prefHeight="109.0" prefWidth="1075.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="122.0" prefWidth="1074.0" style="-fx-font-size: 40; -fx-font-style: bold;" stylesheets="@GUI.css" text="Graph Visualization" textAlignment="CENTER" VBox.vgrow="SOMETIMES" />
+            <HBox prefHeight="45.0" prefWidth="1075.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="btnNodeAndEdges" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#switchToNodeAndEdges" prefHeight="86.0" prefWidth="150.0" text="Node and Edges" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnSwitchToGrid" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#switchToGrid" prefHeight="86.0" prefWidth="150.0" text="Grid" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
     
 </BorderPane>

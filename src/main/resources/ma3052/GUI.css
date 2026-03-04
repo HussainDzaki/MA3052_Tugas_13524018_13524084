@@ -1,0 +1,27 @@
+/* Container Utama */
+.root {
+    -fx-background-color: #0f172a; /* Slate Dark */
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.button {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-padding: 10 20;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #2563eb;
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.button-secondary {
+    -fx-background-color: transparent;
+    -fx-border-color: #38bdf8;
+    -fx-border-radius: 8;
+    -fx-text-fill: #38bdf8;
+}
