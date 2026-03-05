@@ -20,6 +20,8 @@ import ma3052.graph.Graph;
 import ma3052.graph.Node;
 import ma3052.gui.GraphGUI;
 import ma3052.gui.GridGraphGUI;
+import ma3052.gui.animation.ComponentAnimation;
+import ma3052.gui.animation.ConnectivityAnimation;
 import ma3052.gui.animation.PathAnimation;
 import ma3052.gui.animation.TraversalAnimation;
 import ma3052.graph.GraphComponent;
@@ -151,6 +153,8 @@ public class GraphVisualGUIController {
             speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
                 TraversalAnimation.setAnimationStepTime(newValue.longValue());
                 PathAnimation.setAnimationStepTime(newValue.longValue());
+                ConnectivityAnimation.setAnimationStepTime(newValue.longValue());
+                ComponentAnimation.setAnimationStepTime(newValue.longValue());
             });
         }
 
@@ -158,6 +162,12 @@ public class GraphVisualGUIController {
         if (graphCanvas != null) {
             graphCanvas.setStyle("-fx-border-color: #cccccc; -fx-border-width: 1;");
         }
+
+        addFromFile.setVisible(false);
+        addFromFile.setManaged(false);
+
+        advancedInput.setVisible(true);
+        advancedInput.setManaged(true);
 
         // Log initialization
         logMessage("Graph Visualization initialized successfully");
@@ -426,7 +436,8 @@ public class GraphVisualGUIController {
                         "BFS Traversal",
                         "DFS Path Search",
                         "BFS Path Search",
-                        "Connectivity");
+                        "Connectivity",
+                        "Component");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -459,9 +470,6 @@ public class GraphVisualGUIController {
         if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
             startNodeName = startNodeInput.getText().trim();
             endNodeName = endNodeInput.getText().trim();
-            if (!validateStartingNode(startNodeName)) {
-                return;
-            }
             logMessage("═══════════════════════════════════");
             logMessage("Starting " + selectedAlgorithm + " from node: " + startNodeName);
             logMessage("═══════════════════════════════════");
@@ -495,6 +503,25 @@ public class GraphVisualGUIController {
     private boolean validateStartingNode(String startNodeName) {
         if (startNodeName.isEmpty()) {
             showError("Please specify a starting node");
+            return false;
+        }
+        if (!graphGUI.getGraph().hasNode(startNodeName)) {
+            showError("There's no node with the name: " + startNodeName);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Validate ending node for NODE_AND_EDGES_MODE
+     */
+    private boolean validateEndNode(String endNodeName) {
+        if (endNodeName.isEmpty()) {
+            showError("Please specify an end node");
+            return false;
+        }
+        if (!graphGUI.getGraph().hasNode(endNodeName)) {
+            showError("There's no node with the name: " + endNodeName);
             return false;
         }
         return true;
@@ -531,19 +558,34 @@ public class GraphVisualGUIController {
     private void executeNodeAndEdgesAlgorithm(String algorithm, String startNodeName, String endNodeName) {
         switch (algorithm) {
             case "DFS Traversal":
+                if (!validateStartingNode(startNodeName)) {
+                    return;
+                }
                 TraversalAnimation.animateDFS(graphGUI, startNodeName);
                 break;
             case "BFS Traversal":
+                if (!validateStartingNode(startNodeName)) {
+                    return;
+                }
                 TraversalAnimation.animateBFS(graphGUI, startNodeName);
                 break;
             case "DFS Path Search":
+                if (!validateStartingNode(startNodeName) && !validateEndNode(endNodeName)) {
+                    return;
+                }
                 PathAnimation.animateDFS(graphGUI, startNodeName, endNodeName);
                 break;
             case "BFS Path Search":
+                if (!validateStartingNode(startNodeName) && !validateEndNode(endNodeName)) {
+                    return;
+                }
                 PathAnimation.animateBFS(graphGUI, startNodeName, endNodeName);
                 break;
             case "Connectivity":
-                // connectivity();
+                ConnectivityAnimation.animate(graphGUI);
+                break;
+            case "Component":
+                ComponentAnimation.animate(graphGUI);
                 break;
             default:
                 break;
@@ -621,6 +663,18 @@ public class GraphVisualGUIController {
                         labelEndNode.setVisible(false);
                         labelEndNode.setManaged(false);
                         break;
+
+                    case "Component":
+                        startNodeInput.setVisible(false);
+                        startNodeInput.setManaged(false);
+                        labelStartNode.setVisible(false);
+                        labelStartNode.setManaged(false);
+                        endNodeInput.setVisible(false);
+                        endNodeInput.setManaged(false);
+                        labelEndNode.setVisible(false);
+                        labelEndNode.setManaged(false);
+                        break;
+
                     default:
                         break;
                 }
@@ -664,7 +718,12 @@ public class GraphVisualGUIController {
         speedSlider.setManaged(true);
         labelAddEdge.setText("Add Edge: ");
 
-        addFromFile.setText("Add Graph From .txt File");
+        addFromFile.setVisible(false);
+        addFromFile.setManaged(false);
+
+        advancedInput.setVisible(true);
+        advancedInput.setManaged(true);
+
         graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
         logMessage("═══════════════════════════════════");
         logMessage("Switched to Node and Edges view");
@@ -704,7 +763,12 @@ public class GraphVisualGUIController {
         speedSlider.setManaged(false);
         updateAlgorithmComboForMode();
 
-        addFromFile.setText("Add island from .txt file");
+        addFromFile.setVisible(true);
+        addFromFile.setManaged(true);
+
+        advancedInput.setVisible(false);
+        advancedInput.setManaged(false);
+
         logMessage("═══════════════════════════════════");
         logMessage("Switched to Grid view");
         logMessage("═══════════════════════════════════");
