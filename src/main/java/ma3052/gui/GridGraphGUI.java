@@ -34,12 +34,11 @@ public class GridGraphGUI {
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.threadPoolExecutor = new ScheduledThreadPoolExecutor(1);
 
-        // Start rendering thread with proper frame rate (60 FPS = 16ms per frame)
         threadPoolExecutor.scheduleWithFixedDelay(() -> {
             if (isDrawing && gridGraph != null) {
                 updateCanvas();
             }
-        }, 0, 900, TimeUnit.NANOSECONDS); // 60 FPS
+        }, 0, 90000, TimeUnit.NANOSECONDS);
 
         Platform.runLater(() -> {
             canvas.getScene().getWindow().setOnCloseRequest(event -> {
