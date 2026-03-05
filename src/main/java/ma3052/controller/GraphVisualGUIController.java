@@ -138,6 +138,9 @@ public class GraphVisualGUIController {
         graphGUI = new GraphGUI(graphCanvas);
         gridGraphGUI = new GridGraphGUI(graphCanvas);
 
+        graphGUI.setDrawing(true);
+        gridGraphGUI.setDrawing(false);
+
         // Setup algorithm options based on initial mode
         updateAlgorithmComboForMode();
         switchAlgorithm(algorithmCombo.getValue());
@@ -725,6 +728,9 @@ public class GraphVisualGUIController {
         advancedInput.setManaged(true);
 
         graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
+        graphGUI.setDrawing(true);
+        gridGraphGUI.setDrawing(false);
+
         logMessage("═══════════════════════════════════");
         logMessage("Switched to Node and Edges view");
         logMessage("═══════════════════════════════════");
@@ -768,6 +774,9 @@ public class GraphVisualGUIController {
 
         advancedInput.setVisible(false);
         advancedInput.setManaged(false);
+
+        graphGUI.setDrawing(false);
+        gridGraphGUI.setDrawing(true);
 
         logMessage("═══════════════════════════════════");
         logMessage("Switched to Grid view");

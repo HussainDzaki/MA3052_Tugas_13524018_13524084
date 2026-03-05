@@ -61,11 +61,22 @@ public class GridGraphGUI {
         return this.gridGraph;
     }
 
+    public void setDrawing(boolean isDrawing) {
+        this.isDrawing = isDrawing;
+    }
+
     /**
      * Update canvas with current grid state
      */
     private void updateCanvas() {
-        Platform.runLater(this::drawGrid);
+        Platform.runLater(() -> {
+            clearCanvas();
+            drawGrid();
+        });
+    }
+
+    private void clearCanvas() {
+        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     /**
