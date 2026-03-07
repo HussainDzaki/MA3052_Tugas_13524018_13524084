@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 
+import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
 
-// TODO: TEST THIS CLASS AND IMPLEMENT IT TO GUI
 public class FormatGraphInput {
     // Node name options
     public static enum NodeNameOption {
@@ -212,8 +212,9 @@ public class FormatGraphInput {
 
                 case NodeAndEdgeCount:
                     if (tokens.length != 2) {
-                        throw new IllegalArgumentException("[Line " + lineNumber + "] Expected node count and edge count.");
-                    } 
+                        throw new IllegalArgumentException(
+                                "[Line " + lineNumber + "] Expected node count and edge count.");
+                    }
                     nodeCount = Integer.parseInt(tokens[0]);
                     edgeCount = Integer.parseInt(tokens[1]);
                     if (randomNodeOrEdge) {
@@ -410,8 +411,9 @@ public class FormatGraphInput {
                                     "[Line " + lineNumber + "] Number of edge is larger than edge count");
                         }
                     } else {
-                        throw new IllegalArgumentException("[Line " + lineNumber + "] Expected 1, 2, or 3 space-separated values, got "
-                                + tokens.length);
+                        throw new IllegalArgumentException(
+                                "[Line " + lineNumber + "] Expected 1, 2, or 3 space-separated values, got "
+                                        + tokens.length);
                     }
                     break;
 
@@ -425,5 +427,105 @@ public class FormatGraphInput {
         reader.close();
 
         return resultGraph;
+    }
+
+    public static String getFormatString() {
+        String resultString = new String();
+
+        // Node and edge count
+        switch (currentCountOptions) {
+            case NodeAndEdgeCount:
+                resultString.concat("<node-count> <edge-count>\n");
+                break;
+            case OnlyNodeCount:
+                resultString.concat("<node-count>\n");
+                break;
+            case OnlyEdgeCount:
+                resultString.concat("<edge-count>\n");
+                break;
+            case NoExplicitCount:
+                break;
+            default:
+                break;
+        }
+
+        // Node name
+        if (currentNameOption == NodeNameOption.CustomNodeName) {
+            resultString.concat("<node-name-1>\n");
+            resultString.concat("<node-name-2>\n");
+            resultString.concat("...\n");
+            resultString.concat("<node-name-n>\n");
+        }
+
+        // Node value
+        if (inputNodeValue) {
+            resultString.concat("<node-value-1> <node-value-2> ... <node-value-n>\n");
+        }
+
+        // Edges
+        if (inputEdgeWeight) {
+            resultString.concat("<edge-source-1> <edge-destination-1> <edge-weight-1>\n");
+            resultString.concat("<edge-source-2> <edge-destination-2> <edge-weight-2>\n");
+            resultString.concat("...\n");
+            resultString.concat("<edge-source-m> <edge-destination-m> <edge-weight-m>\n");
+        } else {
+            resultString.concat("<edge-source-1> <edge-destination-1>\n");
+            resultString.concat("<edge-source-2> <edge-destination-2>\n");
+            resultString.concat("...\n");
+            resultString.concat("<edge-source-m> <edge-destination-m>\n");
+        }
+
+        return resultString;
+    }
+
+    public static String graphToInputString(Graph graph) {
+        String resultString = new String();
+
+        // Node and edge count
+        switch (currentCountOptions) {
+            case NodeAndEdgeCount:
+                resultString.concat(graph.getNodeList().size() + " "
+                        + graph.getEdgeList().size() + "\n");
+                break;
+            case OnlyNodeCount:
+                resultString.concat(graph.getNodeList().size() + "\n");
+                break;
+            case OnlyEdgeCount:
+                resultString.concat(graph.getEdgeList().size() + "\n");
+                break;
+            case NoExplicitCount:
+                break;
+            default:
+                break;
+        }
+
+        // Node name
+        if (currentNameOption == NodeNameOption.CustomNodeName) {
+            for (Node node : graph.getNodeList()) {
+                resultString.concat(node.getNodeName() + "\n");
+            }
+        }
+
+        // Node value
+        if (inputNodeValue) {
+            for (Node node : graph.getNodeList()) {
+                resultString.concat(resultString.concat(node.getNodeName()) + " ");
+            }
+            resultString.concat("\n");
+        }
+
+        // Edges
+        for (Edge edge : graph.getEdgeList()) {
+            if (inputEdgeWeight) {
+                resultString.concat(edge.getSource().getNodeName() + " "
+                        + edge.getDestination().getNodeName() + " "
+                        + edge.getWeight() + "\n");
+            } else {
+                resultString.concat(edge.getSource().getNodeName() + " "
+                        + edge.getDestination().getNodeName() + "\n");
+            }
+        }
+
+        return resultString;
     }
 }
