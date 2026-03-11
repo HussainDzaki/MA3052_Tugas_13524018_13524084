@@ -1,11 +1,9 @@
 package ma3052.gui;
 
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import ma3052.graph.Edge;
@@ -37,14 +35,13 @@ public class GraphGUI {
     // Animation parameters
     private static final double MIN_DISTANCE = 120;
     private static final double COULOMB_CONSTANT = 400;
-    private static final double CENTER_GRAVITY_CONSTANT = 200;
+    private static final double CENTER_GRAVITY_CONSTANT = 300;
 
     // Force-directed layout parameters
     private static final double FIXED_DELTA_TIME = 0.02; // 50 fps
     private static final long FIXED_DELTA_TIME_MS = 20; // 50 fps
 
     // Animation
-    private volatile boolean isRunningAlgorithm = false;
     private volatile boolean isPhysicEnabled = true;
     private volatile boolean isDrawing = true;
 
@@ -201,6 +198,20 @@ public class GraphGUI {
         this.drawNodeValue = drawNodeValue;
     }
 
+    public void setDrawing(boolean isDrawing) {
+        this.isDrawing = isDrawing;
+    }
+
+    public void resetColors() {
+        for (NodeGUI nodeGUI : nodeGUIList) {
+            nodeGUI.setColor(Color.WHITE);
+            nodeGUI.setBorderColor(Color.BLACK);
+        }
+        for (EdgeGUI edgeGUI : edgeGUIList) {
+            edgeGUI.setLineColor(Color.BLACK);
+        }
+    }
+
     private void updatePhysics() {
         // System.out.println("Updating physics");
         // Add force to the center
@@ -297,5 +308,13 @@ public class GraphGUI {
             draggedNodeGUI.setLockPosition(false);
             isDragging = false;
         }
+    }
+
+    /**
+     * Stop the rendering thread
+     */
+    public void stop() {
+        isDrawing = false;
+        threadPoolExecutor.shutdown();
     }
 }

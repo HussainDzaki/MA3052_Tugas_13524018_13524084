@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController">
+<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController">
     
     <!-- Center: HBox with Left Menu and Right Canvas+Log -->
     <center>
@@ -23,7 +23,7 @@
             </padding>
             
             <!-- LEFT: Control Menu -->
-            <VBox prefWidth="380" spacing="12" style="-fx-border-color: #ddd; -fx-border-width: 0 1 0 0;">
+            <VBox prefHeight="587.0" prefWidth="258.0" spacing="12" style="-fx-border-color: #ddd; -fx-border-width: 0 1 0 0;">
                 <padding>
                     <Insets right="15" />
                 </padding>
@@ -33,7 +33,7 @@
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #1976d2;" text="Add Node" />
                     <HBox spacing="8">
                         <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
-                        <Button fx:id="addNodeButton" minWidth="80.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
+                        <Button fx:id="addNodeButton" minWidth="80.0" onAction="#handleAddNode" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
                     </HBox>
                 </VBox>
                 
@@ -46,11 +46,11 @@
                     <HBox spacing="8">
                         <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
                         <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
-                        <Button fx:id="addEdgeButton" minWidth="60.0" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
+                        <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
                     </HBox>
-                    <Button fx:id="clearButton" maxWidth="Infinity" style="-fx-padding: 10; -fx-text-fill: #d32f2f; -fx-font-weight: bold;" text="Clear Graph" />
-                    <Button fx:id="addFromFile" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add Graph From .txt File" />
-                    <Button fx:id="advancedInput" maxWidth="Infinity" style="-fx-padding: 8; -fx-font-weight: bold;" text="Advanced Input" />
+                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" style="-fx-padding: 10; -fx-text-fill: #d32f2f; -fx-font-weight: bold;" text="Clear Graph" />
+                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Advanced Input" />
+                    <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Input From .txt" />
                 </VBox>
                 
                 <!-- Separator -->
@@ -60,11 +60,14 @@
                 <VBox spacing="8">
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #388e3c;" text="Algorithm" />
                     
-                    <Label fx:id="labelStartNode" style="-fx-font-size: 11;" text="Start Node:" />
-                    <TextField fx:id="startNodeInput" promptText="Enter starting node" />
-                    
                     <Label style="-fx-font-size: 11;" text="Algorithm Type:" />
                     <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" />
+
+                    <Label fx:id="labelStartNode" style="-fx-font-size: 11;" text="Start Node:" />
+                    <TextField fx:id="startNodeInput" promptText="Enter starting node" />
+
+                    <Label fx:id="labelEndNode" style="-fx-font-size: 11;" text="End Node:" />
+                    <TextField fx:id="endNodeInput" promptText="Enter ending node" />
                     
                     <Label fx:id="labelSpeedSlider" style="-fx-font-size: 11;" text="Speed:" />
                     <Slider fx:id="speedSlider" max="2000.0" min="100.0" showTickLabels="false" value="500.0" />
@@ -79,15 +82,9 @@
             <VBox spacing="10" HBox.hgrow="ALWAYS">
                 
                 <!-- Canvas Section -->
-                <VBox prefHeight="400.0" spacing="5" VBox.vgrow="ALWAYS">
+                <VBox prefHeight="587.0" prefWidth="541.0" spacing="5" VBox.vgrow="ALWAYS">
                     <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #0d47a1;" text="Graph Visualization" />
-                    <Canvas fx:id="graphCanvas" height="400.0" style="-fx-border-color: #999; -fx-border-width: 1;" width="640.0" VBox.vgrow="ALWAYS" />
-                </VBox>
-                
-                <!-- Log Section -->
-                <VBox prefHeight="150.0" spacing="5">
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #558b2f;" text="Execution Log" />
-                    <TextArea fx:id="logArea" editable="false" style="-fx-font-family: 'Courier New'; -fx-font-size: 10; -fx-control-inner-background: #f9f9f9;" wrapText="true" VBox.vgrow="ALWAYS" />
+                    <Canvas fx:id="graphCanvas" height="564.0" style="-fx-border-color: #999; -fx-border-width: 1;" width="651.0" VBox.vgrow="ALWAYS" />
                 </VBox>
             </VBox>
         </HBox>
@@ -105,5 +102,13 @@
          </children>
       </VBox>
    </top>
+   <right>
+          
+                <!-- Log Section -->
+          <VBox prefHeight="150.0" spacing="5" BorderPane.alignment="CENTER">
+              <Label alignment="TOP_CENTER" contentDisplay="CENTER" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #558b2f;" text="Execution Log" />
+              <TextArea fx:id="logArea" editable="false" prefHeight="585.0" prefWidth="200.0" style="-fx-font-family: 'Courier New'; -fx-font-size: 13; -fx-control-inner-background: #f9f9f9;" wrapText="true" VBox.vgrow="ALWAYS" />
+          </VBox>
+   </right>
     
 </BorderPane>

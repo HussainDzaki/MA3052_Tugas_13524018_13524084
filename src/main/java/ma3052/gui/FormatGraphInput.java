@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 
@@ -212,6 +211,9 @@ public class FormatGraphInput {
                     break;
 
                 case NodeAndEdgeCount:
+                    if (tokens.length != 2) {
+                        throw new IllegalArgumentException("[Line " + lineNumber + "] Expected node count and edge count.");
+                    } 
                     nodeCount = Integer.parseInt(tokens[0]);
                     edgeCount = Integer.parseInt(tokens[1]);
                     if (randomNodeOrEdge) {
@@ -288,7 +290,7 @@ public class FormatGraphInput {
                         } else {
                             if (source == null || destination == null) {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + "Edge references non-existent node: " +
+                                        "[Line " + lineNumber + "] Edge references non-existent node: " +
                                                 (source == null ? tokens[0] : tokens[1]));
                             }
                         }
@@ -335,7 +337,7 @@ public class FormatGraphInput {
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                     } else if (tokens.length == 2) {
@@ -349,7 +351,7 @@ public class FormatGraphInput {
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                         if (destination == null) {
@@ -359,7 +361,7 @@ public class FormatGraphInput {
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                         if (currentEdgeCount < edgeCount || edgeCount == -1) {
@@ -370,7 +372,7 @@ public class FormatGraphInput {
                             }
                         } else {
                             throw new IllegalArgumentException(
-                                    "Line " + lineNumber + ": Number of edge is larger than edge count");
+                                    "[Line " + lineNumber + "] Number of edge is larger than edge count");
                         }
                     } else if (tokens.length == 3) {
                         // Weighted edge
@@ -384,7 +386,7 @@ public class FormatGraphInput {
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                         if (destination == null) {
@@ -394,7 +396,7 @@ public class FormatGraphInput {
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                         if (currentEdgeCount < edgeCount || edgeCount == -1) {
@@ -405,11 +407,10 @@ public class FormatGraphInput {
                             }
                         } else {
                             throw new IllegalArgumentException(
-                                    "Line " + lineNumber + ": Number of edge is larger than edge count");
+                                    "[Line " + lineNumber + "] Number of edge is larger than edge count");
                         }
                     } else {
-                        throw new IllegalArgumentException("Line " + lineNumber +
-                                ": Expected 1, 2, or 3 space-separated values, got "
+                        throw new IllegalArgumentException("[Line " + lineNumber + "] Expected 1, 2, or 3 space-separated values, got "
                                 + tokens.length);
                     }
                     break;
