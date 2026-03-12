@@ -608,7 +608,7 @@ public class GraphVisualGUIController {
                 break;
             case "Find Diameter":
                 List<Node> res =  CycleDetector.getDiameterPath(graphGUI.getGraph());
-                logMessage("The Graph have diameter " + Integer.toString(res.size()));
+                logMessage("The Graph have diameter " + Integer.toString(res.size() - 1));
                 logMessage("Have the diameter path : " + CycleDetector.getResultPathString(res));
                 break;
             case "Have Cycle Checker":
