@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import ma3052.graph.Edge;
@@ -125,6 +126,10 @@ public class GraphVisualGUIController {
 
     public void setGraph(Graph graph) {
         graphGUI.setGraph(graph);
+    }
+
+    public Graph getGraph() {
+        return graphGUI.getGraph();
     }
 
     /**
@@ -293,9 +298,11 @@ public class GraphVisualGUIController {
 
             // Setup stage
             Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(advancedInput.getScene().getWindow());
             stage.setTitle("Advanced Input");
             stage.setScene(scene);
-            stage.setWidth(700);
+            stage.setWidth(800);
             stage.setHeight(500);
             stage.showAndWait();
         } catch (IOException e) {
