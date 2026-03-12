@@ -152,8 +152,11 @@ public class GraphVisualGUIController {
 
         // Setup algorithm options based on initial mode
         updateAlgorithmComboForMode();
-        switchAlgorithm(algorithmCombo.getValue());
-        algorithmCombo.valueProperty().addListener((obs, oldVal, newVal) -> switchAlgorithm(newVal));
+        algorithmCombo.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                switchAlgorithm(newVal);
+            }
+        });
 
         // Setup speed slider
         if (speedSlider != null) {
@@ -188,6 +191,7 @@ public class GraphVisualGUIController {
 
         // Stop both drawing thread
         Platform.runLater(() -> {
+            switchAlgorithm(algorithmCombo.getValue());
             graphCanvas.getScene().getWindow().setOnCloseRequest(e -> {
                 graphGUI.stop();
                 gridGraphGUI.stop();
