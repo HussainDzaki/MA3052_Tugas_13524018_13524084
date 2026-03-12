@@ -22,7 +22,7 @@ public class GridGraphGUI {
 
     // Visualization parameters
     private static final Color WATER_COLOR = Color.web("#4DA6FF"); // Blue for water (.)
-    private static final Color LAND_COLOR = Color.web("#000000"); // Black for land (#)
+    private static final Color LAND_COLOR = Color.web("#268510"); // Black for land (#)
     private static final Color GRID_LINE_COLOR = Color.web("#CCCCCC"); // Light gray for grid lines
     private static final Color BORDER_COLOR = Color.web("#333333"); // Dark gray for borders
 
