@@ -38,8 +38,8 @@ public class CycleDetector {
                         if (!nodeColors.containsKey(nextNodeID)) {
                             nodeColors.put(nextNodeID, neighborColor); // set tetangga jadi warna lawan
                             queue.add(nextNode);
-                        } else {
-                            return false;
+                        } else if (nodeColors.get(nextNodeID) == currColor) {
+                            return false; 
                         }
                     }
                 }
@@ -321,45 +321,45 @@ public class CycleDetector {
     }
 
     private static List<Node> reconstructGirthPath(Node u, Node v, Node root, HashMap<Long, Node> parentMap) {
-    LinkedList<Node> path = new LinkedList<>();
-    
-    ArrayList<Node> pathA = new ArrayList<>();
-    Node step = u;
-    while (step != null) {
-        pathA.add(step);
-        step = parentMap.get(step.getNodeID());
-    }
-    
-    ArrayList<Node> pathB = new ArrayList<>();
-    step = v;
-    while (step != null) {
-        pathB.add(step);
-        step = parentMap.get(step.getNodeID());
-    }
-    
-   // cari titik pertemuan terakhir
-    int i = pathA.size() - 1;
-    int j = pathB.size() - 1;
-    Node lca = null;
-    
-    while (i >= 0 && j >= 0 && pathA.get(i) == pathB.get(j)) {
-        lca = pathA.get(i);
-        i--;
-        j--;
-    }
-    
-    for (int k = 0; k <= i + 1; k++) {
-        path.add(pathA.get(k));
-    }
-    for (int k = j; k >= 0; k--) {
-        path.add(pathB.get(k));
-    }
-    path.add(u); // Close the cycle
-    
-    return new ArrayList<>(path);
-}
+        LinkedList<Node> path = new LinkedList<>();
 
-    public static String getResultPathString(List<Node> path){
+        ArrayList<Node> pathA = new ArrayList<>();
+        Node step = u;
+        while (step != null) {
+            pathA.add(step);
+            step = parentMap.get(step.getNodeID());
+        }
+
+        ArrayList<Node> pathB = new ArrayList<>();
+        step = v;
+        while (step != null) {
+            pathB.add(step);
+            step = parentMap.get(step.getNodeID());
+        }
+
+        // cari titik pertemuan terakhir
+        int i = pathA.size() - 1;
+        int j = pathB.size() - 1;
+        Node lca = null;
+
+        while (i >= 0 && j >= 0 && pathA.get(i) == pathB.get(j)) {
+            lca = pathA.get(i);
+            i--;
+            j--;
+        }
+
+        for (int k = 0; k <= i + 1; k++) {
+            path.add(pathA.get(k));
+        }
+        for (int k = j; k >= 0; k--) {
+            path.add(pathB.get(k));
+        }
+        path.add(u); // Close the cycle
+
+        return new ArrayList<>(path);
+    }
+
+    public static String getResultPathString(List<Node> path) {
         String result = "";
         boolean first = true;
         for (Node node : path) {
