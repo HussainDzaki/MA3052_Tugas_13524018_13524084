@@ -27,6 +27,7 @@ import ma3052.gui.animation.TraversalAnimation;
 import ma3052.graph.GraphComponent;
 import ma3052.graph.GridGraph;
 import ma3052.graph.IslandCounter;
+import ma3052.graph.CycleDetector;
 
 import java.io.*;
 import java.util.*;
@@ -440,7 +441,12 @@ public class GraphVisualGUIController {
                         "DFS Path Search",
                         "BFS Path Search",
                         "Connectivity",
-                        "Component");
+                        "Component",
+                        "Bipartite Checker",
+                        "Find Diameter",
+                        "Have Cycle Checker",
+                        "Find Smallest Cycle"
+                    );
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -590,6 +596,31 @@ public class GraphVisualGUIController {
             case "Component":
                 ComponentAnimation.animate(graphGUI);
                 break;
+            case "Bipartite Checker":
+                logMessage("The Graph is " + (CycleDetector.isBipartite(graphGUI.getGraph()) ? " Bipartite" : "NOT Bipartite"));
+                break;
+            case "Find Diameter":
+                List<Node> res =  CycleDetector.getDiameterPath(graphGUI.getGraph());
+                logMessage("The Graph have diameter " + Integer.toString(res.size()));
+                logMessage("Have the diameter path : " + CycleDetector.getResultPathString(res));
+                break;
+            case "Have Cycle Checker":
+                List<Node> cyclePath;
+                if (graphGUI.getGraph().isDirected()) {
+                    cyclePath = CycleDetector.getDirectedCyclePath(graphGUI.getGraph());
+                    
+                }else{
+                    cyclePath = CycleDetector.getUndirectedCyclePath(graphGUI.getGraph());
+                }
+                logMessage("The graph have the cycle path : " + CycleDetector.getResultPathString(cyclePath));
+                break;
+            case "Find Smallest Cycle":
+                List<Node> girthPath;
+                girthPath = CycleDetector.getGirthPath(graphGUI.getGraph());
+                logMessage("The Graph have cycle size: " + Integer.toString(girthPath.size() - 1));
+                logMessage("Have the cycle path: " + CycleDetector.getResultPathString(girthPath));
+                break;
+                        
             default:
                 break;
         }
@@ -865,5 +896,6 @@ public class GraphVisualGUIController {
         logMessage("Grid size: " + loadedGrid.getRowSize() + " rows x " + loadedGrid.getColSize() + " cols");
         logMessage("═══════════════════════════════════");
     }
+
 
 }
