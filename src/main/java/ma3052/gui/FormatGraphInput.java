@@ -435,13 +435,13 @@ public class FormatGraphInput {
         // Node and edge count
         switch (currentCountOptions) {
             case NodeAndEdgeCount:
-                resultString.concat("<node-count> <edge-count>\n");
+                resultString = resultString.concat("<node-count> <edge-count>\n");
                 break;
             case OnlyNodeCount:
-                resultString.concat("<node-count>\n");
+                resultString = resultString.concat("<node-count>\n");
                 break;
             case OnlyEdgeCount:
-                resultString.concat("<edge-count>\n");
+                resultString = resultString.concat("<edge-count>\n");
                 break;
             case NoExplicitCount:
                 break;
@@ -451,28 +451,25 @@ public class FormatGraphInput {
 
         // Node name
         if (currentNameOption == NodeNameOption.CustomNodeName) {
-            resultString.concat("<node-name-1>\n");
-            resultString.concat("<node-name-2>\n");
-            resultString.concat("...\n");
-            resultString.concat("<node-name-n>\n");
+            resultString = resultString.concat("<node-name-1> <node-name-2> ... <node-name-n>\n");
         }
 
         // Node value
         if (inputNodeValue) {
-            resultString.concat("<node-value-1> <node-value-2> ... <node-value-n>\n");
+            resultString = resultString.concat("<node-value-1> <node-value-2> ... <node-value-n>\n");
         }
 
         // Edges
         if (inputEdgeWeight) {
-            resultString.concat("<edge-source-1> <edge-destination-1> <edge-weight-1>\n");
-            resultString.concat("<edge-source-2> <edge-destination-2> <edge-weight-2>\n");
-            resultString.concat("...\n");
-            resultString.concat("<edge-source-m> <edge-destination-m> <edge-weight-m>\n");
+            resultString = resultString.concat("<edge-source-1> <edge-destination-1> <edge-weight-1>\n");
+            resultString = resultString.concat("<edge-source-2> <edge-destination-2> <edge-weight-2>\n");
+            resultString = resultString.concat("...\n");
+            resultString = resultString.concat("<edge-source-m> <edge-destination-m> <edge-weight-m>\n");
         } else {
-            resultString.concat("<edge-source-1> <edge-destination-1>\n");
-            resultString.concat("<edge-source-2> <edge-destination-2>\n");
-            resultString.concat("...\n");
-            resultString.concat("<edge-source-m> <edge-destination-m>\n");
+            resultString = resultString.concat("<edge-source-1> <edge-destination-1>\n");
+            resultString = resultString.concat("<edge-source-2> <edge-destination-2>\n");
+            resultString = resultString.concat("...\n");
+            resultString = resultString.concat("<edge-source-m> <edge-destination-m>\n");
         }
 
         return resultString;
@@ -484,14 +481,14 @@ public class FormatGraphInput {
         // Node and edge count
         switch (currentCountOptions) {
             case NodeAndEdgeCount:
-                resultString.concat(graph.getNodeList().size() + " "
+                resultString = resultString.concat(graph.getNodeList().size() + " "
                         + graph.getEdgeList().size() + "\n");
                 break;
             case OnlyNodeCount:
-                resultString.concat(graph.getNodeList().size() + "\n");
+                resultString = resultString.concat(graph.getNodeList().size() + "\n");
                 break;
             case OnlyEdgeCount:
-                resultString.concat(graph.getEdgeList().size() + "\n");
+                resultString = resultString.concat(graph.getEdgeList().size() + "\n");
                 break;
             case NoExplicitCount:
                 break;
@@ -502,26 +499,26 @@ public class FormatGraphInput {
         // Node name
         if (currentNameOption == NodeNameOption.CustomNodeName) {
             for (Node node : graph.getNodeList()) {
-                resultString.concat(node.getNodeName() + "\n");
+                resultString = resultString.concat(node.getNodeName() + "\n");
             }
         }
 
         // Node value
         if (inputNodeValue) {
             for (Node node : graph.getNodeList()) {
-                resultString.concat(resultString.concat(node.getNodeName()) + " ");
+                resultString = resultString.concat(node.getNodeName() + " ");
             }
-            resultString.concat("\n");
+            resultString = resultString.concat("\n");
         }
 
         // Edges
         for (Edge edge : graph.getEdgeList()) {
             if (inputEdgeWeight) {
-                resultString.concat(edge.getSource().getNodeName() + " "
+                resultString = resultString.concat(edge.getSource().getNodeName() + " "
                         + edge.getDestination().getNodeName() + " "
                         + edge.getWeight() + "\n");
             } else {
-                resultString.concat(edge.getSource().getNodeName() + " "
+                resultString = resultString.concat(edge.getSource().getNodeName() + " "
                         + edge.getDestination().getNodeName() + "\n");
             }
         }
