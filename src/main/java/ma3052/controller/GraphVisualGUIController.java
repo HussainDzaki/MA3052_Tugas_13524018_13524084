@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
+import ma3052.App;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
@@ -314,8 +315,8 @@ public class GraphVisualGUIController {
             stage.initOwner(advancedInput.getScene().getWindow());
             stage.setTitle("Advanced Input");
             stage.setScene(scene);
-            stage.setWidth(800);
-            stage.setHeight(500);
+            stage.setWidth(900);
+            stage.setHeight(600);
             stage.showAndWait();
         } catch (IOException e) {
             showError(e.getMessage());
