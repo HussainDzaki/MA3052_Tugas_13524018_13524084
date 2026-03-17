@@ -1,114 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
-<BorderPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController">
-    
-    <!-- Center: HBox with Left Menu and Right Canvas+Log -->
-    <center>
-        <HBox spacing="15">
+<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController" stylesheets="@css/GUI.css,@css/Lexend.css" styleClass="lexend,bg-yellow">
+    <top>
+        <VBox prefHeight="80.0" prefWidth="Infinity" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-orange">
             <padding>
-                <Insets bottom="10" left="10" right="10" top="10" />
+                <Insets bottom="5" left="20" right="20" top="10" />
             </padding>
-            
-            <!-- LEFT: Control Menu -->
-            <VBox prefHeight="587.0" prefWidth="258.0" spacing="12" style="-fx-border-color: #ddd; -fx-border-width: 0 1 0 0;">
+            <children>
+                <Label prefWidth="Infinity" HBox.hgrow="ALWAYS" text="THE ULTIMATE GRAPH VISUALIZATION APP" alignment="CENTER" textAlignment="CENTER" styleClass="h1,lexend-bold,black,shadow-white"/>
+                <HBox spacing="16" VBox.vgrow="ALWAYS" alignment="CENTER">
+                    <padding>
+                        <Insets bottom="5" left="5" right="5" top="5" />
+                    </padding>
+                    <children>
+                        <Button fx:id="btnNodeAndEdges" alignment="CENTER" onAction="#switchToNodeAndEdges"
+                        prefHeight="60.0" prefWidth="500.0" text="Node and Edges"
+                        styleClass="bg-light-yellow,h3"/>
+                        <Button fx:id="btnSwitchToGrid" alignment="CENTER" onAction="#switchToGrid"
+                        prefHeight="60.0" prefWidth="500.0" text="Grid"
+                        styleClass="bg-yellow,h3"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+    <left>
+        <!-- LEFT: Control Menu -->
+        <VBox prefWidth="320.0">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="10" />
+            </padding>
+            <VBox styleClass="bg-light-yellow,rounded" spacing="20" VBox.vgrow="ALWAYS">
                 <padding>
-                    <Insets right="15" />
+                    <Insets bottom="10" left="15" right="15" top="10" />
                 </padding>
-                
-                <!-- Node Management Section -->
-                <VBox fx:id="addNodeVbox" spacing="8">
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #1976d2;" text="Add Node" />
-                    <HBox spacing="8">
-                        <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
-                        <Button fx:id="addNodeButton" minWidth="80.0" onAction="#handleAddNode" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
+                <VBox spacing="10" >
+                    <!-- Header -->
+                    <VBox>
+                        <Label text="Input" styleClass="h2,blue,lexend-bold"/>
+                        <Separator/>
+                    </VBox>
+                    <!-- Node Management Section -->
+                    <VBox fx:id="addNodeVbox" spacing="5">
+                        <Label text="Add Node" styleClass="blue,lexend-bold"/>
+                        <HBox spacing="8">
+                            <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
+                            <Button fx:id="addNodeButton" minWidth="60.0" onAction="#handleAddNode" text="Add" styleClass="button-blue,lexend-bold"/>
+                        </HBox>
+                    </VBox>
+                    <!-- Edge Management Section -->
+                    <VBox fx:id="addEdgeVbox" spacing="5">
+                        <Label fx:id="labelAddEdge" text="Add Edge" styleClass="blue,lexend-bold"/>
+                        <HBox spacing="8">
+                            <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
+                            <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
+                            <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" text="Add" styleClass="button-blue,lexend-bold"/>
+                        </HBox>
+                    </VBox>
+                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Advanced Input" styleClass="button-blue,lexend-bold" />
+                    <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" text="Input From .txt" styleClass="button-blue,lexend-bold"/>
+                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" text="Clear Graph" styleClass="button-red,lexend-bold" />
+                    <HBox spacing="15">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Node List" styleClass="blue,lexend-bold"/>
+                            <TextArea fx:id="nodeList" prefHeight="200" styleClass="monospace"/>
+                        </VBox>
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <Label text="Edge List" styleClass="blue,lexend-bold"/>
+                            <TextArea fx:id="edgeList" prefHeight="200" styleClass="monospace"/>
+                        </VBox>
                     </HBox>
                 </VBox>
-                
-                <!-- Separator -->
-                <Separator />
-                
-                <!-- Edge Management Section -->
-                <VBox spacing="8">
-                    <Label fx:id="labelAddEdge" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #1976d2;" text="Add Edge" />
-                    <HBox spacing="8">
-                        <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
-                        <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
-                        <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Add" />
+                <VBox spacing="10">
+                    <!-- Header -->
+                    <VBox>
+                        <Label text="Config" styleClass="h2,blue,lexend-bold"/>
+                        <Separator/>
+                    </VBox>
+                    <CheckBox fx:id="directedCheckBox" text="Directed" />
+                </VBox>
+            </VBox>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="10" />
+            </padding>
+            <VBox prefHeight="587.0" prefWidth="541.0" spacing="5" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
+                <HBox maxWidth="600" alignment="CENTER">
+                    <Label text="Visualization" styleClass="h2,lexend-bold,pink"/>
+                    <HBox HBox.hgrow="ALWAYS"/>
+                    <HBox spacing="5">
+                        <Button text="Move" styleClass="button-pink,lexend-bold"/>
+                        <Button text="Add" styleClass="button-pink,lexend-bold"/>
+                        <Button text="Delete" styleClass="button-pink,lexend-bold"/>
+                        <Button text="Edit" styleClass="button-pink,lexend-bold"/>
                     </HBox>
-                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" style="-fx-padding: 10; -fx-text-fill: #d32f2f; -fx-font-weight: bold;" text="Clear Graph" />
-                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Advanced Input" />
-                    <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" style="-fx-padding: 8; -fx-font-weight: bold;" stylesheets="@GUI.css" text="Input From .txt" />
-                </VBox>
-                
-                <!-- Separator -->
-                <Separator />
-                
-                <!-- Algorithm Execution Section -->
-                <VBox spacing="8">
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #388e3c;" text="Algorithm" />
-                    
-                    <Label style="-fx-font-size: 11;" text="Algorithm Type:" />
-                    <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" />
-
-                    <Label fx:id="labelStartNode" style="-fx-font-size: 11;" text="Start Node:" />
-                    <TextField fx:id="startNodeInput" promptText="Enter starting node" />
-
-                    <Label fx:id="labelEndNode" style="-fx-font-size: 11;" text="End Node:" />
-                    <TextField fx:id="endNodeInput" promptText="Enter ending node" />
-                    
-                    <Label fx:id="labelSpeedSlider" style="-fx-font-size: 11;" text="Speed:" />
-                    <Slider fx:id="speedSlider" max="2000.0" min="100.0" showTickLabels="false" value="500.0" />
-                    
-                    <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" style="-fx-padding: 12; -fx-font-weight: bold; -fx-font-size: 12; -fx-text-fill: #ffffff; -fx-background-color: #388e3c;" stylesheets="@GUI.css" text="Execute" />
-                </VBox>
-                
-                <VBox VBox.vgrow="ALWAYS" />
+                </HBox>
+                <HBox maxWidth="600" maxHeight="500" styleClass="border-thick,border-black">
+                    <Canvas fx:id="graphCanvas" width="600.0" height="500.0"/>
+                </HBox>
             </VBox>
-            
-            <!-- RIGHT: Canvas and Log -->
-            <VBox spacing="10" HBox.hgrow="ALWAYS">
-                
-                <!-- Canvas Section -->
-                <VBox prefHeight="587.0" prefWidth="541.0" spacing="5" VBox.vgrow="ALWAYS">
-                    <Label style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #0d47a1;" text="Graph Visualization" />
-                    <Canvas fx:id="graphCanvas" height="564.0" style="-fx-border-color: #999; -fx-border-width: 1;" width="651.0" VBox.vgrow="ALWAYS" />
-                </VBox>
-            </VBox>
-        </HBox>
+        </VBox>
     </center>
-   <top>
-      <VBox prefHeight="109.0" prefWidth="1075.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="122.0" prefWidth="1074.0" style="-fx-font-size: 40; -fx-font-style: bold;" stylesheets="@GUI.css" text="Graph Visualization" textAlignment="CENTER" VBox.vgrow="SOMETIMES" />
-            <HBox prefHeight="45.0" prefWidth="1075.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button fx:id="btnNodeAndEdges" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#switchToNodeAndEdges" prefHeight="86.0" prefWidth="150.0" text="Node and Edges" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="btnSwitchToGrid" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#switchToGrid" prefHeight="86.0" prefWidth="150.0" text="Grid" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </top>
-   <right>
-          
-                <!-- Log Section -->
-          <VBox prefHeight="150.0" spacing="5" BorderPane.alignment="CENTER">
-              <Label alignment="TOP_CENTER" contentDisplay="CENTER" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #558b2f;" text="Execution Log" />
-              <TextArea fx:id="logArea" editable="false" prefHeight="585.0" prefWidth="200.0" style="-fx-font-family: 'Courier New'; -fx-font-size: 13; -fx-control-inner-background: #f9f9f9;" wrapText="true" VBox.vgrow="ALWAYS" />
-          </VBox>
-   </right>
-    
+    <right>
+        <VBox prefWidth="320.0">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="10" />
+            </padding>
+            <VBox spacing="20" styleClass="bg-light-yellow,rounded" VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="15" left="15" right="15" top="10" />
+                </padding>
+                <!-- Algorithm Execution Section -->
+                <VBox spacing="10">
+                    <VBox>
+                        <Label text="Algorithm" styleClass="h2,green,lexend-bold"/>
+                        <Separator/>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Algorithm Type:" styleClass="green,lexend-bold"/>
+                        <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" styleClass="bg-white,border-medium,border-black,rounded"/>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label fx:id="labelStartNode" text="Start Node:" styleClass="green,lexend-bold" />
+                        <TextField fx:id="startNodeInput" promptText="Enter starting node" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label fx:id="labelEndNode" text="End Node:" styleClass="green,lexend-bold"/>
+                        <TextField fx:id="endNodeInput" promptText="Enter ending node" />
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label fx:id="labelSpeedSlider" text="Speed:" styleClass="green,lexend-bold" />
+                        <Slider fx:id="speedSlider" max="2000.0" min="100.0" showTickLabels="false" value="500.0" />
+                        <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-green,lexend-bold"/>
+                    </VBox>
+                </VBox>
+                <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Execution Log" styleClass="h3,green,lexend-bold" />
+                <TextArea fx:id="logArea" editable="false" prefHeight="585.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
+            </VBox>
+        </VBox>
+    </right>
 </BorderPane>

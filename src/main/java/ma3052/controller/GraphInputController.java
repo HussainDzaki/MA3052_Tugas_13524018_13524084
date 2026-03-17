@@ -3,14 +3,19 @@ package ma3052.controller;
 import java.io.File;
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import ma3052.App;
 import ma3052.gui.FormatGraphInput;
 
 public class GraphInputController {
@@ -84,6 +89,7 @@ public class GraphInputController {
             } else if (str.equals("Custom Label")) {
                 FormatGraphInput.setCurrentNameOption(FormatGraphInput.NodeNameOption.CustomNodeName);
             }
+            updateFormat();
         });
 
         inputCount.getItems().addAll(
@@ -118,31 +124,37 @@ public class GraphInputController {
             } else if (str.equals("No Explicit Count")) {
                 FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.NoExplicitCount);
             }
+            updateFormat();
         });
 
         directed.setSelected(FormatGraphInput.isGraphDirected());
         directed.setOnAction(e -> {
             FormatGraphInput.setIsGraphDirected(directed.isSelected());
+            updateFormat();
         });
 
         nodeValue.setSelected(FormatGraphInput.isInputNodeValue());
         nodeValue.setOnAction(e -> {
             FormatGraphInput.setInputNodeValue(nodeValue.isSelected());
+            updateFormat();
         });
 
         edgeWeight.setSelected(FormatGraphInput.isInputEdgeWeight());
         edgeWeight.setOnAction(e -> {
             FormatGraphInput.setInputEdgeWeight(edgeWeight.isSelected());
+            updateFormat();
         });
 
         addNodeFromEdge.setSelected(FormatGraphInput.isNewNodeFromEdge());
         addNodeFromEdge.setOnAction(e -> {
             FormatGraphInput.setNewNodeFromEdge(addNodeFromEdge.isSelected());
+            updateFormat();
         });
 
         randomNodeEgde.setSelected(FormatGraphInput.isRandomNodeOrEdge());
         randomNodeEgde.setOnAction(e -> {
             FormatGraphInput.setRandomNodeOrEdge(randomNodeEgde.isSelected());
+            updateFormat();
         });
     }
 
@@ -171,7 +183,14 @@ public class GraphInputController {
         });
 
         getCurrentGraphButton.setOnAction(event -> {
-            showError("This feature is not yet implemented");
+            try {
+                if (GraphVisualGUIController.instance != null) {
+                    inputTextArea
+                            .setText(FormatGraphInput.graphToInputString(GraphVisualGUIController.instance.getGraph()));
+                }
+            } catch (IllegalArgumentException e) {
+                showError(e.getMessage());
+            }
         });
 
         applyInputButton.setOnAction(event -> {
@@ -191,7 +210,7 @@ public class GraphInputController {
 
     private void initTextAreas() {
         formatTextArea.setEditable(false);
-         formatTextArea.setText("" +
+        formatTextArea.setText("" +
                 "<node-count(n)> <edge-count(m)>\n" +
                 "<edge-1> <edge-1>\n" +
                 "<edge-2> <edge-2>\n" +
@@ -206,6 +225,22 @@ public class GraphInputController {
                 "2 3\n" +
                 "3 5\n" +
                 "2 5");
+
+        Platform.runLater(() -> {
+            updateFormat();
+            updateInputFromGraph();
+        });
+    }
+
+    private void updateFormat() {
+        formatTextArea.setText(FormatGraphInput.getFormatString());
+    }
+
+    private void updateInputFromGraph() {
+        if (GraphVisualGUIController.instance != null) {
+            inputTextArea
+                    .setText(FormatGraphInput.graphToInputString(GraphVisualGUIController.instance.getGraph()));
+        }
     }
 
     /**

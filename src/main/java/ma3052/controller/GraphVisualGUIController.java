@@ -13,8 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
+import ma3052.App;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
@@ -127,6 +129,10 @@ public class GraphVisualGUIController {
         graphGUI.setGraph(graph);
     }
 
+    public Graph getGraph() {
+        return graphGUI.getGraph();
+    }
+
     /**
      * Initialize the controller
      * Called after FXML file has been loaded
@@ -142,10 +148,16 @@ public class GraphVisualGUIController {
         graphGUI.setDrawing(true);
         gridGraphGUI.setDrawing(false);
 
+        graphGUI.setGraph(getDefaultGraph());
+        gridGraphGUI.setGridGraph(getDefaultGridGraph());
+
         // Setup algorithm options based on initial mode
         updateAlgorithmComboForMode();
-        switchAlgorithm(algorithmCombo.getValue());
-        algorithmCombo.valueProperty().addListener((obs, oldVal, newVal) -> switchAlgorithm(newVal));
+        algorithmCombo.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                switchAlgorithm(newVal);
+            }
+        });
 
         // Setup speed slider
         if (speedSlider != null) {
@@ -180,6 +192,7 @@ public class GraphVisualGUIController {
 
         // Stop both drawing thread
         Platform.runLater(() -> {
+            switchAlgorithm(algorithmCombo.getValue());
             graphCanvas.getScene().getWindow().setOnCloseRequest(e -> {
                 graphGUI.stop();
                 gridGraphGUI.stop();
@@ -262,15 +275,20 @@ public class GraphVisualGUIController {
             showError("Cannot clear while animation is running");
             return;
         }
-        graphGUI.setGraph(new Graph());
-        gridGraphGUI.setGridGraph(new GridGraph());
         switch (mode) {
             case NODE_AND_EDGES_MODE:
+                graphGUI.setGraph(new Graph());
                 logMessage("═══════════════════════════════════");
                 logMessage("Graph cleared");
                 logMessage("═══════════════════════════════════");
                 break;
             case GRID_MODE:
+                GridGraph graph = gridGraphGUI.getGridGraph();
+                for (int i = 0; i < graph.getRowSize(); i++) {
+                    for (int j = 0; j < graph.getRowSize(); j++) {
+                        graph.setNodeType(i, j, '.');
+                    }
+                }
                 logMessage("═══════════════════════════════════");
                 logMessage("Grid Graph Cleared");
                 logMessage("═══════════════════════════════════");
@@ -293,10 +311,12 @@ public class GraphVisualGUIController {
 
             // Setup stage
             Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(advancedInput.getScene().getWindow());
             stage.setTitle("Advanced Input");
             stage.setScene(scene);
-            stage.setWidth(700);
-            stage.setHeight(500);
+            stage.setWidth(900);
+            stage.setHeight(600);
             stage.showAndWait();
         } catch (IOException e) {
             showError(e.getMessage());
@@ -445,8 +465,7 @@ public class GraphVisualGUIController {
                         "Bipartite Checker",
                         "Find Diameter",
                         "Have Cycle Checker",
-                        "Find Smallest Cycle"
-                    );
+                        "Find Smallest Cycle");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -597,10 +616,11 @@ public class GraphVisualGUIController {
                 ComponentAnimation.animate(graphGUI);
                 break;
             case "Bipartite Checker":
-                logMessage("The Graph is " + (CycleDetector.isBipartite(graphGUI.getGraph()) ? " Bipartite" : "NOT Bipartite"));
+                logMessage("The Graph is "
+                        + (CycleDetector.isBipartite(graphGUI.getGraph()) ? " Bipartite" : "NOT Bipartite"));
                 break;
             case "Find Diameter":
-                List<Node> res =  CycleDetector.getDiameterPath(graphGUI.getGraph());
+                List<Node> res = CycleDetector.getDiameterPath(graphGUI.getGraph());
                 logMessage("The Graph have diameter " + Integer.toString(res.size() - 1));
                 logMessage("Have the diameter path : " + CycleDetector.getResultPathString(res));
                 break;
@@ -608,8 +628,8 @@ public class GraphVisualGUIController {
                 List<Node> cyclePath;
                 if (graphGUI.getGraph().isDirected()) {
                     cyclePath = CycleDetector.getDirectedCyclePath(graphGUI.getGraph());
-                    
-                }else{
+
+                } else {
                     cyclePath = CycleDetector.getUndirectedCyclePath(graphGUI.getGraph());
                 }
                 logMessage("The graph have the cycle path : " + CycleDetector.getResultPathString(cyclePath));
@@ -620,7 +640,7 @@ public class GraphVisualGUIController {
                 logMessage("The Graph have cycle size: " + Integer.toString(girthPath.size() - 1));
                 logMessage("Have the cycle path: " + CycleDetector.getResultPathString(girthPath));
                 break;
-                        
+
             default:
                 break;
         }
@@ -773,7 +793,6 @@ public class GraphVisualGUIController {
     @FXML
     public void switchToGrid() {
         mode = ModeGUI.GRID_MODE;
-        gridGraphGUI.setGridGraph(new GridGraph());
         startNodeInput.setVisible(false);
         startNodeInput.setManaged(false);
         labelStartNode.setVisible(false);
@@ -897,5 +916,46 @@ public class GraphVisualGUIController {
         logMessage("═══════════════════════════════════");
     }
 
+    private Graph getDefaultGraph() {
+        Graph graph = new Graph();
+        graph.addNode(new Node("1"));
+        graph.addNode(new Node("2"));
+        graph.addNode(new Node("3"));
+        graph.addNode(new Node("4"));
+        graph.addNode(new Node("5"));
+        graph.addNode(new Node("6"));
+        graph.addNode(new Node("7"));
+        graph.addEdge("1", "2");
+        graph.addEdge("1", "5");
+        graph.addEdge("1", "6");
+        graph.addEdge("2", "5");
+        graph.addEdge("2", "3");
+        graph.addEdge("3", "6");
+        graph.addEdge("4", "5");
+        graph.addEdge("4", "6");
+        graph.addEdge("4", "7");
+        graph.addEdge("5", "7");
+        return graph;
+    }
+
+    private GridGraph getDefaultGridGraph() {
+        GridGraph graph = new GridGraph(7, 7);
+        char[][] grid = {
+                { '.', '#', '.', '#', '.', '.', '.' },
+                { '#', '#', '.', '.', '.', '#', '#' },
+                { '.', '#', '#', '#', '#', '#', '#' },
+                { '.', '.', '.', '.', '.', '#', '.' },
+                { '.', '#', '.', '#', '#', '.', '.' },
+                { '#', '#', '.', '#', '#', '#', '.' },
+                { '.', '#', '.', '#', '#', '#', '.' },
+                { '.', '.', '.', '.', '#', '#', '.' },
+        };
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                graph.setNodeType(i, j, grid[i][j]);
+            }
+        }
+        return graph;
+    }
 
 }

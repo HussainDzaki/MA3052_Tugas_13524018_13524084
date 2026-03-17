@@ -127,23 +127,57 @@ public class Graph {
     }
 
     public void addUndirectedEdge(String node1, String node2) {
-        addDirectedEdge(node1, node2);
-        addDirectedEdge(node2, node1);
+        Node n1, n2;
+        if (hasNode(node1)) {
+            n1 = getNode(node1);
+        } else {
+            n1 = new Node(node1);
+        }
+        if (hasNode(node2)) {
+            n2 = getNode(node2);
+        } else {
+            n2 = new Node(node2);
+        }
+        addUndirectedEdge(n1, n2);
     }
 
     public void addUndirectedEdge(String node1, String node2, double weight) {
-        addDirectedEdge(node1, node2, weight);
-        addDirectedEdge(node2, node1, weight);
+        Node n1, n2;
+        if (hasNode(node1)) {
+            n1 = getNode(node1);
+        } else {
+            n1 = new Node(node1);
+        }
+        if (hasNode(node2)) {
+            n2 = getNode(node2);
+        } else {
+            n2 = new Node(node2);
+        }
+        addUndirectedEdge(n1, n2, weight);
     }
 
     public void addUndirectedEdge(Node node1, Node node2) {
-        addDirectedEdge(node1, node2);
-        addDirectedEdge(node2, node1);
+        if (!hasNode(node1)) {
+            addNode(node1);
+        }
+        if (!hasNode(node2)) {
+            addNode(node2);
+        }
+        node1.addEdge(node2);
+        node2.addEdge(node1);
+        edgeList.add(node1.getEdge(node2));
     }
 
     public void addUndirectedEdge(Node node1, Node node2, double weight) {
-        addDirectedEdge(node1, node2, weight);
-        addDirectedEdge(node2, node1, weight);
+        if (!hasNode(node1)) {
+            addNode(node1);
+        }
+        if (!hasNode(node2)) {
+            addNode(node2);
+        }
+        node1.addEdge(node2, weight);
+        node2.addEdge(node1, weight);
+        edgeList.add(node1.getEdge(node2));
     }
 
     public void addDirectedEdge(String source, String destination) {
