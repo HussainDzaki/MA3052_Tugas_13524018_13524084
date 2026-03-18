@@ -189,9 +189,8 @@
     cursor: hand;
     -fx-cursor: hand;
 }
-.button:hover {
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+.button:focused {
+    -fx-effect: dropshadow(gaussian, #2bab62, 4, 0.8, 0, 0)
 }
 .button-dark-blue {
     background-color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
@@ -199,10 +198,6 @@
     -fx-text-fill: #a8e8f9;
 }
 .button-dark-blue:hover {
-    background-color: linear-gradient(to top, #013c58 0%, #2b83ab 30%, #2b83ab 100%);
-    -fx-background-color: linear-gradient(to top, #013c58 0%, #2b83ab 30%, #2b83ab 100%);
-}
-.button-dark-blue:focused {
     background-color: linear-gradient(to top, #013c58 0%, #2b83ab 30%, #2b83ab 100%);
     -fx-background-color: linear-gradient(to top, #013c58 0%, #2b83ab 30%, #2b83ab 100%);
 }
@@ -216,25 +211,15 @@
     -fx-background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
     -fx-text-fill: #013c58;
 }
-.button-blue:focused {
-    background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
-    -fx-background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
-    -fx-text-fill: #013c58;
-}
 .button-light-blue {
     background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
     -fx-background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
     -fx-text-fill: #013c58;
 }
 .button-light-blue:hover {
-    background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
-    -fx-background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
-    -fx-text-fill: #a8e8f9;
-}
-.button-light-blue:focused {
-    background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
-    -fx-background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
-    -fx-text-fill: #a8e8f9;
+    background-color: linear-gradient(to top, #a8e8f9 0%, #fffbee 30%, #fffbee 100%);
+    -fx-background-color: linear-gradient(to top, #a8e8f9 0%, #fffbee 30%, #fffbee 100%);
+    -fx-text-fill: #1a6a8f;
 }
 .button-red {
      background-color: linear-gradient(to top, #013c58 0%, #b63939 30%, #b63939 100%);

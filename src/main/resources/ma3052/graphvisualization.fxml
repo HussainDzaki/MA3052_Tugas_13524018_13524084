@@ -16,17 +16,17 @@
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController" stylesheets="@css/GUI.css,@css/Lexend.css">
     <top>
-        <VBox prefHeight="80.0" prefWidth="Infinity" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-orange">
+        <VBox prefHeight="80.0" prefWidth="Infinity" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-light-orange,rounded">
             <padding>
                 <Insets bottom="5" left="20" right="20" top="10" />
             </padding>
             <children>
-                <Label prefWidth="Infinity" HBox.hgrow="ALWAYS" text="THE ULTIMATE GRAPH VISUALIZATION APP" alignment="CENTER" textAlignment="CENTER" styleClass="h1,lexend-bold,black,shadow-white"/>
+                <Label fx:id="appLabel" prefWidth="Infinity" HBox.hgrow="ALWAYS" text="THE ULTIMATE GRAPH VISUALIZATION APP" alignment="CENTER" textAlignment="CENTER" styleClass="h1,lexend-bold,black,shadow-white"/>
                 <HBox spacing="16" VBox.vgrow="ALWAYS" alignment="CENTER">
                     <padding>
                         <Insets bottom="5" left="5" right="5" top="5" />
                     </padding>
-                    <HBox styleClass="bg-dark-blue">
+                    <HBox styleClass="bg-dark-blue,rounded">
                         <padding>
                             <Insets bottom="1"/>
                         </padding>
@@ -112,10 +112,10 @@
                         <padding>
                             <Insets bottom="1"/>
                         </padding>
-                        <Button text="Fix" styleClass="button-light-blue,lexend-bold"/>
-                        <Button text="Add" styleClass="button-dark-blue,lexend-bold"/>
-                        <Button text="Delete" styleClass="button-dark-blue,lexend-bold"/>
-                        <Button text="Edit" styleClass="button-dark-blue,lexend-bold"/>
+                        <Button fx:id="btnLockMode" onAction="#switchToLockMode" text="Lock" styleClass="button-light-blue,lexend-bold"/>
+                        <Button fx:id="btnAddMode" onAction="#switchToAddMode" text="Add" styleClass="button-dark-blue,lexend-bold"/>
+                        <Button fx:id="btnDeleteMode" onAction="#switchToDeleteMode" text="Delete" styleClass="button-dark-blue,lexend-bold"/>
+                        <Button fx:id="btnEditMode" onAction="#switchToEditMode" text="Edit" styleClass="button-dark-blue,lexend-bold"/>
                     </HBox>
                 </HBox>
                 <HBox maxWidth="600" maxHeight="500" styleClass="border-thick,border-black">

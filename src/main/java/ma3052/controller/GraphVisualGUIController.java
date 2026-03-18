@@ -52,6 +52,9 @@ public class GraphVisualGUIController {
 
     // FXML UI Components
     @FXML
+    private Label appLabel;
+
+    @FXML
     private Canvas graphCanvas;
 
     @FXML
@@ -86,6 +89,15 @@ public class GraphVisualGUIController {
 
     @FXML
     private Button btnSwitchToGrid;
+
+    @FXML
+    private Button btnLockMode;
+    @FXML
+    private Button btnAddMode;
+    @FXML
+    private Button btnDeleteMode;
+    @FXML
+    private Button btnEditMode;
 
     @FXML
     private ComboBox<String> algorithmCombo;
@@ -173,7 +185,7 @@ public class GraphVisualGUIController {
                 ComponentAnimation.setAnimationStepTime(newValue.longValue());
             });
         }
-        
+
         addFromFile.setVisible(false);
         addFromFile.setManaged(false);
 
@@ -187,6 +199,8 @@ public class GraphVisualGUIController {
 
         // Stop both drawing thread
         Platform.runLater(() -> {
+            // Remove focus on the first button, make it focus a non button
+            appLabel.requestFocus();
             switchAlgorithm(algorithmCombo.getValue());
             graphCanvas.getScene().getWindow().setOnCloseRequest(e -> {
                 graphGUI.stop();
@@ -742,6 +756,8 @@ public class GraphVisualGUIController {
      */
     @FXML
     public void switchToNodeAndEdges() {
+        if (mode == ModeGUI.NODE_AND_EDGES_MODE)
+            return;
         mode = ModeGUI.NODE_AND_EDGES_MODE;
         updateAlgorithmComboForMode();
         startNodeInput.setVisible(true);
@@ -773,6 +789,11 @@ public class GraphVisualGUIController {
         advancedInput.setVisible(true);
         advancedInput.setManaged(true);
 
+        btnNodeAndEdges.getStyleClass().add("button-light-blue");
+        btnNodeAndEdges.getStyleClass().remove("button-dark-blue");
+        btnSwitchToGrid.getStyleClass().add("button-dark-blue");
+        btnSwitchToGrid.getStyleClass().remove("button-light-blue");
+
         graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
         graphGUI.setDrawing(true);
         gridGraphGUI.setDrawing(false);
@@ -787,6 +808,8 @@ public class GraphVisualGUIController {
      */
     @FXML
     public void switchToGrid() {
+        if (mode == ModeGUI.GRID_MODE)
+            return;
         mode = ModeGUI.GRID_MODE;
         startNodeInput.setVisible(false);
         startNodeInput.setManaged(false);
@@ -820,12 +843,73 @@ public class GraphVisualGUIController {
         advancedInput.setVisible(false);
         advancedInput.setManaged(false);
 
+        btnNodeAndEdges.getStyleClass().remove("button-light-blue");
+        btnNodeAndEdges.getStyleClass().add("button-dark-blue");
+        btnSwitchToGrid.getStyleClass().remove("button-dark-blue");
+        btnSwitchToGrid.getStyleClass().add("button-light-blue");
+
         graphGUI.setDrawing(false);
         gridGraphGUI.setDrawing(true);
 
         logMessage("═══════════════════════════════════");
         logMessage("Switched to Grid view");
         logMessage("═══════════════════════════════════");
+    }
+
+    public void switchToLockMode() {
+        if (graphGUI.getMode() == GraphGUI.Mode.Lock)
+            return;
+        graphGUI.setMode(GraphGUI.Mode.Lock);
+        btnLockMode.getStyleClass().remove("button-dark-blue");
+        btnLockMode.getStyleClass().add("button-light-blue");
+        btnAddMode.getStyleClass().remove("button-light-blue");
+        btnAddMode.getStyleClass().add("button-dark-blue");
+        btnDeleteMode.getStyleClass().remove("button-light-blue");
+        btnDeleteMode.getStyleClass().add("button-dark-blue");
+        btnEditMode.getStyleClass().remove("button-light-blue");
+        btnEditMode.getStyleClass().add("button-dark-blue");
+    }
+
+    public void switchToAddMode() {
+        if (graphGUI.getMode() == GraphGUI.Mode.Add)
+            return;
+        graphGUI.setMode(GraphGUI.Mode.Add);
+        btnLockMode.getStyleClass().remove("button-light-blue");
+        btnLockMode.getStyleClass().add("button-dark-blue");
+        btnAddMode.getStyleClass().remove("button-dark-blue");
+        btnAddMode.getStyleClass().add("button-light-blue");
+        btnDeleteMode.getStyleClass().remove("button-light-blue");
+        btnDeleteMode.getStyleClass().add("button-dark-blue");
+        btnEditMode.getStyleClass().remove("button-light-blue");
+        btnEditMode.getStyleClass().add("button-dark-blue");
+    }
+
+    public void switchToDeleteMode() {
+        if (graphGUI.getMode() == GraphGUI.Mode.Delete)
+            return;
+        graphGUI.setMode(GraphGUI.Mode.Delete);
+        btnLockMode.getStyleClass().remove("button-light-blue");
+        btnLockMode.getStyleClass().add("button-dark-blue");
+        btnAddMode.getStyleClass().remove("button-light-blue");
+        btnAddMode.getStyleClass().add("button-dark-blue");
+        btnDeleteMode.getStyleClass().remove("button-dark-blue");
+        btnDeleteMode.getStyleClass().add("button-light-blue");
+        btnEditMode.getStyleClass().remove("button-light-blue");
+        btnEditMode.getStyleClass().add("button-dark-blue");
+    }
+
+    public void switchToEditMode() {
+        if (graphGUI.getMode() == GraphGUI.Mode.Edit)
+            return;
+        graphGUI.setMode(GraphGUI.Mode.Edit);
+        btnLockMode.getStyleClass().remove("button-light-blue");
+        btnLockMode.getStyleClass().add("button-dark-blue");
+        btnAddMode.getStyleClass().remove("button-light-blue");
+        btnAddMode.getStyleClass().add("button-dark-blue");
+        btnDeleteMode.getStyleClass().remove("button-light-blue");
+        btnDeleteMode.getStyleClass().add("button-dark-blue");
+        btnEditMode.getStyleClass().remove("button-dark-blue");
+        btnEditMode.getStyleClass().add("button-light-blue");
     }
 
     /**

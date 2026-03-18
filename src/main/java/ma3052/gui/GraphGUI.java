@@ -22,12 +22,12 @@ public class GraphGUI {
     // What to do when canvas is interacted
     public static enum Mode {
         Lock, // Fix node position
-        Draw, // Add node and edges
-        Edit, // Edit node name, node value, and edge weight
+        Add, // Add node and edges
+        Edit, // Edit node name, node value, and edge weight on a window
         Delete, // Delete node and edges
     }
 
-    private Mode currentMode = Mode.Lock;
+    private Mode mode = Mode.Lock;
 
     // Graph data structure
     private Canvas canvas;
@@ -118,6 +118,14 @@ public class GraphGUI {
                 threadPoolExecutor.shutdown();
             });
         });
+    }
+
+    public Mode getMode() {
+        return mode;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
     public Graph getGraph() {
@@ -399,7 +407,7 @@ public class GraphGUI {
     private void onCanvasClick(MouseEvent event) {
         NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
         EdgeGUI edgeGUI = getEdgeOnPosition(event.getX(), event.getY());
-        switch (currentMode) {
+        switch (mode) {
             case Lock:
                 if (nodeGUI != null) {
                     if (initialLockPosition) {
@@ -411,7 +419,7 @@ public class GraphGUI {
                     }
                 }
                 break;
-            case Draw:
+            case Add:
                 System.out.println("Not implemented yet");
                 break;
             case Edit:
@@ -433,7 +441,7 @@ public class GraphGUI {
     private void onCanvasHover(MouseEvent event) {
         NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
         EdgeGUI edgeGUI = getEdgeOnPosition(event.getX(), event.getY());
-        if (nodeGUI != null || edgeGUI != null && (currentMode == Mode.Delete || currentMode == Mode.Edit)) {
+        if (nodeGUI != null || edgeGUI != null && (mode == Mode.Delete || mode == Mode.Edit)) {
             if (!isCursorPointing) {
                 canvas.getStyleClass().add("cursor-pointer");
                 isCursorPointing = true;
