@@ -20,14 +20,14 @@ import java.util.concurrent.TimeUnit;
 
 public class GraphGUI {
     // What to do when canvas is interacted
-    private static enum Mode {
+    public static enum Mode {
         Lock, // Fix node position
         Draw, // Add node and edges
         Edit, // Edit node name, node value, and edge weight
         Delete, // Delete node and edges
     }
 
-    private static Mode currentMode = Mode.Delete;
+    private Mode currentMode = Mode.Lock;
 
     // Graph data structure
     private Canvas canvas;
@@ -69,6 +69,9 @@ public class GraphGUI {
     // Node clicking
     private long startClickTime = 0;
     private Point2D startClickPosition;
+
+    // Cursor state
+    private boolean isCursorPointing = false;
 
     public GraphGUI(Canvas canvas) {
         graph = new Graph();
@@ -332,8 +335,6 @@ public class GraphGUI {
 
             // Tidak berada di antara dua node
             if (pos1.dotProduct(segment1) < 0 || pos2.dotProduct(segment2) < 0) {
-                System.out.println("Dot product 1: " + pos1.dotProduct(segment1) + "; Dot product 2: "
-                        + pos2.dotProduct(segment2));
                 continue;
             }
 
@@ -345,9 +346,6 @@ public class GraphGUI {
 
             // Jarak = |ax + by + c| / sqrt(a^2 + b^2)
             double distance = Math.abs((a * pos.getX() + b * pos.getY() + c) / Math.sqrt(a * a + b * b));
-            System.out.println("Distance to edge (" +
-                    edgeGUI.getEdge().getSource().getNodeName() + ", "
-                    + edgeGUI.getEdge().getDestination().getNodeName() + "): " + distance);
             if (distance < MAX_DISTANCE_FROM_EDGE_TO_CLICK) {
                 return edgeGUI;
             }
@@ -433,6 +431,19 @@ public class GraphGUI {
     }
 
     private void onCanvasHover(MouseEvent event) {
+        NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
+        EdgeGUI edgeGUI = getEdgeOnPosition(event.getX(), event.getY());
+        if (nodeGUI != null || edgeGUI != null && (currentMode == Mode.Delete || currentMode == Mode.Edit)) {
+            if (!isCursorPointing) {
+                canvas.getStyleClass().add("cursor-pointer");
+                isCursorPointing = true;
+            }
+        } else {
+            if (isCursorPointing) {
+                canvas.getStyleClass().remove("cursor-pointer");
+                isCursorPointing = false;
+            }
+        }
     }
 
     /**

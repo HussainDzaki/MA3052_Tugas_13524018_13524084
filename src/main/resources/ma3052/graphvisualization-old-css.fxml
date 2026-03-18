@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController" stylesheets="@css/GUI.css,@css/Lexend.css">
+<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController" stylesheets="@css/GUI-Old.css,@css/Lexend.css" styleClass="lexend,bg-white">
     <top>
         <VBox prefHeight="80.0" prefWidth="Infinity" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-orange">
             <padding>
@@ -26,17 +26,14 @@
                     <padding>
                         <Insets bottom="5" left="5" right="5" top="5" />
                     </padding>
-                    <HBox styleClass="bg-dark-blue">
-                        <padding>
-                            <Insets bottom="1"/>
-                        </padding>
+                    <children>
                         <Button fx:id="btnNodeAndEdges" alignment="CENTER" onAction="#switchToNodeAndEdges"
                         prefHeight="60.0" prefWidth="500.0" text="Node and Edges"
-                        styleClass="button-light-blue,h3"/>
+                        styleClass="bg-light-yellow,h3"/>
                         <Button fx:id="btnSwitchToGrid" alignment="CENTER" onAction="#switchToGrid"
                         prefHeight="60.0" prefWidth="500.0" text="Grid"
-                        styleClass="button-dark-blue,h3"/>
-                    </HBox>
+                        styleClass="bg-yellow,h3"/>
+                    </children>
                 </HBox>
             </children>
         </VBox>
@@ -47,7 +44,7 @@
             <padding>
                 <Insets bottom="15" left="15" right="15" top="10" />
             </padding>
-            <VBox styleClass="bg-light-orange,rounded" spacing="20" VBox.vgrow="ALWAYS">
+            <VBox styleClass="bg-light-yellow,rounded" spacing="20" VBox.vgrow="ALWAYS">
                 <padding>
                     <Insets bottom="10" left="15" right="15" top="10" />
                 </padding>
@@ -62,7 +59,7 @@
                         <Label text="Add Node" styleClass="blue,lexend-bold"/>
                         <HBox spacing="8">
                             <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
-                            <Button fx:id="addNodeButton" minWidth="60.0" onAction="#handleAddNode" text="Add" styleClass="button-light-blue,lexend-bold"/>
+                            <Button fx:id="addNodeButton" minWidth="60.0" onAction="#handleAddNode" text="Add" styleClass="button-blue,lexend-bold"/>
                         </HBox>
                     </VBox>
                     <!-- Edge Management Section -->
@@ -71,7 +68,7 @@
                         <HBox spacing="8">
                             <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
                             <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
-                            <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" text="Add" styleClass="button-light-blue,lexend-bold"/>
+                            <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" text="Add" styleClass="button-blue,lexend-bold"/>
                         </HBox>
                     </VBox>
                     <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Advanced Input" styleClass="button-blue,lexend-bold" />
@@ -108,14 +105,11 @@
                 <HBox maxWidth="600" alignment="CENTER">
                     <Label text="Visualization" styleClass="h2,lexend-bold,pink"/>
                     <HBox HBox.hgrow="ALWAYS"/>
-                    <HBox styleClass="bg-dark-blue,rounded">
-                        <padding>
-                            <Insets bottom="1"/>
-                        </padding>
-                        <Button text="Fix" styleClass="button-light-blue,lexend-bold"/>
-                        <Button text="Add" styleClass="button-dark-blue,lexend-bold"/>
-                        <Button text="Delete" styleClass="button-dark-blue,lexend-bold"/>
-                        <Button text="Edit" styleClass="button-dark-blue,lexend-bold"/>
+                    <HBox spacing="5">
+                        <Button text="Move" styleClass="button-pink,lexend-bold"/>
+                        <Button text="Add" styleClass="button-pink,lexend-bold"/>
+                        <Button text="Delete" styleClass="button-pink,lexend-bold"/>
+                        <Button text="Edit" styleClass="button-pink,lexend-bold"/>
                     </HBox>
                 </HBox>
                 <HBox maxWidth="600" maxHeight="500" styleClass="border-thick,border-black">
@@ -129,7 +123,7 @@
             <padding>
                 <Insets bottom="15" left="15" right="15" top="10" />
             </padding>
-            <VBox spacing="20" styleClass="bg-light-orange,rounded" VBox.vgrow="ALWAYS">
+            <VBox spacing="20" styleClass="bg-light-yellow,rounded" VBox.vgrow="ALWAYS">
                 <padding>
                     <Insets bottom="15" left="15" right="15" top="10" />
                 </padding>
