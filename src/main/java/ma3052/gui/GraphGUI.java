@@ -19,6 +19,16 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class GraphGUI {
+    // What to do when canvas is interacted
+    private static enum Mode {
+        Lock, // Fix node position
+        Draw, // Add node and edges
+        Edit, // Edit node name, node value, and edge weight
+        Delete, // Delete node and edges
+    }
+
+    private static Mode currentMode = Mode.Delete;
+
     // Graph data structure
     private Canvas canvas;
     private GraphicsContext graphicsContext;
@@ -41,6 +51,9 @@ public class GraphGUI {
     private static final double FIXED_DELTA_TIME = 0.02; // 50 fps
     private static final long FIXED_DELTA_TIME_MS = 20; // 50 fps
 
+    // Detection parameters
+    private static final double MAX_DISTANCE_FROM_EDGE_TO_CLICK = 10;
+
     // Animation
     private volatile boolean isPhysicEnabled = true;
     private volatile boolean isDrawing = true;
@@ -49,8 +62,13 @@ public class GraphGUI {
 
     // Node dragging
     private boolean isDragging = false;
+    private boolean initialLockPosition = false;
     private Point2D dragOffset;
     private NodeGUI draggedNodeGUI;
+
+    // Node clicking
+    private long startClickTime = 0;
+    private Point2D startClickPosition;
 
     public GraphGUI(Canvas canvas) {
         graph = new Graph();
@@ -71,6 +89,7 @@ public class GraphGUI {
         }, 0, 16, TimeUnit.MILLISECONDS);
 
         canvas.setOnMousePressed(event -> {
+            onCanvasClickStart(event);
             onCanvasDragStart(event);
         });
 
@@ -78,12 +97,17 @@ public class GraphGUI {
             onCanvasDragMove(event);
         });
 
-        canvas.setOnMouseClicked(event -> {
+        canvas.setOnMouseReleased(event -> {
+            onCanvasClickEnd(event);
             onCanvasDragEnd(event);
         });
 
         canvas.setOnMouseExited(event -> {
             onCanvasDragEnd(event);
+        });
+
+        canvas.setOnMouseMoved(event -> {
+            onCanvasHover(event);
         });
 
         Platform.runLater(() -> {
@@ -152,6 +176,14 @@ public class GraphGUI {
 
     public void removeNode(Node node) {
         if (graph.hasNode(node)) {
+            edgeGUIList.removeIf((edgeGUI) -> {
+                if (edgeGUI.getEdge().getSource() == node || edgeGUI.getEdge().getDestination() == node) {
+                    edgeMap.remove(edgeGUI.getEdge());
+                    graph.removeEdge(edgeGUI.getEdge());
+                    return true;
+                }
+                return false;
+            });
             nodeGUIList.remove(nodeMap.get(node));
             nodeMap.remove(node);
             graph.removeNode(node);
@@ -278,17 +310,59 @@ public class GraphGUI {
         });
     }
 
-    private void onCanvasDragStart(MouseEvent event) {
+    private NodeGUI getNodeOnPosition(double x, double y) {
         for (NodeGUI nodeGUI : nodeGUIList) {
-            if (nodeGUI.getPosition().subtract(new Point2D(event.getX(), event.getY())).magnitude() <= nodeGUI
+            if (nodeGUI.getPosition().subtract(x, y).magnitude() <= nodeGUI
                     .getRadius()) {
-                isDragging = true;
-                draggedNodeGUI = nodeGUI;
-                Point2D dragPosition = new Point2D(event.getX(), event.getY());
-                dragOffset = nodeGUI.getPosition().subtract(dragPosition);
-                draggedNodeGUI.setLockPosition(true);
-                break;
+                return nodeGUI;
             }
+        }
+        return null;
+    }
+
+    private EdgeGUI getEdgeOnPosition(double x, double y) {
+        Point2D pos = new Point2D(x, y);
+        for (EdgeGUI edgeGUI : edgeGUIList) {
+            Point2D node1 = edgeGUI.getSourceGUI().getPosition();
+            Point2D node2 = edgeGUI.getDestinationGUI().getPosition();
+            Point2D pos1 = pos.subtract(node1);
+            Point2D pos2 = pos.subtract(node2);
+            Point2D segment1 = node2.subtract(node1);
+            Point2D segment2 = node1.subtract(node2);
+
+            // Tidak berada di antara dua node
+            if (pos1.dotProduct(segment1) < 0 || pos2.dotProduct(segment2) < 0) {
+                System.out.println("Dot product 1: " + pos1.dotProduct(segment1) + "; Dot product 2: "
+                        + pos2.dotProduct(segment2));
+                continue;
+            }
+
+            // Hitung garis ax + by + c = 0;
+            // Diket: (x2 - x1) * (y - y1) = (x - x1) * (y2 - y1)
+            double a = (node2.getY() - node1.getY());
+            double b = -(node2.getX() - node1.getX());
+            double c = -node1.getX() * a + -node1.getY() * b;
+
+            // Jarak = |ax + by + c| / sqrt(a^2 + b^2)
+            double distance = Math.abs((a * pos.getX() + b * pos.getY() + c) / Math.sqrt(a * a + b * b));
+            System.out.println("Distance to edge (" +
+                    edgeGUI.getEdge().getSource().getNodeName() + ", "
+                    + edgeGUI.getEdge().getDestination().getNodeName() + "): " + distance);
+            if (distance < MAX_DISTANCE_FROM_EDGE_TO_CLICK) {
+                return edgeGUI;
+            }
+        }
+        return null;
+    }
+
+    private void onCanvasDragStart(MouseEvent event) {
+        NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
+        if (nodeGUI != null) {
+            isDragging = true;
+            draggedNodeGUI = nodeGUI;
+            dragOffset = nodeGUI.getPosition().subtract(event.getX(), event.getY());
+            initialLockPosition = draggedNodeGUI.isLockPosition();
+            draggedNodeGUI.setLockPosition(true);
         }
     }
 
@@ -305,9 +379,60 @@ public class GraphGUI {
 
     private void onCanvasDragEnd(MouseEvent event) {
         if (isDragging) {
-            draggedNodeGUI.setLockPosition(false);
+            // If is actually dragged, not just a click
+            if (startClickPosition.distance(event.getX(), event.getY()) > 5) {
+                draggedNodeGUI.setLockPosition(initialLockPosition);
+            }
             isDragging = false;
         }
+    }
+
+    private void onCanvasClickStart(MouseEvent event) {
+        startClickPosition = new Point2D(event.getX(), event.getY());
+    }
+
+    private void onCanvasClickEnd(MouseEvent event) {
+        // If is not a drag
+        if (startClickPosition.distance(event.getX(), event.getY()) <= 5) {
+            onCanvasClick(event);
+        }
+    }
+
+    private void onCanvasClick(MouseEvent event) {
+        NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
+        EdgeGUI edgeGUI = getEdgeOnPosition(event.getX(), event.getY());
+        switch (currentMode) {
+            case Lock:
+                if (nodeGUI != null) {
+                    if (initialLockPosition) {
+                        nodeGUI.setBorderWidth(3);
+                        nodeGUI.setLockPosition(false);
+                    } else {
+                        nodeGUI.setBorderWidth(5);
+                        nodeGUI.setLockPosition(true);
+                    }
+                }
+                break;
+            case Draw:
+                System.out.println("Not implemented yet");
+                break;
+            case Edit:
+                System.out.println("Not implemented yet");
+                break;
+            case Delete:
+                if (nodeGUI != null) {
+                    removeNode(nodeGUI.getNode());
+                } else if (edgeGUI != null) {
+                    removeEdge(edgeGUI.getEdge());
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void onCanvasHover(MouseEvent event) {
     }
 
     /**

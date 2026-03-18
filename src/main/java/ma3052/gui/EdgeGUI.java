@@ -33,6 +33,10 @@ public class EdgeGUI {
         this.arrowHeadSize = 10;
     }
 
+    public Edge getEdge() {
+        return edge;
+    }
+
     public NodeGUI getSourceGUI() {
         return sourceGUI;
     }

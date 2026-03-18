@@ -173,12 +173,7 @@ public class GraphVisualGUIController {
                 ComponentAnimation.setAnimationStepTime(newValue.longValue());
             });
         }
-
-        // Setup canvas
-        if (graphCanvas != null) {
-            graphCanvas.setStyle("-fx-border-color: #cccccc; -fx-border-width: 1;");
-        }
-
+        
         addFromFile.setVisible(false);
         addFromFile.setManaged(false);
 
