@@ -79,6 +79,12 @@ public class GraphVisualGUIController {
     private Button clearButton;
 
     @FXML
+    private TextArea nodeListTextArea;
+
+    @FXML
+    private TextArea edgeListTextArea;
+
+    @FXML
     private Button addFromFile;
 
     @FXML
@@ -136,6 +142,7 @@ public class GraphVisualGUIController {
     private ModeGUI mode = ModeGUI.NODE_AND_EDGES_MODE;
 
     private ScheduledThreadPoolExecutor threadPoolExecutor;
+    private Timer updateGraphFromListTimer;
 
     public void setGraph(Graph graph) {
         graphGUI.setGraph(graph);
@@ -192,6 +199,33 @@ public class GraphVisualGUIController {
         advancedInput.setVisible(true);
         advancedInput.setManaged(true);
 
+        nodeListTextArea.textProperty().addListener((observable) -> {
+            if (updateGraphFromListTimer != null) {
+                updateGraphFromListTimer.cancel();
+                updateGraphFromListTimer.purge();
+            }
+            updateGraphFromListTimer = new Timer();
+            updateGraphFromListTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    updateGraphFromList();
+                }
+            }, 500);
+        });
+        edgeListTextArea.textProperty().addListener((observable) -> {
+            if (updateGraphFromListTimer != null) {
+                updateGraphFromListTimer.cancel();
+                updateGraphFromListTimer.purge();
+            }
+            updateGraphFromListTimer = new Timer();
+            updateGraphFromListTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    updateGraphFromList();
+                }
+            }, 500);
+        });
+
         // Log initialization
         logMessage("Graph Visualization initialized successfully");
 
@@ -206,6 +240,8 @@ public class GraphVisualGUIController {
                 graphGUI.stop();
                 gridGraphGUI.stop();
                 threadPoolExecutor.shutdown();
+                updateGraphFromListTimer.cancel();
+                updateGraphFromListTimer.purge();
             });
         });
     }
@@ -910,6 +946,105 @@ public class GraphVisualGUIController {
         btnDeleteMode.getStyleClass().add("button-dark-blue");
         btnEditMode.getStyleClass().remove("button-dark-blue");
         btnEditMode.getStyleClass().add("button-light-blue");
+    }
+
+    public void updateGraphFromList() {
+        Graph graph = graphGUI.getGraph();
+        String[] nodeList = nodeListTextArea.getText().split("\n+");
+        String[] edgeList = edgeListTextArea.getText().split("\n+");
+        HashSet<Node> nodeSet = new HashSet<>();
+        HashSet<Edge> edgeSet = new HashSet<>();
+        for (String node : nodeList) {
+            String[] tokens = node.strip().split("[ \t]+");
+            if (tokens.length == 0)
+                continue;
+            if (tokens[0].isBlank())
+                continue;
+            if (!graph.hasNode(tokens[0])) {
+                double value = 0;
+                if (tokens.length >= 2) {
+                    try {
+                        value = Double.parseDouble(tokens[1]);
+                    } catch (Exception e) {
+                        value = 0;
+                    }
+                }
+                graphGUI.addNode(new Node(tokens[0], value));
+            } else {
+                if (tokens.length >= 2) {
+                    double value = 0;
+                    try {
+                        value = Double.parseDouble(tokens[1]);
+                    } catch (Exception e) {
+                        value = 0;
+                    }
+                    graph.getNode(tokens[0]).setValue(value);
+                }
+            }
+            nodeSet.add(graph.getNode(tokens[0]));
+        }
+        for (String edge : edgeList) {
+            String[] tokens = edge.strip().split("[ \t]+");
+            if (tokens.length <= 1)
+                continue;
+            if (tokens[0].isBlank() || tokens[1].isBlank()) {
+                continue;
+            }
+            if (!graph.hasNode(tokens[0])) {
+                graphGUI.addNode(new Node(tokens[0]));
+                String text = nodeListTextArea.getText();
+                if (text.endsWith("\n") || text.isBlank()) {
+                    nodeListTextArea.setText(text + tokens[0]);
+                } else {
+                    nodeListTextArea.setText(text + "\n" + tokens[0]);
+                }
+            }
+            if (!graph.hasNode(tokens[1])) {
+                graphGUI.addNode(new Node(tokens[1]));
+                String text = nodeListTextArea.getText();
+                if (text.endsWith("\n") || text.isBlank()) {
+                    nodeListTextArea.setText(text + tokens[1]);
+                } else {
+                    nodeListTextArea.setText(text + "\n" + tokens[1]);
+                }
+            }
+            nodeSet.add(graph.getNode(tokens[0]));
+            nodeSet.add(graph.getNode(tokens[1]));
+
+            if (!graph.hasEdge(tokens[0], tokens[1])) {
+                Node node1 = graph.getNode(tokens[0]);
+                Node node2 = graph.getNode(tokens[1]);
+                graphGUI.addEdge(node1, node2);
+                if (tokens.length >= 3) {
+                    double weight = 1;
+                    try {
+                        weight = Double.parseDouble(tokens[2]);
+                    } catch (Exception e) {
+                        weight = 1;
+                    }
+                    graph.getEdge(node1, node2).setWeight(weight);
+                }
+            }
+            edgeSet.add(graph.getEdge(tokens[0], tokens[1]));
+        }
+        ArrayList<Node> nodesToRemove = new ArrayList<>();
+        for (Node node : graph.getNodeList()) {
+            if (!nodeSet.contains(node)) {
+                nodesToRemove.add(node);
+            }
+        }
+        for (Node node : nodesToRemove) {
+            graphGUI.removeNode(node);
+        }
+        ArrayList<Edge> edgesToRemove = new ArrayList<>();
+        for (Edge edge : graph.getEdgeList()) {
+            if (!edgeSet.contains(edge)) {
+                edgesToRemove.add(edge);
+            }
+        }
+        for (Edge edge : edgesToRemove) {
+            graphGUI.removeEdge(edge);
+        }
     }
 
     /**

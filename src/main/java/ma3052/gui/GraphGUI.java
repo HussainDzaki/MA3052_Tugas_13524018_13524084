@@ -27,7 +27,7 @@ public class GraphGUI {
         Delete, // Delete node and edges
     }
 
-    private Mode mode = Mode.Lock;
+    private Mode mode = Mode.Add;
 
     // Graph data structure
     private Canvas canvas;
@@ -114,6 +114,8 @@ public class GraphGUI {
 
         canvas.setOnMouseExited(event -> {
             onCanvasDragEnd(event);
+            sourceNodeGUI = null;
+            dummyEdgeGUI = null;
         });
 
         canvas.setOnMouseMoved(event -> {
@@ -407,6 +409,7 @@ public class GraphGUI {
                     canvas.getWidth() - draggedNodeGUI.getRadius() - 10,
                     canvas.getHeight() - draggedNodeGUI.getRadius() - 10);
         }
+        dummyNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
     }
 
     private void onCanvasDragEnd(MouseEvent event) {

@@ -74,17 +74,17 @@
                             <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" text="Add" styleClass="button-light-blue"/>
                         </HBox>
                     </VBox>
-                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Advanced Input" styleClass="button-blue" />
+                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Formatted Input" styleClass="button-blue" />
                     <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" text="Input From .txt" styleClass="button-blue"/>
                     <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" text="Clear Graph" styleClass="button-red" />
                     <HBox spacing="15">
                         <VBox spacing="8" HBox.hgrow="ALWAYS">
                             <Label text="Node List" styleClass="blue,lexend-bold"/>
-                            <TextArea fx:id="nodeList" prefHeight="200" styleClass="monospace"/>
+                            <TextArea fx:id="nodeListTextArea" prefHeight="200" styleClass="monospace"/>
                         </VBox>
                         <VBox spacing="8" HBox.hgrow="ALWAYS">
                             <Label text="Edge List" styleClass="blue,lexend-bold"/>
-                            <TextArea fx:id="edgeList" prefHeight="200" styleClass="monospace"/>
+                            <TextArea fx:id="edgeListTextArea" prefHeight="200" styleClass="monospace"/>
                         </VBox>
                     </HBox>
                 </VBox>
@@ -112,8 +112,8 @@
                         <padding>
                             <Insets bottom="1"/>
                         </padding>
-                        <Button fx:id="btnLockMode" onAction="#switchToLockMode" text="Lock" styleClass="button-light-blue"/>
-                        <Button fx:id="btnAddMode" onAction="#switchToAddMode" text="Add" styleClass="button-dark-blue"/>
+                        <Button fx:id="btnAddMode" onAction="#switchToAddMode" text="Add" styleClass="button-light-blue"/>
+                        <Button fx:id="btnLockMode" onAction="#switchToLockMode" text="Lock" styleClass="button-dark-blue"/>
                         <Button fx:id="btnDeleteMode" onAction="#switchToDeleteMode" text="Delete" styleClass="button-dark-blue"/>
                         <Button fx:id="btnEditMode" onAction="#switchToEditMode" text="Edit" styleClass="button-dark-blue"/>
                     </HBox>

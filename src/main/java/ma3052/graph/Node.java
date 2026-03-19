@@ -32,6 +32,7 @@ public class Node {
     public Node(String nodeName) {
         this.nodeID = nodeIDCount;
         this.nodeName = nodeName;
+        this.value = 0;
         this.adjacencyList = new ArrayList<Edge>();
         nodeIDCount++;
     }
