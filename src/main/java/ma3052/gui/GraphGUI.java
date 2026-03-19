@@ -67,11 +67,15 @@ public class GraphGUI {
     private NodeGUI draggedNodeGUI;
 
     // Node clicking
-    private long startClickTime = 0;
     private Point2D startClickPosition;
 
     // Cursor state
     private boolean isCursorPointing = false;
+
+    // Adding edge
+    private NodeGUI dummyNodeGUI = new NodeGUI(new Node()); // For drawing edge to the cursor
+    private EdgeGUI dummyEdgeGUI; // For drawing edge to the cursor
+    private NodeGUI sourceNodeGUI;
 
     public GraphGUI(Canvas canvas) {
         graph = new Graph();
@@ -90,6 +94,9 @@ public class GraphGUI {
             if (isDrawing)
                 updateCanvas();
         }, 0, 16, TimeUnit.MILLISECONDS);
+
+        dummyNodeGUI.setColor(Color.TRANSPARENT);
+        dummyNodeGUI.setTextColor(Color.TRANSPARENT);
 
         canvas.setOnMousePressed(event -> {
             onCanvasClickStart(event);
@@ -302,6 +309,9 @@ public class GraphGUI {
     }
 
     private void drawEdges() {
+        if (dummyEdgeGUI != null) {
+            dummyEdgeGUI.draw(graphicsContext, drawEdgeWeight, graph.isDirected());
+        }
         for (EdgeGUI edgeGUI : edgeGUIList) {
             edgeGUI.draw(graphicsContext, drawEdgeWeight, graph.isDirected());
         }
@@ -321,7 +331,7 @@ public class GraphGUI {
         });
     }
 
-    private NodeGUI getNodeOnPosition(double x, double y) {
+    private NodeGUI getNodeGUIOnPosition(double x, double y) {
         for (NodeGUI nodeGUI : nodeGUIList) {
             if (nodeGUI.getPosition().subtract(x, y).magnitude() <= nodeGUI
                     .getRadius()) {
@@ -331,7 +341,7 @@ public class GraphGUI {
         return null;
     }
 
-    private EdgeGUI getEdgeOnPosition(double x, double y) {
+    private EdgeGUI getEdgeGUIOnPosition(double x, double y) {
         Point2D pos = new Point2D(x, y);
         for (EdgeGUI edgeGUI : edgeGUIList) {
             Point2D node1 = edgeGUI.getSourceGUI().getPosition();
@@ -361,8 +371,24 @@ public class GraphGUI {
         return null;
     }
 
+    private String getNextNodeName() {
+        if (graph.isEmpty()) {
+            return "1";
+        } else {
+            int nextNumber = 1;
+            for (Node node : graph.getNodeList()) {
+                try {
+                    nextNumber = Math.max(nextNumber, Integer.parseInt(node.getNodeName()) + 1);
+                } catch (Exception e) {
+                    // Do nothing
+                }
+            }
+            return Integer.toString(nextNumber);
+        }
+    }
+
     private void onCanvasDragStart(MouseEvent event) {
-        NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
+        NodeGUI nodeGUI = getNodeGUIOnPosition(event.getX(), event.getY());
         if (nodeGUI != null) {
             isDragging = true;
             draggedNodeGUI = nodeGUI;
@@ -386,7 +412,7 @@ public class GraphGUI {
     private void onCanvasDragEnd(MouseEvent event) {
         if (isDragging) {
             // If is actually dragged, not just a click
-            if (startClickPosition.distance(event.getX(), event.getY()) > 5) {
+            if (mode != Mode.Lock || startClickPosition.distance(event.getX(), event.getY()) > 5) {
                 draggedNodeGUI.setLockPosition(initialLockPosition);
             }
             isDragging = false;
@@ -405,8 +431,8 @@ public class GraphGUI {
     }
 
     private void onCanvasClick(MouseEvent event) {
-        NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
-        EdgeGUI edgeGUI = getEdgeOnPosition(event.getX(), event.getY());
+        NodeGUI nodeGUI = getNodeGUIOnPosition(event.getX(), event.getY());
+        EdgeGUI edgeGUI = getEdgeGUIOnPosition(event.getX(), event.getY());
         switch (mode) {
             case Lock:
                 if (nodeGUI != null) {
@@ -420,7 +446,23 @@ public class GraphGUI {
                 }
                 break;
             case Add:
-                System.out.println("Not implemented yet");
+                if (sourceNodeGUI == null) {
+                    if (nodeGUI == null) {
+                        Node newNode = new Node(getNextNodeName());
+                        addNode(newNode);
+                        NodeGUI newNodeGUI = getNodeGUI(newNode);
+                        newNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
+                    } else {
+                        sourceNodeGUI = nodeGUI;
+                        dummyEdgeGUI = new EdgeGUI(null, sourceNodeGUI, dummyNodeGUI);
+                    }
+                } else {
+                    if (nodeGUI != null) {
+                        addEdge(sourceNodeGUI.getNode(), nodeGUI.getNode());
+                    }
+                    sourceNodeGUI = null;
+                    dummyEdgeGUI = null;
+                }
                 break;
             case Edit:
                 System.out.println("Not implemented yet");
@@ -439,8 +481,8 @@ public class GraphGUI {
     }
 
     private void onCanvasHover(MouseEvent event) {
-        NodeGUI nodeGUI = getNodeOnPosition(event.getX(), event.getY());
-        EdgeGUI edgeGUI = getEdgeOnPosition(event.getX(), event.getY());
+        NodeGUI nodeGUI = getNodeGUIOnPosition(event.getX(), event.getY());
+        EdgeGUI edgeGUI = getEdgeGUIOnPosition(event.getX(), event.getY());
         if (nodeGUI != null || edgeGUI != null && (mode == Mode.Delete || mode == Mode.Edit)) {
             if (!isCursorPointing) {
                 canvas.getStyleClass().add("cursor-pointer");
@@ -452,6 +494,7 @@ public class GraphGUI {
                 isCursorPointing = false;
             }
         }
+        dummyNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
     }
 
     /**

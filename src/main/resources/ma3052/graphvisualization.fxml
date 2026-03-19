@@ -62,7 +62,7 @@
                         <Label text="Add Node" styleClass="blue,lexend-bold"/>
                         <HBox spacing="8">
                             <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
-                            <Button fx:id="addNodeButton" minWidth="60.0" onAction="#handleAddNode" text="Add" styleClass="button-light-blue,lexend-bold"/>
+                            <Button fx:id="addNodeButton" minWidth="60.0" onAction="#handleAddNode" text="Add" styleClass="button-light-blue"/>
                         </HBox>
                     </VBox>
                     <!-- Edge Management Section -->
@@ -71,12 +71,12 @@
                         <HBox spacing="8">
                             <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
                             <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
-                            <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" text="Add" styleClass="button-light-blue,lexend-bold"/>
+                            <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" text="Add" styleClass="button-light-blue"/>
                         </HBox>
                     </VBox>
-                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Advanced Input" styleClass="button-blue,lexend-bold" />
-                    <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" text="Input From .txt" styleClass="button-blue,lexend-bold"/>
-                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" text="Clear Graph" styleClass="button-red,lexend-bold" />
+                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Advanced Input" styleClass="button-blue" />
+                    <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" text="Input From .txt" styleClass="button-blue"/>
+                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" text="Clear Graph" styleClass="button-red" />
                     <HBox spacing="15">
                         <VBox spacing="8" HBox.hgrow="ALWAYS">
                             <Label text="Node List" styleClass="blue,lexend-bold"/>
@@ -112,10 +112,10 @@
                         <padding>
                             <Insets bottom="1"/>
                         </padding>
-                        <Button fx:id="btnLockMode" onAction="#switchToLockMode" text="Lock" styleClass="button-light-blue,lexend-bold"/>
-                        <Button fx:id="btnAddMode" onAction="#switchToAddMode" text="Add" styleClass="button-dark-blue,lexend-bold"/>
-                        <Button fx:id="btnDeleteMode" onAction="#switchToDeleteMode" text="Delete" styleClass="button-dark-blue,lexend-bold"/>
-                        <Button fx:id="btnEditMode" onAction="#switchToEditMode" text="Edit" styleClass="button-dark-blue,lexend-bold"/>
+                        <Button fx:id="btnLockMode" onAction="#switchToLockMode" text="Lock" styleClass="button-light-blue"/>
+                        <Button fx:id="btnAddMode" onAction="#switchToAddMode" text="Add" styleClass="button-dark-blue"/>
+                        <Button fx:id="btnDeleteMode" onAction="#switchToDeleteMode" text="Delete" styleClass="button-dark-blue"/>
+                        <Button fx:id="btnEditMode" onAction="#switchToEditMode" text="Edit" styleClass="button-dark-blue"/>
                     </HBox>
                 </HBox>
                 <HBox maxWidth="600" maxHeight="500" styleClass="border-thick,border-black">
@@ -154,7 +154,7 @@
                     <VBox spacing="5">
                         <Label fx:id="labelSpeedSlider" text="Speed:" styleClass="green,lexend-bold" />
                         <Slider fx:id="speedSlider" max="2000.0" min="100.0" showTickLabels="false" value="500.0" />
-                        <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-green,lexend-bold"/>
+                        <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-blue"/>
                     </VBox>
                 </VBox>
                 <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Execution Log" styleClass="h3,green,lexend-bold" />
