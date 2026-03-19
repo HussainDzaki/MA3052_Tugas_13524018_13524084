@@ -6,6 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import ma3052.controller.GraphVisualGUIController;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
@@ -480,6 +481,9 @@ public class GraphGUI {
 
             default:
                 break;
+        }
+        if (GraphVisualGUIController.instance != null) {
+            GraphVisualGUIController.instance.updateListFromGraph();
         }
     }
 

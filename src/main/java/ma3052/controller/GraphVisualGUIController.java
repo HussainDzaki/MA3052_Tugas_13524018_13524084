@@ -225,7 +225,7 @@ public class GraphVisualGUIController {
                 }
             }, 500);
         });
-
+        
         // Log initialization
         logMessage("Graph Visualization initialized successfully");
 
@@ -236,12 +236,15 @@ public class GraphVisualGUIController {
             // Remove focus on the first button, make it focus a non button
             appLabel.requestFocus();
             switchAlgorithm(algorithmCombo.getValue());
+            updateListFromGraph();
             graphCanvas.getScene().getWindow().setOnCloseRequest(e -> {
                 graphGUI.stop();
                 gridGraphGUI.stop();
                 threadPoolExecutor.shutdown();
-                updateGraphFromListTimer.cancel();
-                updateGraphFromListTimer.purge();
+                if (updateGraphFromListTimer != null) {
+                    updateGraphFromListTimer.cancel();
+                    updateGraphFromListTimer.purge();
+                }
             });
         });
     }
@@ -278,6 +281,7 @@ public class GraphVisualGUIController {
         } catch (Exception e) {
             showError("Error adding node: " + e.getMessage());
         }
+        updateListFromGraph();
     }
 
     /**
@@ -309,6 +313,7 @@ public class GraphVisualGUIController {
         } catch (Exception e) {
             showError("Error adding edge: " + e.getMessage());
         }
+        updateListFromGraph();
     }
 
     /**
@@ -341,7 +346,7 @@ public class GraphVisualGUIController {
             default:
                 break;
         }
-
+        updateListFromGraph();
     }
 
     @FXML
@@ -1045,6 +1050,19 @@ public class GraphVisualGUIController {
         for (Edge edge : edgesToRemove) {
             graphGUI.removeEdge(edge);
         }
+    }
+
+    public void updateListFromGraph() {
+        String nodeText = "";
+        for (Node node : graphGUI.getGraph().getNodeList()) {
+            nodeText += node.getNodeName() + "\n";
+        }
+        nodeListTextArea.setText(nodeText);
+        String edgeText = "";
+        for (Edge edge : graphGUI.getGraph().getEdgeList()) {
+            edgeText += edge.getSource().getNodeName() + " " + edge.getDestination().getNodeName() + "\n";
+        }
+        edgeListTextArea.setText(edgeText);
     }
 
     /**
