@@ -180,16 +180,15 @@ public class GraphVisualGUIController {
 
         // Setup speed slider
         if (speedSlider != null) {
-            speedSlider.setMin(100);
-            speedSlider.setMax(2000);
-            speedSlider.setValue(500);
-            speedSlider.setBlockIncrement(100);
-
+            speedSlider.setSnapToTicks(true);
             speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-                TraversalAnimation.setAnimationStepTime(newValue.longValue());
-                PathAnimation.setAnimationStepTime(newValue.longValue());
-                ConnectivityAnimation.setAnimationStepTime(newValue.longValue());
-                ComponentAnimation.setAnimationStepTime(newValue.longValue());
+                double multiplier = Math.pow(2, Math.round(newValue.doubleValue()));
+                speedSlider.setValue(Math.round(newValue.doubleValue()));
+                labelSpeedSlider.setText("Speed: (x" + multiplier +")");
+                TraversalAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                PathAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                ConnectivityAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                ComponentAnimation.setAnimationStepTime(Math.round(500 / multiplier));
             });
         }
 
@@ -225,7 +224,7 @@ public class GraphVisualGUIController {
                 }
             }, 500);
         });
-        
+
         // Log initialization
         logMessage("Graph Visualization initialized successfully");
 

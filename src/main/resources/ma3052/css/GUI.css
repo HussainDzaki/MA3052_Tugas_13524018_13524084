@@ -297,3 +297,35 @@
     cursor: grabbing;
     -fx-cursor: "close_hand";
 }
+
+/* Slider */
+.slider .track {
+    background-color: #fffbee;
+    -fx-background-color: #fffbee;
+    border-color: #000116;
+    -fx-border-color: #000116;
+    border-width: 2;
+    -fx-border-width: 2;
+    border-radius: 5;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.slider .thumb {
+    background-color: #fffbee;
+    -fx-background-color: #fffbee;
+    border-color: #000116;
+    -fx-border-color: #000116;
+    border-width: 2;
+    -fx-border-width: 2;
+    border-radius: 15;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+.slider .axis .axis-tick-mark {
+    fill: none;
+    -fx-fill: none;
+    stroke: #000116;
+    -fx-stroke: #000116;
+}
