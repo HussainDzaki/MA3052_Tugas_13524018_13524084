@@ -40,8 +40,8 @@ public class GraphGUI {
     private Map<Edge, EdgeGUI> edgeMap;
 
     // Draw options
-    private boolean drawNodeValue = false;
-    private boolean drawEdgeWeight = false;
+    private boolean drawNodeValue = true;
+    private boolean drawEdgeWeight = true;
 
     // Animation parameters
     private static final double MIN_DISTANCE = 120;
@@ -307,16 +307,16 @@ public class GraphGUI {
 
     private void drawNodes() {
         for (NodeGUI nodeGUI : nodeGUIList) {
-            nodeGUI.draw(graphicsContext, drawNodeValue);
+            nodeGUI.draw(graphicsContext);
         }
     }
 
     private void drawEdges() {
         if (dummyEdgeGUI != null) {
-            dummyEdgeGUI.draw(graphicsContext, drawEdgeWeight, graph.isDirected());
+            dummyEdgeGUI.draw(graphicsContext, graph.isDirected());
         }
         for (EdgeGUI edgeGUI : edgeGUIList) {
-            edgeGUI.draw(graphicsContext, drawEdgeWeight, graph.isDirected());
+            edgeGUI.draw(graphicsContext, graph.isDirected());
         }
     }
 

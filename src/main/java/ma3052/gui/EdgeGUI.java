@@ -18,6 +18,7 @@ public class EdgeGUI {
     private Color lineColor;
     private Color textColor;
     private double arrowHeadSize;
+    private boolean drawWeight;
 
     // Physics config
     private static final double SPRING_CONSTANT = 200;
@@ -77,7 +78,15 @@ public class EdgeGUI {
         this.arrowHeadSize = arrowHeadSize;
     }
 
-    public void draw(GraphicsContext context, boolean drawWeight, boolean isDirected) {
+    public boolean isDrawWeight() {
+        return drawWeight;
+    }
+
+    public void setDrawWeight(boolean drawWeight) {
+        this.drawWeight = drawWeight;
+    }
+
+    public void draw(GraphicsContext context, boolean isDirected) {
         Point2D angleVector = sourceGUI.getPosition().subtract(destinationGUI.getPosition());
         double angleRad = Math.atan2(angleVector.getY(), angleVector.getX());
 
@@ -87,22 +96,6 @@ public class EdgeGUI {
         context.strokeLine(
                 sourceGUI.getPosition().getX(), sourceGUI.getPosition().getY(),
                 destinationGUI.getPosition().getX(), destinationGUI.getPosition().getY());
-
-        if (drawWeight) {
-            // Draw weight text in the middle
-            Point2D middlePosition = sourceGUI.getPosition().add(destinationGUI.getPosition()).multiply(0.5);
-            Point2D offset = new Point2D(Math.sin(angleRad), -Math.cos(angleRad)).multiply(15 + lineWidth);
-
-            String weightString = Double.toString(edge.getWeight());
-            double textX = middlePosition.getX() + offset.getX();
-            double textY = middlePosition.getY() + offset.getY();
-
-            context.setFill(textColor);
-            context.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
-            context.fillText(weightString, textX, textY);
-
-            // TODO: bikin tulisan ga overlap dengan edge kalo mau
-        }
 
         if (isDirected) {
             // Draw arrow head
@@ -125,6 +118,24 @@ public class EdgeGUI {
                     3);
         }
 
+        if (edge == null)
+            return;
+
+        if (drawWeight) {
+            // Draw weight text in the middle
+            Point2D middlePosition = sourceGUI.getPosition().add(destinationGUI.getPosition()).multiply(0.5);
+            Point2D offset = new Point2D(Math.sin(angleRad), -Math.cos(angleRad)).multiply(15 + lineWidth);
+
+            String weightString = Double.toString(edge.getWeight());
+            double textX = middlePosition.getX() + offset.getX();
+            double textY = middlePosition.getY() + offset.getY();
+
+            context.setFill(textColor);
+            context.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+            context.fillText(weightString, textX, textY);
+
+            // TODO: bikin tulisan ga overlap dengan edge kalo mau
+        }
     }
 
     public void update() {

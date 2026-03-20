@@ -64,10 +64,16 @@ public class GraphVisualGUIController {
     private TextField nodeInput;
 
     @FXML
+    private TextField nodeValueInput;
+
+    @FXML
     private TextField edgeStartInput;
 
     @FXML
     private TextField edgeEndInput;
+
+    @FXML
+    private TextField edgeWeightInput;
 
     @FXML
     private Button addNodeButton;
@@ -184,7 +190,7 @@ public class GraphVisualGUIController {
             speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
                 double multiplier = Math.pow(2, Math.round(newValue.doubleValue()));
                 speedSlider.setValue(Math.round(newValue.doubleValue()));
-                labelSpeedSlider.setText("Speed: (x" + multiplier +")");
+                labelSpeedSlider.setText("Speed: (x" + multiplier + ")");
                 TraversalAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 PathAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 ConnectivityAnimation.setAnimationStepTime(Math.round(500 / multiplier));
@@ -218,10 +224,12 @@ public class GraphVisualGUIController {
             }
             updateGraphFromListTimer = new Timer();
             updateGraphFromListTimer.schedule(new TimerTask() {
+
                 @Override
                 public void run() {
                     updateGraphFromList();
                 }
+
             }, 500);
         });
 
@@ -253,7 +261,7 @@ public class GraphVisualGUIController {
      */
     @FXML
     private void handleAddNode() {
-        String nodeName = nodeInput.getText().trim();
+        String nodeName = nodeInput.getText().strip();
         if (nodeName.isEmpty()) {
             showError("Node name cannot be empty");
             return;
@@ -262,7 +270,19 @@ public class GraphVisualGUIController {
         try {
             if (!graphGUI.getGraph().hasNode(nodeName)) {
                 Node newNode = new Node(nodeName);
-                graphGUI.addNode(newNode);
+                if (!nodeValueInput.getText().isBlank()) {
+                    try {
+                        double value = Double.parseDouble(nodeValueInput.getText());
+                        newNode.setValue(value);
+                        graphGUI.addNode(newNode);
+                        graphGUI.getNodeGUI(newNode).setDrawValue(true);
+                    } catch (Exception e) {
+                        showError("Node value must be a number!");
+                        return;
+                    }
+                } else {
+                    graphGUI.addNode(newNode);
+                }
 
                 // Initialize position and velocity for new node
                 double width = graphCanvas.getWidth();
@@ -277,6 +297,7 @@ public class GraphVisualGUIController {
             }
 
             nodeInput.clear();
+            nodeValueInput.clear();
         } catch (Exception e) {
             showError("Error adding node: " + e.getMessage());
         }
@@ -288,8 +309,8 @@ public class GraphVisualGUIController {
      */
     @FXML
     private void handleAddEdge() {
-        String startNodeName = edgeStartInput.getText().trim();
-        String endNodeName = edgeEndInput.getText().trim();
+        String startNodeName = edgeStartInput.getText().strip();
+        String endNodeName = edgeEndInput.getText().strip();
 
         if (startNodeName.isEmpty() || endNodeName.isEmpty()) {
             showError("Both node names must be specified");
@@ -305,14 +326,33 @@ public class GraphVisualGUIController {
                 return;
             }
 
-            graphGUI.addEdge(startNode, endNode);
+            if (!edgeWeightInput.getText().isBlank()) {
+                try {
+                    double weight = Double.parseDouble(edgeWeightInput.getText());
+                    graphGUI.addEdge(startNode, endNode);
+                    Edge edge = graphGUI.getGraph().getEdge(startNode, endNode);
+                    edge.setWeight(weight);
+                    graphGUI.getEdgeGUI(edge).setDrawWeight(true);
+                } catch (Exception e) {
+                    showError("Node value must be a number!");
+                    return;
+                }
+            } else {
+                graphGUI.addEdge(startNode, endNode);
+            }
+
             logMessage("Added edge: " + startNodeName + " <-> " + endNodeName);
             edgeStartInput.clear();
             edgeEndInput.clear();
-        } catch (Exception e) {
+            edgeWeightInput.clear();
+        } catch (
+
+        Exception e) {
             showError("Error adding edge: " + e.getMessage());
         }
+
         updateListFromGraph();
+
     }
 
     /**
@@ -954,26 +994,31 @@ public class GraphVisualGUIController {
 
     public void updateGraphFromList() {
         Graph graph = graphGUI.getGraph();
-        String[] nodeList = nodeListTextArea.getText().split("\n+");
-        String[] edgeList = edgeListTextArea.getText().split("\n+");
+        String[] nodeInput = nodeListTextArea.getText().split("\n+");
+        String[] edgeInput = edgeListTextArea.getText().split("\n+");
         HashSet<Node> nodeSet = new HashSet<>();
         HashSet<Edge> edgeSet = new HashSet<>();
-        for (String node : nodeList) {
-            String[] tokens = node.strip().split("[ \t]+");
+        for (String line : nodeInput) {
+            String[] tokens = line.strip().split("[ \t]+");
             if (tokens.length == 0)
                 continue;
             if (tokens[0].isBlank())
                 continue;
             if (!graph.hasNode(tokens[0])) {
-                double value = 0;
                 if (tokens.length >= 2) {
+                    double value = 0;
                     try {
                         value = Double.parseDouble(tokens[1]);
                     } catch (Exception e) {
                         value = 0;
                     }
+                    Node newNode = new Node(tokens[0], value);
+                    graphGUI.addNode(newNode);
+                    graphGUI.getNodeGUI(newNode).setDrawValue(true);
+                } else {
+                    Node newNode = new Node(tokens[0]);
+                    graphGUI.addNode(newNode);
                 }
-                graphGUI.addNode(new Node(tokens[0], value));
             } else {
                 if (tokens.length >= 2) {
                     double value = 0;
@@ -982,13 +1027,19 @@ public class GraphVisualGUIController {
                     } catch (Exception e) {
                         value = 0;
                     }
-                    graph.getNode(tokens[0]).setValue(value);
+                    Node node = graph.getNode(tokens[0]);
+                    node.setValue(value);
+                    graphGUI.getNodeGUI(node).setDrawValue(true);
+                } else {
+                    Node node = graph.getNode(tokens[0]);
+                    node.setValue(Node.DEFAULT_VALUE);
+                    graphGUI.getNodeGUI(node).setDrawValue(false);
                 }
             }
             nodeSet.add(graph.getNode(tokens[0]));
         }
-        for (String edge : edgeList) {
-            String[] tokens = edge.strip().split("[ \t]+");
+        for (String line : edgeInput) {
+            String[] tokens = line.strip().split("[ \t]+");
             if (tokens.length <= 1)
                 continue;
             if (tokens[0].isBlank() || tokens[1].isBlank()) {
@@ -1026,7 +1077,27 @@ public class GraphVisualGUIController {
                     } catch (Exception e) {
                         weight = 1;
                     }
-                    graph.getEdge(node1, node2).setWeight(weight);
+                    Edge edge = graph.getEdge(node1, node2);
+                    edge.setWeight(weight);
+                    graphGUI.getEdgeGUI(edge).setDrawWeight(true);
+                }
+            } else {
+                Node node1 = graph.getNode(tokens[0]);
+                Node node2 = graph.getNode(tokens[1]);
+                if (tokens.length >= 3) {
+                    double weight = 1;
+                    try {
+                        weight = Double.parseDouble(tokens[2]);
+                    } catch (Exception e) {
+                        weight = 1;
+                    }
+                    Edge edge = graph.getEdge(node1, node2);
+                    edge.setWeight(weight);
+                    graphGUI.getEdgeGUI(edge).setDrawWeight(true);
+                } else {
+                    Edge edge = graph.getEdge(node1, node2);
+                    edge.setWeight(Edge.DEFAULT_WEIGHT);
+                    graphGUI.getEdgeGUI(edge).setDrawWeight(false);
                 }
             }
             edgeSet.add(graph.getEdge(tokens[0], tokens[1]));
@@ -1054,12 +1125,21 @@ public class GraphVisualGUIController {
     public void updateListFromGraph() {
         String nodeText = "";
         for (Node node : graphGUI.getGraph().getNodeList()) {
-            nodeText += node.getNodeName() + "\n";
+            if (graphGUI.getNodeGUI(node).isDrawValue()) {
+                nodeText += node.getNodeName() + " " + Double.toString(node.getValue()) + "\n";
+            } else {
+                nodeText += node.getNodeName() + "\n";
+            }
         }
         nodeListTextArea.setText(nodeText);
         String edgeText = "";
         for (Edge edge : graphGUI.getGraph().getEdgeList()) {
-            edgeText += edge.getSource().getNodeName() + " " + edge.getDestination().getNodeName() + "\n";
+            if (graphGUI.getEdgeGUI(edge).isDrawWeight()) {
+                edgeText += edge.getSource().getNodeName() + " " + edge.getDestination().getNodeName() + " "
+                        + Double.toString(edge.getWeight()) + "\n";
+            } else {
+                edgeText += edge.getSource().getNodeName() + " " + edge.getDestination().getNodeName() + "\n";
+            }
         }
         edgeListTextArea.setText(edgeText);
     }
