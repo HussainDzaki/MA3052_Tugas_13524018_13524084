@@ -979,17 +979,19 @@ public class GraphVisualGUIController {
     }
 
     public void switchToEditMode() {
-        if (graphGUI.getMode() == GraphGUI.Mode.Edit)
-            return;
-        graphGUI.setMode(GraphGUI.Mode.Edit);
-        btnLockMode.getStyleClass().remove("button-light-blue");
-        btnLockMode.getStyleClass().add("button-dark-blue");
-        btnAddMode.getStyleClass().remove("button-light-blue");
-        btnAddMode.getStyleClass().add("button-dark-blue");
-        btnDeleteMode.getStyleClass().remove("button-light-blue");
-        btnDeleteMode.getStyleClass().add("button-dark-blue");
-        btnEditMode.getStyleClass().remove("button-dark-blue");
-        btnEditMode.getStyleClass().add("button-light-blue");
+        showError("Not implemented yet");
+        return;
+        // if (graphGUI.getMode() == GraphGUI.Mode.Edit)
+        // return;
+        // graphGUI.setMode(GraphGUI.Mode.Edit);
+        // btnLockMode.getStyleClass().remove("button-light-blue");
+        // btnLockMode.getStyleClass().add("button-dark-blue");
+        // btnAddMode.getStyleClass().remove("button-light-blue");
+        // btnAddMode.getStyleClass().add("button-dark-blue");
+        // btnDeleteMode.getStyleClass().remove("button-light-blue");
+        // btnDeleteMode.getStyleClass().add("button-dark-blue");
+        // btnEditMode.getStyleClass().remove("button-dark-blue");
+        // btnEditMode.getStyleClass().add("button-light-blue");
     }
 
     public void updateGraphFromList() {
