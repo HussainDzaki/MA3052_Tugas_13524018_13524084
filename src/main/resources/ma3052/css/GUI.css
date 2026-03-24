@@ -1,0 +1,331 @@
+/* @font-face {
+    font-family: 'Cascadia Code Regular';
+    -fx-font-family: 'Cascadia Code Regular';
+    src: url('font/Cascadia_Code/static/CascadiaCode-Regular.ttf');
+} */
+
+.root {
+    -fx-font-family: 'Lexend Regular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Lexend Regular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fffbee;
+    -fx-background-color: #fffbee;
+    color: #013c58;
+    fill: #013c58;
+    -fx-text-fill: #013c58;
+}
+
+.monospace {
+    -fx-font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    font-family: 'Cascadia Code Regular','Consolas', 'Courier New', Courier, monospace;
+}
+
+/* Header */
+.h1 {
+    font-size: 32;
+    -fx-font-size: 32;
+}
+
+.h2 {
+    font-size: 20;
+    -fx-font-size: 20;
+}
+
+.h3 {
+    font-size: 16;
+    -fx-font-size: 16;
+}
+
+/* Text colours  */
+.dark-blue {
+    color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+    fill: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+    -fx-text-fill: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+}
+.blue {
+    color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+    fill: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+    -fx-text-fill: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+}
+.light-blue {
+    color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    fill: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    -fx-text-fill: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+}
+.dark-orange {
+    color: #f5a201;
+    fill: #f5a201;
+    -fx-text-fill: #f5a201;
+}
+.orange {
+    color: #ffba42;
+    fill: #ffba42;
+    -fx-text-fill: #ffba42;
+}
+.light-orange {
+    color: #ffd35b;
+    fill: #ffd35b;
+    -fx-text-fill: #ffd35b;
+}
+.white {
+    color: #fffbee;
+    fill: #fffbee;
+    -fx-text-fill: #fffbee;
+}
+.black {
+    color: #000116;
+    fill: #000116;
+    -fx-text-fill: #000116;
+}
+
+/* Background colours  */
+.bg-dark-blue {
+    background-color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+    -fx-background-color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+}
+.bg-blue {
+    background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+    -fx-background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+}
+.bg-light-blue {
+    background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    -fx-background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+}
+.bg-dark-orange {
+    background-color: #f5a201;
+    -fx-background-color: #f5a201;
+}
+.bg-orange {
+    background-color: #ffba42;
+    -fx-background-color: #ffba42;
+}
+.bg-light-orange {
+    background-color: linear-gradient(to top, #f5a201 0%, #ffba42 30%, #ffd35b 100%);
+    -fx-background-color: linear-gradient(to top, #f5a201 0%, #ffba42 30%, #ffd35b 100%);
+}
+.bg-white {
+    background-color: #fffbee;
+    -fx-background-color: #fffbee;
+}
+.bg-black {
+    background-color: #000116;
+    -fx-background-color: #000116;
+}
+
+/* Border colours  */
+.border-dark-blue {
+    border-color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+    -fx-border-color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+}
+.border-blue {
+    border-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+    -fx-border-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+}
+.border-light-blue {
+    border-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    -fx-border-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+}
+.border-dark-orange {
+    border-color: #f5a201;
+    -fx-border-color: #f5a201;
+}
+.border-orange {
+    border-color: #ffba42;
+    -fx-border-color: #ffba42;
+}
+.border-light-orange {
+    border-color: #ffd35b;
+    -fx-border-color: #ffd35b;
+}
+.border-white {
+    border-color: #fffbee;
+    -fx-border-color: #fffbee;
+}
+.border-black {
+    border-color: #000116;
+    -fx-border-color: #000116;
+}
+
+/* Border thickness */
+.border-thin {
+    border-width: 1;
+    -fx-border-width: 1;
+}
+.border-medium {
+    border-width: 2;
+    -fx-border-width: 2;
+}
+.border-thick {
+    border-width: 4;
+    -fx-border-width: 4;
+}
+
+.rounded {
+    border-radius: 15;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+/* Shadows colours */
+.shadow-orange {
+    -fx-effect: dropshadow(gaussian, #ffaa3b, 2, 0.1, 2, 2);
+}
+
+.shadow-white {
+    -fx-effect: dropshadow(gaussian, #fffbee, 2, 1, 0, 0);
+}
+
+.shadow-black {
+    -fx-effect: dropshadow(gaussian, #000116, 3, 1, 0, 0);
+}
+
+
+/* Button */
+.button {
+    font-family: 'Lexend Bold';
+    -fx-font-family: 'Lexend Bold';
+    -fx-background-radius: 10;
+    padding: 8 16;
+    -fx-padding: 8 16;
+    cursor: hand;
+    -fx-cursor: hand;
+}
+.button:focused {
+    -fx-effect: dropshadow(gaussian, #2bab62, 4, 0.8, 0, 0)
+}
+.button-dark-blue {
+    background-color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+    -fx-background-color: linear-gradient(to top, #2b83ab 0%, #013c58 30%, #013c58 100%);
+    -fx-text-fill: #a8e8f9;
+}
+.button-dark-blue:hover {
+    background-color: linear-gradient(to top, #013c58 0%, #2b83ab 30%, #2b83ab 100%);
+    -fx-background-color: linear-gradient(to top, #013c58 0%, #2b83ab 30%, #2b83ab 100%);
+}
+.button-blue {
+    background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+    -fx-background-color: linear-gradient(to top, #013c58 0%, #1a6a8f 30%, #1a6a8f 100%);
+    -fx-text-fill: #ffd35b;
+}
+.button-blue:hover {
+    background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    -fx-background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    -fx-text-fill: #013c58;
+}
+.button-light-blue {
+    background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    -fx-background-color: linear-gradient(to top, #1a6a8f 0%, #a8e8f9 30%, #a8e8f9 100%);
+    -fx-text-fill: #013c58;
+}
+.button-light-blue:hover {
+    background-color: linear-gradient(to top, #a8e8f9 0%, #fffbee 30%, #fffbee 100%);
+    -fx-background-color: linear-gradient(to top, #a8e8f9 0%, #fffbee 30%, #fffbee 100%);
+    -fx-text-fill: #1a6a8f;
+}
+.button-red {
+     background-color: linear-gradient(to top, #013c58 0%, #b63939 30%, #b63939 100%);
+    -fx-background-color: linear-gradient(to top, #013c58 0%, #b63939 30%, #b63939 100%);
+    -fx-text-fill: #ffd35b;
+}
+
+.text-area {
+    -fx-border-width: 2;
+    border-width: 2;
+    -fx-border-color: #000116;
+    border-color: #000116;
+    -fx-background-radius: 0;
+    -fx-font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    -fx-font-size: medium;
+    font-size: medium;
+    -fx-effect: dropshadow(gaussian, #a8e8f9, 2, 1, 5, 5);
+}
+
+.text-field {
+    -fx-border-width: 2;
+    border-width: 2;
+    -fx-border-color: #000116;
+    border-color: #000116;
+    -fx-background-radius: 0;
+    -fx-font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    -fx-font-size: medium;
+    font-size: medium;
+    -fx-effect: dropshadow(gaussian, #a8e8f9, 0.5, 1, 3, 3);
+}
+
+.check-box > .box {
+    background-color: #fffbee;
+    -fx-background-color: #fffbee;
+     border-radius: 5;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    border-width: 2;
+    -fx-border-width: 2;
+    border-color: #000116;
+    -fx-border-color: #000116;
+}
+
+.separator:horizontal .line {
+    border-color: #013c58 transparent transparent transparent;
+    -fx-border-color: #013c58 transparent transparent transparent;
+    border-width: 2;
+    -fx-border-width: 2;
+    -fx-border-insets: 0, 1 0 0 0;
+}
+.separator:vertical .line {
+    border-color: transparent transparent transparent #013c58;
+    -fx-border-color: transparent transparent transparent #013c58;
+    border-width: 2;
+    -fx-border-width: 2;
+    -fx-border-insets: 0, 0 0 0 1;
+}
+
+/* Cursor */
+.cursor-default {
+    cursor: default;
+    -fx-cursor: default;
+}
+.cursor-pointer {
+    cursor: pointer;
+    -fx-cursor: hand;
+}
+.cursor-grab {
+    cursor: grab;
+    -fx-cursor: "open_hand";
+}
+.cursor-grabbing {
+    cursor: grabbing;
+    -fx-cursor: "close_hand";
+}
+
+/* Slider */
+.slider .track {
+    background-color: #fffbee;
+    -fx-background-color: #fffbee;
+    border-color: #000116;
+    -fx-border-color: #000116;
+    border-width: 2;
+    -fx-border-width: 2;
+    border-radius: 5;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.slider .thumb {
+    background-color: #fffbee;
+    -fx-background-color: #fffbee;
+    border-color: #000116;
+    -fx-border-color: #000116;
+    border-width: 2;
+    -fx-border-width: 2;
+    border-radius: 15;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+.slider .axis .axis-tick-mark {
+    fill: none;
+    -fx-fill: none;
+    stroke: #000116;
+    -fx-stroke: #000116;
+}

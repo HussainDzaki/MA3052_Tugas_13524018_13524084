@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -17,18 +18,21 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+        loadFonts();
+
         // Load the FXML file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("graphvisualization.fxml"));
         Parent root = loader.load();
         
         // Create scene
-        Scene scene = new Scene(root, 1100, 600);
+        Scene scene = new Scene(root, 1280, 720);
         
         // Setup stage
-        primaryStage.setTitle("Graph Visualization - DFS/BFS Algorithm");
+        primaryStage.setTitle("Graph Visualization");
         primaryStage.setScene(scene);
-        primaryStage.setWidth(1100);
-        primaryStage.setHeight(700);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(720);
+        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 
@@ -37,5 +41,20 @@ public class App extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void loadFonts() {
+        Font.loadFont(App.class.getResourceAsStream("font/Cascadia_Code/static/CascadiaCode-Regular.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Thin.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Thin.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-ExtraLight.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Light.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Regular.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Medium.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-SemiBold.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Bold.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-ExtraBold.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Bold.ttf"), 14);
+        Font.loadFont(App.class.getResourceAsStream("font/Lexend/static/Lexend-Black.ttf"), 14);
     }
 }

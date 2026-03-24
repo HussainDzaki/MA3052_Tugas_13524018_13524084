@@ -3,25 +3,33 @@ package ma3052.gui;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 
+import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
 
-// TODO: TEST THIS CLASS AND IMPLEMENT IT TO GUI
-public class FormatInputGraph {
-    // Configs boolean
-    private static boolean inputNodeCount = true; // Input node count on first line
-    private static boolean inputEdgeCount = true; // Input edge count on first line
-
+public class FormatGraphInput {
     // Node name options
-    public static enum NodeNameOptions {
+    public static enum NodeNameOption {
         CustomNodeName,
         ZeroIndexed,
         OneIndexed
     }
 
-    private static NodeNameOptions currentNameOption = NodeNameOptions.OneIndexed;
+    private static NodeNameOption currentNameOption = NodeNameOption.OneIndexed;
+
+    // Node/Edge count option
+    public static enum InputCountOption {
+        NodeAndEdgeCount,
+        OnlyNodeCount,
+        OnlyEdgeCount,
+        NoExplicitCount
+    }
+
+    private static InputCountOption currentCountOptions = InputCountOption.NodeAndEdgeCount;
 
     // Graph type
     private static boolean isGraphDirected = false;
@@ -47,8 +55,74 @@ public class FormatInputGraph {
         End
     }
 
-    public static Graph inputGraphFromFile(File file) throws Exception {
-        Graph resultGraph = new Graph();
+    public static NodeNameOption getCurrentNameOption() {
+        return currentNameOption;
+    }
+
+    public static void setCurrentNameOption(NodeNameOption option) {
+        currentNameOption = option;
+    }
+
+    public static InputCountOption getCurrentCountOption() {
+        return currentCountOptions;
+    }
+
+    public static void setCurrentCountOption(InputCountOption option) {
+        currentCountOptions = option;
+    }
+
+    public static boolean isGraphDirected() {
+        return isGraphDirected;
+    }
+
+    public static void setIsGraphDirected(boolean directed) {
+        isGraphDirected = directed;
+    }
+
+    public static boolean isInputNodeValue() {
+        return inputNodeValue;
+    }
+
+    public static void setInputNodeValue(boolean value) {
+        inputNodeValue = value;
+    }
+
+    public static boolean isInputEdgeWeight() {
+        return inputEdgeWeight;
+    }
+
+    public static void setInputEdgeWeight(boolean value) {
+        inputEdgeWeight = value;
+    }
+
+    public static boolean isRandomNodeOrEdge() {
+        return randomNodeOrEdge;
+    }
+
+    public static void setRandomNodeOrEdge(boolean value) {
+        randomNodeOrEdge = value;
+    }
+
+    public static boolean isNewNodeFromEdge() {
+        return newNodeFromEdge;
+    }
+
+    public static void setNewNodeFromEdge(boolean value) {
+        newNodeFromEdge = value;
+    }
+
+    public static Graph inputGraphFromFile(File input) throws IOException, IllegalArgumentException {
+        BufferedReader reader = new BufferedReader(new FileReader(input));
+        return inputGraphFromReader(reader);
+    }
+
+    public static Graph inputGraphFromString(String input) throws IOException, IllegalArgumentException {
+        BufferedReader reader = new BufferedReader(new StringReader(input));
+        return inputGraphFromReader(reader);
+    }
+
+    private static Graph inputGraphFromReader(BufferedReader reader) throws IOException, IllegalArgumentException {
+        Graph resultGraph = new Graph(isGraphDirected());
         HashMap<Integer, Node> indexToNode = new HashMap<>();
 
         int nodeCount = -1;
@@ -57,19 +131,23 @@ public class FormatInputGraph {
         int currentNodeValueCount = 0;
         int currentEdgeCount = 0;
 
-        BufferedReader reader = new BufferedReader(new FileReader(file));
         String line;
         int lineNumber = 0;
 
         InputState currentInputState = InputState.Start;
-        if (inputNodeCount && inputEdgeCount) {
-            currentInputState = InputState.NodeAndEdgeCount;
-        } else if (inputNodeCount) {
-            currentInputState = InputState.NodeCount;
-        } else if (inputEdgeCount) {
-            currentInputState = InputState.EdgeCount;
-        } else {
-            currentInputState = InputState.NodeOrEdge;
+        switch (currentCountOptions) {
+            case NodeAndEdgeCount:
+                currentInputState = InputState.NodeAndEdgeCount;
+                break;
+            case OnlyNodeCount:
+                currentInputState = InputState.NodeCount;
+                break;
+            case OnlyEdgeCount:
+                currentInputState = InputState.EdgeCount;
+                break;
+            case NoExplicitCount:
+                currentInputState = InputState.NodeOrEdge;
+                break;
         }
 
         // Parse file
@@ -95,14 +173,14 @@ public class FormatInputGraph {
                     if (randomNodeOrEdge) {
                         currentInputState = InputState.NodeOrEdge;
                     } else {
-                        if (currentNameOption == NodeNameOptions.CustomNodeName) {
+                        if (currentNameOption == NodeNameOption.CustomNodeName) {
                             currentInputState = InputState.NodeName;
                         } else {
                             for (int i = 0; i < nodeCount; i++) {
                                 Node newNode = new Node(Integer.toString(i));
-                                if (currentNameOption == NodeNameOptions.ZeroIndexed) {
+                                if (currentNameOption == NodeNameOption.ZeroIndexed) {
                                     newNode = new Node(Integer.toString(i));
-                                } else if (currentNameOption == NodeNameOptions.OneIndexed) {
+                                } else if (currentNameOption == NodeNameOption.OneIndexed) {
                                     newNode = new Node(Integer.toString(i + 1));
                                 }
                                 resultGraph.addNode(newNode);
@@ -122,7 +200,7 @@ public class FormatInputGraph {
                     if (randomNodeOrEdge) {
                         currentInputState = InputState.NodeOrEdge;
                     } else {
-                        if (currentNameOption == NodeNameOptions.CustomNodeName) {
+                        if (currentNameOption == NodeNameOption.CustomNodeName) {
                             currentInputState = InputState.NodeName;
                         } else if (inputNodeValue) {
                             currentInputState = InputState.NodeValue;
@@ -133,17 +211,33 @@ public class FormatInputGraph {
                     break;
 
                 case NodeAndEdgeCount:
+                    if (tokens.length != 2) {
+                        throw new IllegalArgumentException(
+                                "[Line " + lineNumber + "] Expected node count and edge count.");
+                    }
                     nodeCount = Integer.parseInt(tokens[0]);
                     edgeCount = Integer.parseInt(tokens[1]);
                     if (randomNodeOrEdge) {
                         currentInputState = InputState.NodeOrEdge;
                     } else {
-                        if (currentNameOption == NodeNameOptions.CustomNodeName) {
+                        if (currentNameOption == NodeNameOption.CustomNodeName) {
                             currentInputState = InputState.NodeName;
-                        } else if (inputNodeValue) {
-                            currentInputState = InputState.NodeValue;
                         } else {
-                            currentInputState = InputState.Edge;
+                            for (int i = 0; i < nodeCount; i++) {
+                                Node newNode = new Node(Integer.toString(i));
+                                if (currentNameOption == NodeNameOption.ZeroIndexed) {
+                                    newNode = new Node(Integer.toString(i));
+                                } else if (currentNameOption == NodeNameOption.OneIndexed) {
+                                    newNode = new Node(Integer.toString(i + 1));
+                                }
+                                resultGraph.addNode(newNode);
+                                indexToNode.put(i, newNode);
+                            }
+                            if (inputNodeValue) {
+                                currentInputState = InputState.NodeValue;
+                            } else {
+                                currentInputState = InputState.Edge;
+                            }
                         }
                     }
                     break;
@@ -197,7 +291,7 @@ public class FormatInputGraph {
                         } else {
                             if (source == null || destination == null) {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + "Edge references non-existent node: " +
+                                        "[Line " + lineNumber + "] Edge references non-existent node: " +
                                                 (source == null ? tokens[0] : tokens[1]));
                             }
                         }
@@ -239,12 +333,12 @@ public class FormatInputGraph {
                         Node node = resultGraph.getNode(tokens[0]);
                         if (node == null) {
                             node = new Node(tokens[0]);
-                            if (currentNodeNameCount < nodeCount) {
+                            if (currentNodeNameCount < nodeCount || nodeCount == -1) {
                                 resultGraph.addNode(node);
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                     } else if (tokens.length == 2) {
@@ -253,25 +347,25 @@ public class FormatInputGraph {
                         Node destination = resultGraph.getNode(tokens[1]);
                         if (source == null) {
                             source = new Node(tokens[0]);
-                            if (currentNodeNameCount < nodeCount) {
+                            if (currentNodeNameCount < nodeCount || nodeCount == -1) {
                                 resultGraph.addNode(source);
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                         if (destination == null) {
                             destination = new Node(tokens[0]);
-                            if (currentNodeNameCount < nodeCount) {
+                            if (currentNodeNameCount < nodeCount || nodeCount == -1) {
                                 resultGraph.addNode(destination);
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
-                        if (currentEdgeCount < edgeCount) {
+                        if (currentEdgeCount < edgeCount || edgeCount == -1) {
                             if (isGraphDirected) {
                                 resultGraph.addDirectedEdge(source, destination);
                             } else {
@@ -279,7 +373,7 @@ public class FormatInputGraph {
                             }
                         } else {
                             throw new IllegalArgumentException(
-                                    "Line " + lineNumber + ": Number of edge is larger than edge count");
+                                    "[Line " + lineNumber + "] Number of edge is larger than edge count");
                         }
                     } else if (tokens.length == 3) {
                         // Weighted edge
@@ -288,25 +382,25 @@ public class FormatInputGraph {
                         double weight = Double.parseDouble(tokens[2]);
                         if (source == null) {
                             source = new Node(tokens[0]);
-                            if (currentNodeNameCount < nodeCount) {
+                            if (currentNodeNameCount < nodeCount || nodeCount == -1) {
                                 resultGraph.addNode(source);
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
                         if (destination == null) {
                             destination = new Node(tokens[0]);
-                            if (currentNodeNameCount < nodeCount) {
+                            if (currentNodeNameCount < nodeCount || nodeCount == -1) {
                                 resultGraph.addNode(destination);
                                 currentNodeNameCount++;
                             } else {
                                 throw new IllegalArgumentException(
-                                        "Line " + lineNumber + ": Number of node is larger than node count");
+                                        "[Line " + lineNumber + "] Number of node is larger than node count");
                             }
                         }
-                        if (currentEdgeCount < edgeCount) {
+                        if (currentEdgeCount < edgeCount || edgeCount == -1) {
                             if (isGraphDirected) {
                                 resultGraph.addDirectedEdge(source, destination, weight);
                             } else {
@@ -314,12 +408,12 @@ public class FormatInputGraph {
                             }
                         } else {
                             throw new IllegalArgumentException(
-                                    "Line " + lineNumber + ": Number of edge is larger than edge count");
+                                    "[Line " + lineNumber + "] Number of edge is larger than edge count");
                         }
                     } else {
-                        throw new IllegalArgumentException("Line " + lineNumber +
-                                ": Expected 1, 2, or 3 space-separated values, got "
-                                + tokens.length);
+                        throw new IllegalArgumentException(
+                                "[Line " + lineNumber + "] Expected 1, 2, or 3 space-separated values, got "
+                                        + tokens.length);
                     }
                     break;
 
@@ -333,5 +427,102 @@ public class FormatInputGraph {
         reader.close();
 
         return resultGraph;
+    }
+
+    public static String getFormatString() {
+        String resultString = new String();
+
+        // Node and edge count
+        switch (currentCountOptions) {
+            case NodeAndEdgeCount:
+                resultString = resultString.concat("<node-count> <edge-count>\n");
+                break;
+            case OnlyNodeCount:
+                resultString = resultString.concat("<node-count>\n");
+                break;
+            case OnlyEdgeCount:
+                resultString = resultString.concat("<edge-count>\n");
+                break;
+            case NoExplicitCount:
+                break;
+            default:
+                break;
+        }
+
+        // Node name
+        if (currentNameOption == NodeNameOption.CustomNodeName) {
+            resultString = resultString.concat("<node-name-1> <node-name-2> ... <node-name-n>\n");
+        }
+
+        // Node value
+        if (inputNodeValue) {
+            resultString = resultString.concat("<node-value-1> <node-value-2> ... <node-value-n>\n");
+        }
+
+        // Edges
+        if (inputEdgeWeight) {
+            resultString = resultString.concat("<edge-source-1> <edge-destination-1> <edge-weight-1>\n");
+            resultString = resultString.concat("<edge-source-2> <edge-destination-2> <edge-weight-2>\n");
+            resultString = resultString.concat("...\n");
+            resultString = resultString.concat("<edge-source-m> <edge-destination-m> <edge-weight-m>\n");
+        } else {
+            resultString = resultString.concat("<edge-source-1> <edge-destination-1>\n");
+            resultString = resultString.concat("<edge-source-2> <edge-destination-2>\n");
+            resultString = resultString.concat("...\n");
+            resultString = resultString.concat("<edge-source-m> <edge-destination-m>\n");
+        }
+
+        return resultString;
+    }
+
+    public static String graphToInputString(Graph graph) {
+        String resultString = new String();
+
+        // Node and edge count
+        switch (currentCountOptions) {
+            case NodeAndEdgeCount:
+                resultString = resultString.concat(graph.getNodeList().size() + " "
+                        + graph.getEdgeList().size() + "\n");
+                break;
+            case OnlyNodeCount:
+                resultString = resultString.concat(graph.getNodeList().size() + "\n");
+                break;
+            case OnlyEdgeCount:
+                resultString = resultString.concat(graph.getEdgeList().size() + "\n");
+                break;
+            case NoExplicitCount:
+                break;
+            default:
+                break;
+        }
+
+        // Node name
+        if (currentNameOption == NodeNameOption.CustomNodeName) {
+            for (Node node : graph.getNodeList()) {
+                resultString = resultString.concat(node.getNodeName() + "\n");
+            }
+        }
+
+        // Node value
+        if (inputNodeValue) {
+            for (Node node : graph.getNodeList()) {
+                resultString = resultString.concat(node.getNodeName() + " ");
+            }
+            resultString = resultString.concat("\n");
+        }
+
+        // Edges
+        for (Edge edge : graph.getEdgeList()) {
+            if (inputEdgeWeight) {
+                resultString = resultString.concat(edge.getSource().getNodeName() + " "
+                        + edge.getDestination().getNodeName() + " "
+                        + edge.getWeight() + "\n");
+            } else {
+                resultString = resultString.concat(edge.getSource().getNodeName() + " "
+                        + edge.getDestination().getNodeName() + "\n");
+            }
+        }
+
+        return resultString;
     }
 }

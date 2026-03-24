@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphInputController" stylesheets="@css/GUI-Old.css,@css/Lexend.css" styleClass="lexend,bg-yellow">
+    <HBox spacing = "15" prefWidth="Infinity" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets bottom="10" left="15" right="15" top="10" />
+        </padding>
+        <!-- Input Option -->
+        <VBox prefWidth="300" spacing = "10" HBox.hgrow="ALWAYS" styleClass="bg-light-yellow,rounded">
+            <padding>
+                <Insets bottom="10" left="15" right="15" top="10" />
+            </padding>
+            <Label text="Options" styleClass="h1,lexend-bold"/>
+            <VBox spacing = "5">
+                <Label text="Node Label:" />
+                <ComboBox fx:id="nodeLabel" prefWidth="Infinity" styleClass="bg-white,border-medium,border-black,rounded"/>
+            </VBox>
+            <VBox spacing = "5">
+                <Label text="Input Count:" />
+                <ComboBox fx:id="inputCount" prefWidth="Infinity" styleClass="bg-white,border-medium,border-black,rounded"/>
+            </VBox>
+            <CheckBox fx:id="directed" text="Directed"/>
+            <HBox spacing = "10">
+                <CheckBox fx:id="nodeValue" text="Node Value"/>
+                <CheckBox fx:id="edgeWeight" text="Edge Weight"/>
+            </HBox>
+            <CheckBox fx:id="addNodeFromEdge" text="Add Node From Edge"/>
+            <CheckBox fx:id="randomNodeEgde" text="Random Node/Edge"/>
+            <Button fx:id="addFromFileButton" prefWidth="Infinity" text="Input .txt" styleClass="button-blue,lexend-bold"/>
+            <Button fx:id="applyInputButton" prefWidth="Infinity" text="Apply Input" styleClass="button-blue,lexend-bold"/>
+            <Button fx:id="getCurrentGraphButton" prefWidth="Infinity" text="Reset Input" styleClass="button-red,lexend-bold"/>
+        </VBox>
+        <!-- Format -->
+        <VBox prefWidth="400" spacing = "5" VBox.vgrow="ALWAYS">
+            <Label styleClass="h2,lexend-bold">
+                Format
+            </Label>
+            <TextArea fx:id="formatTextArea" editable="false" prefHeight="350" VBox.vgrow="ALWAYS"
+                      styleClass=""
+                      text="node-count edge-count"/>
+        </VBox>
+        <!-- Input Text Box -->
+        <VBox prefWidth="150" spacing = "5" VBox.vgrow="ALWAYS">
+            <Label styleClass="h2,lexend-bold">
+                Input
+            </Label>
+            <TextArea fx:id="inputTextArea" editable="true" prefHeight="350" VBox.vgrow="ALWAYS"
+                      styleClass=""/>
+        </VBox>
+    </HBox>
+</VBox>

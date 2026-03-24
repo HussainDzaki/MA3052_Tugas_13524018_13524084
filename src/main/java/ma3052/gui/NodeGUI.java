@@ -14,6 +14,8 @@ public class NodeGUI {
     // Visual
     private double radius;
     private double borderWidth;
+    private boolean drawLabel;
+    private boolean drawValue;
 
     // Colors
     private Color color;
@@ -28,8 +30,8 @@ public class NodeGUI {
 
     // Physics config
     private static final double DEFAULT_RADIUS = 20; // Default node radius
-    private static final double DAMPENING = 0.9; // Friction/dampening
-    private static final double MAX_VELOCITY = 30.0; // Maximum node velocity
+    private static final double DAMPENING = 0.7; // Friction/dampening
+    private static final double MAX_VELOCITY = 500.0; // Maximum node velocity
 
     public NodeGUI(Node node) {
         this.node = node;
@@ -37,6 +39,8 @@ public class NodeGUI {
         this.velocity = new Point2D(0, 0);
         this.force = new Point2D(0, 0);
         this.radius = DEFAULT_RADIUS;
+        this.drawLabel = true;
+        this.drawValue = false;
         this.borderWidth = 3;
         this.color = Color.WHITE;
         this.borderColor = Color.BLACK;
@@ -50,6 +54,8 @@ public class NodeGUI {
         this.velocity = new Point2D(0, 0);
         this.force = new Point2D(0, 0);
         this.radius = DEFAULT_RADIUS;
+        this.drawLabel = true;
+        this.drawValue = false;
         this.borderWidth = 3;
         this.color = Color.WHITE;
         this.borderColor = Color.BLACK;
@@ -137,7 +143,23 @@ public class NodeGUI {
         this.lockPosition = lockPosition;
     }
 
-    public void draw(GraphicsContext context, boolean drawValue) {
+    public boolean isDrawLabel() {
+        return drawLabel;
+    }
+
+    public void setDrawLabel(boolean drawLabel) {
+        this.drawLabel = drawLabel;
+    }
+
+    public boolean isDrawValue() {
+        return drawValue;
+    }
+
+    public void setDrawValue(boolean drawValue) {
+        this.drawValue = drawValue;
+    }
+
+    public void draw(GraphicsContext context) {
         // Draw node circle with color
         context.setFill(color);
         context.fillOval(position.getX() - radius, position.getY() - radius,
@@ -149,10 +171,13 @@ public class NodeGUI {
         context.strokeOval(position.getX() - radius, position.getY() - radius,
                 2 * radius, 2 * radius);
 
-        if (!drawValue) {
+        if (node == null)
+            return;
+
+        if (drawLabel && !drawValue) {
             // Draw label centered in node
             context.setFill(textColor);
-            context.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+            context.setFont(Font.font("Cascadia Code Regular", FontWeight.NORMAL, 12));
 
             // Center the text
             double textWidth = node.getNodeName().length() * 7;
@@ -160,10 +185,22 @@ public class NodeGUI {
             double textY = position.getY() + 5;
 
             context.fillText(node.getNodeName(), textX, textY);
-        } else {
+        } else if (!drawLabel && drawValue) {
+            // Draw value centered in node
+            context.setFill(textColor);
+            context.setFont(Font.font("Cascadia Code Regular", FontWeight.NORMAL, 12));
+
+            // Center the text
+            String valueString = Double.toString(node.getValue());
+            double valueWidth = valueString.length() * 7;
+            double valueX = position.getX() - valueWidth / 2;
+            double valueY = position.getY() + 5;
+
+            context.fillText(valueString, valueX, valueY);
+        } else if (drawLabel && drawValue) {
             // Draw label centered in node
             context.setFill(textColor);
-            context.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+            context.setFont(Font.font("Cascadia Code Regular", FontWeight.NORMAL, 12));
 
             // Draw value in the center
             String valueString = Double.toString(node.getValue());

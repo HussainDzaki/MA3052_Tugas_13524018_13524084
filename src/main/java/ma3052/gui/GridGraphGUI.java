@@ -1,18 +1,14 @@
 package ma3052.gui;
 
 import javafx.application.Platform;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ma3052.graph.GridGraph;
 import ma3052.graph.IslandCounter;
 
-
-import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 
 /**
  * Grid Graph visualization component
@@ -26,9 +22,9 @@ public class GridGraphGUI {
 
     // Visualization parameters
     private static final Color WATER_COLOR = Color.web("#4DA6FF"); // Blue for water (.)
-    private static final Color LAND_COLOR = Color.web("#000000");   // Black for land (#)
+    private static final Color LAND_COLOR = Color.web("#268510"); // Black for land (#)
     private static final Color GRID_LINE_COLOR = Color.web("#CCCCCC"); // Light gray for grid lines
-    private static final Color BORDER_COLOR = Color.web("#333333");    // Dark gray for borders
+    private static final Color BORDER_COLOR = Color.web("#333333"); // Dark gray for borders
 
     private volatile boolean isDrawing = true;
     private double cellSize = 20; // Size of each cell in pixels
@@ -38,35 +34,37 @@ public class GridGraphGUI {
     private volatile int[][] finalIslandMap = null;
     private volatile boolean isAnimating = false;
 
-
-    public GridGraphGUI(Canvas canvas){
+    public GridGraphGUI(Canvas canvas) {
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.threadPoolExecutor = new ScheduledThreadPoolExecutor(1);
-        
-        // Start rendering thread with proper frame rate (60 FPS = 16ms per frame)
+
         threadPoolExecutor.scheduleWithFixedDelay(() -> {
             if (isDrawing && gridGraph != null) {
                 updateCanvas();
             }
-        }, 0, 90000, TimeUnit.NANOSECONDS); // 60 FPS
+        }, 0, 90000, TimeUnit.NANOSECONDS);
+
+        Platform.runLater(() -> {
+            canvas.getScene().getWindow().setOnCloseRequest(event -> {
+                threadPoolExecutor.shutdown();
+            });
+        });
     }
 
     /**
      * Set the grid graph to visualize
      */
-    public void setGridGraph(GridGraph grid){
+    public void setGridGraph(GridGraph grid) {
         this.gridGraph = grid;
     }
 
     /**
      * Get the current grid graph
      */
-    public GridGraph getGridGraph(){
+    public GridGraph getGridGraph() {
         return this.gridGraph;
     }
-
-
 
     public void setDrawing(boolean isDrawing) {
         this.isDrawing = isDrawing;
@@ -75,15 +73,23 @@ public class GridGraphGUI {
     /**
      * Update canvas with current grid state
      */
-    private void updateCanvas(){
-        Platform.runLater(this::drawGrid);
+    private void updateCanvas() {
+        Platform.runLater(() -> {
+            clearCanvas();
+            drawGrid();
+        });
+    }
+
+    private void clearCanvas() {
+        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     /**
      * Draw the grid on canvas
      */
-    private void drawGrid(){
-        if (gridGraph == null) return;
+    private void drawGrid() {
+        if (gridGraph == null)
+            return;
 
         double width = canvas.getWidth();
         double height = canvas.getHeight();
@@ -167,7 +173,7 @@ public class GridGraphGUI {
     /**
      * Get total island count in the grid
      */
-    public int getTotalIsland(){
+    public int getTotalIsland() {
         if (gridGraph == null) {
             return 0;
         }
@@ -177,7 +183,7 @@ public class GridGraphGUI {
     /**
      * Stop the rendering thread
      */
-    public void stop(){
+    public void stop() {
         isDrawing = false;
         threadPoolExecutor.shutdown();
     }
