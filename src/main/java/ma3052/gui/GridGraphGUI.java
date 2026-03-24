@@ -32,6 +32,11 @@ public class GridGraphGUI {
 
     private volatile boolean isDrawing = true;
     private double cellSize = 20; // Size of each cell in pixels
+    
+    // Animation state
+    private volatile int[][] islandMap = null;
+    private volatile int[][] finalIslandMap = null;
+    private volatile boolean isAnimating = false;
 
 
     public GridGraphGUI(Canvas canvas){
@@ -61,6 +66,12 @@ public class GridGraphGUI {
         return this.gridGraph;
     }
 
+
+
+    public void setDrawing(boolean isDrawing) {
+        this.isDrawing = isDrawing;
+    }
+
     /**
      * Update canvas with current grid state
      */
@@ -86,19 +97,56 @@ public class GridGraphGUI {
         double startX = (width - cols * cellSize) / 2;
         double startY = (height - rows * cellSize) / 2;
 
+        // Color palette for islands during animation
+        Color[] ISLAND_COLORS = {
+                Color.web("#FF6B6B"), Color.web("#4ECDC4"), Color.web("#FFE66D"),
+                Color.web("#95E1D3"), Color.web("#F38181"), Color.web("#AA96DA"),
+                Color.web("#FCBAD3"), Color.web("#A8D8EA"), Color.web("#FFD3B6"),
+                Color.web("#FF9F1C")
+        };
+
         // Draw cells
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                char nodeType = gridGraph.getNodeType(i, j);
                 double x = startX + j * cellSize;
                 double y = startY + i * cellSize;
-
-                // Draw cell background based on type
-                if (nodeType == '#') {
-                    graphicsContext.setFill(LAND_COLOR);
-                } else {
-                    graphicsContext.setFill(WATER_COLOR);
+                
+                Color cellColor;
+                
+                // Determine which map to use
+                int[][] mapToUse = null;
+                if (isAnimating && islandMap != null) {
+                    mapToUse = islandMap;
+                } else if (finalIslandMap != null) {
+                    mapToUse = finalIslandMap;
                 }
+                
+                // If using animation map, apply colors
+                if (mapToUse != null) {
+                    if (mapToUse[i][j] == -1) {
+                        // Water
+                        cellColor = WATER_COLOR;
+                    } else if (mapToUse[i][j] == -2) {
+                        // Unvisited land
+                        cellColor = LAND_COLOR;
+                    } else if (mapToUse[i][j] == -3) {
+                        // Small island (not the largest) - render as default green
+                        cellColor = LAND_COLOR;
+                    } else {
+                        // Island - assign color based on island number
+                        cellColor = ISLAND_COLORS[mapToUse[i][j] % ISLAND_COLORS.length];
+                    }
+                } else {
+                    // Default rendering
+                    char nodeType = gridGraph.getNodeType(i, j);
+                    if (nodeType == '#') {
+                        cellColor = LAND_COLOR;
+                    } else {
+                        cellColor = WATER_COLOR;
+                    }
+                }
+                
+                graphicsContext.setFill(cellColor);
                 graphicsContext.fillRect(x, y, cellSize, cellSize);
 
                 // Draw cell border
@@ -134,4 +182,53 @@ public class GridGraphGUI {
         threadPoolExecutor.shutdown();
     }
 
+
+    /**
+     * Set island map for animation visualization
+     */
+    public void setIslandMap(int[][] map) {
+        this.islandMap = map;
+    }
+    
+    /**
+     * Get current island map
+     */
+    public int[][] getIslandMap() {
+        return this.islandMap;
+    }
+    
+    /**
+     * Set final island map to persist after animation
+     */
+    public void setFinalIslandMap(int[][] map) {
+        this.finalIslandMap = map;
+    }
+    
+    /**
+     * Get final island map
+     */
+    public int[][] getFinalIslandMap() {
+        return this.finalIslandMap;
+    }
+    
+    /**
+     * Set animation state
+     */
+    public void setAnimating(boolean animating) {
+        this.isAnimating = animating;
+    }
+    
+    /**
+     * Check if currently animating
+     */
+    public boolean isAnimating() {
+        return this.isAnimating;
+    }
+
+    /**
+     * Get Canvas
+     */
+    public Canvas getCanvas(){
+        return this.canvas;
+    }
 }
