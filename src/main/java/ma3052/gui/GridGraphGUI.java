@@ -105,8 +105,8 @@ public class GridGraphGUI {
 
         // Color palette for islands during animation
         Color[] ISLAND_COLORS = {
-                Color.web("#FF6B6B"), Color.web("#4ECDC4"), Color.web("#FFE66D"),
-                Color.web("#95E1D3"), Color.web("#F38181"), Color.web("#AA96DA"),
+                Color.web("#FF6B6B"), Color.web("#1e948c"), Color.web("#FFE66D"),
+                Color.web("#8AB17D"), Color.web("#F38181"), Color.web("#AA96DA"),
                 Color.web("#FCBAD3"), Color.web("#A8D8EA"), Color.web("#FFD3B6"),
                 Color.web("#FF9F1C")
         };
