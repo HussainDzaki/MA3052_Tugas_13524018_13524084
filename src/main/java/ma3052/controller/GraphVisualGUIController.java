@@ -22,6 +22,7 @@ import ma3052.graph.Graph;
 import ma3052.graph.Node;
 import ma3052.gui.GraphGUI;
 import ma3052.gui.GridGraphGUI;
+import ma3052.gui.animation.*;
 import ma3052.gui.animation.ComponentAnimation;
 import ma3052.gui.animation.ConnectivityAnimation;
 import ma3052.gui.animation.PathAnimation;
@@ -741,11 +742,21 @@ public class GraphVisualGUIController {
     private void executeGridAlgorithm(String algorithm) {
         switch (algorithm) {
             case "Count Component":
-                logMessage(String.format("Total component is %d", gridGraphGUI.getTotalIsland()));
+                IslandAnimation.animate(gridGraphGUI, '#', () -> {
+                    logMessage(String.format("Total component is %d", gridGraphGUI.getTotalIsland()));
+                    logMessage("═══════════════════════════════════");
+                    logMessage("Island animation completed!");
+                    logMessage("═══════════════════════════════════");
+                });
                 break;
             case "Biggest Component":
-                int biggestIslandSize = IslandCounter.getBiggestIsland(gridGraphGUI.getGridGraph(), '#');
-                logMessage(String.format("Biggest island size is %d", biggestIslandSize));
+                IslandAnimation.animateLargestComponent(gridGraphGUI, '#', () -> {
+                    int biggestIslandSize = IslandCounter.getBiggestIsland(gridGraphGUI.getGridGraph(), '#');
+                    logMessage(String.format("Biggest island size is %d", biggestIslandSize));
+                    logMessage("═══════════════════════════════════");
+                    logMessage("Largest component animation completed!");
+                    logMessage("═══════════════════════════════════");
+                });
                 break;
             default:
                 break;
