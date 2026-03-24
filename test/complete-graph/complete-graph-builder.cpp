@@ -10,7 +10,7 @@ int main()
     ofstream cout(to_string(N) + "-node.txt");
     cout << N << " " << N * (N - 1) / 2 << endl;
     for (int i = 1; i < N; i++) {
-        for (int j = 2; j <= N; j++) {
+        for (int j = i + 1; j <= N; j++) {
             cout << i << " " << j << endl;
         }
     }

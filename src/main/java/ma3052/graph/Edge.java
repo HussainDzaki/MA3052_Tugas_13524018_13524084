@@ -1,6 +1,8 @@
 package ma3052.graph;
 
 public class Edge {
+    public static final double DEFAULT_WEIGHT = 1;
+
     private Node source;
     private Node destination;
     private double weight;
@@ -8,7 +10,7 @@ public class Edge {
     public Edge(Node source, Node destination) {
         this.source = source;
         this.destination = destination;
-        this.weight = 1;
+        this.weight = DEFAULT_WEIGHT;
     }
 
     public Edge(Node source, Node destination, double value) {

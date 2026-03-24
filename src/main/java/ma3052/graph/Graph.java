@@ -65,11 +65,18 @@ public class Graph {
     }
 
     public void removeNode(Node node) {
-        nodeList.remove(node);
+        if (hasNode(node)) {
+            for (Edge edge : node.getAdjacencyList()) {
+                edge.getDestination().removeEdge(node);
+            }
+            nodeList.remove(node);
+        }
     }
 
-    public void removeNodes(Collection<Node> node) {
-        nodeList.removeAll(node);
+    public void removeNodes(Collection<Node> nodes) {
+        for (Node node : nodes) {
+            removeNode(node);
+        }
     }
 
     public List<Edge> getEdgeList() {

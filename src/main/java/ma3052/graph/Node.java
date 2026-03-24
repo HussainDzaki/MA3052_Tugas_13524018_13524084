@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Node {
     private static long nodeIDCount = 1;
+    public static final double DEFAULT_VALUE = 0;
 
     private long nodeID;
     private String nodeName;
@@ -16,7 +17,7 @@ public class Node {
     public Node() {
         this.nodeID = nodeIDCount;
         this.nodeName = Long.toString(nodeIDCount);
-        this.value = 0;
+        this.value = DEFAULT_VALUE;
         this.adjacencyList = new ArrayList<Edge>();
         nodeIDCount++;
     }
@@ -32,6 +33,7 @@ public class Node {
     public Node(String nodeName) {
         this.nodeID = nodeIDCount;
         this.nodeName = nodeName;
+        this.value = DEFAULT_VALUE;
         this.adjacencyList = new ArrayList<Edge>();
         nodeIDCount++;
     }
