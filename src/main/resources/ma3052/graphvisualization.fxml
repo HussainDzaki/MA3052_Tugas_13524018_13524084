@@ -65,7 +65,7 @@
                                 <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
                                 <TextField fx:id="nodeValueInput" prefWidth="200.0" promptText="Value (optional)" />
                             </VBox>
-                            <Button fx:id="addNodeButton" minWidth="60.0" onAction="#handleAddNode" text="Add" styleClass="button-light-blue"/>
+                            <Button fx:id="addNodeButton" minWidth="80.0" onAction="#handleAddNode" text="Add" styleClass="button-light-blue"/>
                         </HBox>
                     </VBox>
                     <!-- Edge Management Section -->
@@ -79,7 +79,7 @@
                                 </HBox>
                                 <TextField fx:id="edgeWeightInput" prefWidth="120.0" promptText="Weight (Optional)" />
                             </VBox>
-                            <Button fx:id="addEdgeButton" minWidth="60.0" onAction="#handleAddEdge" text="Add" styleClass="button-light-blue"/>
+                            <Button fx:id="addEdgeButton" minWidth="80.0" onAction="#handleAddEdge" text="Add" styleClass="button-light-blue"/>
                         </HBox>
                     </VBox>
                     <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Formatted Input (.txt)" styleClass="button-blue" />
