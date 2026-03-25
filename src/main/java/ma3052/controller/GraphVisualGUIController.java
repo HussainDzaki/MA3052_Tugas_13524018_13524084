@@ -23,10 +23,6 @@ import ma3052.graph.Node;
 import ma3052.gui.GraphGUI;
 import ma3052.gui.GridGraphGUI;
 import ma3052.gui.animation.*;
-import ma3052.gui.animation.ComponentAnimation;
-import ma3052.gui.animation.ConnectivityAnimation;
-import ma3052.gui.animation.PathAnimation;
-import ma3052.gui.animation.TraversalAnimation;
 import ma3052.graph.GraphComponent;
 import ma3052.graph.GridGraph;
 import ma3052.graph.IslandCounter;
@@ -555,7 +551,8 @@ public class GraphVisualGUIController {
                         "Bipartite Checker",
                         "Find Diameter",
                         "Have Cycle Checker",
-                        "Find Smallest Cycle");
+                        "Find Smallest Cycle",
+                        "Djikstra");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -730,7 +727,8 @@ public class GraphVisualGUIController {
                 logMessage("The Graph have cycle size: " + Integer.toString(girthPath.size() - 1));
                 logMessage("Have the cycle path: " + CycleDetector.getResultPathString(girthPath));
                 break;
-
+            case "Djikstra":
+                DijkstraAnimation.animate(graphGUI, startNodeName, endNodeName);
             default:
                 break;
         }
@@ -828,6 +826,17 @@ public class GraphVisualGUIController {
                         labelEndNode.setVisible(false);
                         labelEndNode.setManaged(false);
                         break;
+                    case "Djikstra":
+                        startNodeInput.setVisible(true);
+                        startNodeInput.setManaged(true);
+                        labelStartNode.setVisible(true);
+                        labelStartNode.setManaged(true);
+                        endNodeInput.setVisible(true);
+                        endNodeInput.setManaged(true);
+                        labelEndNode.setVisible(true);
+                        labelEndNode.setManaged(true);
+                        break;
+
 
                     default:
                         break;
