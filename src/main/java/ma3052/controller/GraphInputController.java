@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ma3052.App;
+import ma3052.gui.EdgeGUI;
 import ma3052.gui.FormatGraphInput;
 
 public class GraphInputController {
@@ -168,17 +169,21 @@ public class GraphInputController {
 
             File selectedFile = fileChooser.showOpenDialog(addFromFileButton.getScene().getWindow());
             if (selectedFile != null) {
-                try {
-                    if (GraphVisualGUIController.instance != null) {
-                        GraphVisualGUIController.instance
-                                .setGraph(FormatGraphInput.inputGraphFromFile(selectedFile));
-                        ((Stage) (applyInputButton.getScene().getWindow())).close();
+                Platform.runLater(() -> {
+                    try {
+                        if (GraphVisualGUIController.instance != null) {
+                            GraphVisualGUIController.instance
+                                    .setGraph(FormatGraphInput.inputGraphFromFile(selectedFile));
+                            GraphVisualGUIController.instance.switchWeightedGraph(edgeWeight.isSelected());
+                            GraphVisualGUIController.instance.updateListFromGraph();
+                            ((Stage) (applyInputButton.getScene().getWindow())).close();
+                        }
+                    } catch (IOException e) {
+                        showError("Error reading file: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        showError("Invalid file format: " + e.getMessage());
                     }
-                } catch (IOException e) {
-                    showError("Error reading file: " + e.getMessage());
-                } catch (IllegalArgumentException e) {
-                    showError("Invalid file format: " + e.getMessage());
-                }
+                });
             }
         });
 
@@ -194,17 +199,21 @@ public class GraphInputController {
         });
 
         applyInputButton.setOnAction(event -> {
-            try {
-                if (GraphVisualGUIController.instance != null) {
-                    GraphVisualGUIController.instance
-                            .setGraph(FormatGraphInput.inputGraphFromString(inputTextArea.getText()));
-                    ((Stage) (applyInputButton.getScene().getWindow())).close();
+            Platform.runLater(() -> {
+                try {
+                    if (GraphVisualGUIController.instance != null) {
+                        GraphVisualGUIController.instance
+                                .setGraph(FormatGraphInput.inputGraphFromString(inputTextArea.getText()));
+                        GraphVisualGUIController.instance.switchWeightedGraph(edgeWeight.isSelected());
+                        GraphVisualGUIController.instance.updateListFromGraph();
+                        ((Stage) (applyInputButton.getScene().getWindow())).close();
+                    }
+                } catch (IOException e) {
+                    showError("Error reading file: " + e.getMessage());
+                } catch (IllegalArgumentException e) {
+                    showError("Invalid file format: " + e.getMessage());
                 }
-            } catch (IOException e) {
-                showError("Error reading file: " + e.getMessage());
-            } catch (IllegalArgumentException e) {
-                showError("Invalid file format: " + e.getMessage());
-            }
+            });
         });
     }
 

@@ -295,7 +295,6 @@ public class FormatGraphInput {
                                                 (source == null ? tokens[0] : tokens[1]));
                             }
                         }
-
                         if (isGraphDirected) {
                             resultGraph.addDirectedEdge(source, destination);
                         } else {
@@ -306,10 +305,20 @@ public class FormatGraphInput {
                         Node source = resultGraph.getNode(tokens[0]);
                         Node destination = resultGraph.getNode(tokens[1]);
                         double weight = Double.parseDouble(tokens[2]);
-                        if (source == null || destination == null) {
-                            throw new IllegalArgumentException(
-                                    "Line " + lineNumber + "Edge references non-existent node: " +
-                                            (source == null ? tokens[0] : tokens[1]));
+                        if (!newNodeFromEdge) {
+                            if (source == null || destination == null) {
+                                throw new IllegalArgumentException(
+                                        "Line " + lineNumber + "Edge references non-existent node: " +
+                                                (source == null ? tokens[0] : tokens[1]));
+                            }
+                        }
+                        else {
+                            if (source == null) {
+                                source = new Node(tokens[0]);
+                            }
+                            if (destination == null) {
+                                destination = new Node(tokens[1]);
+                            }
                         }
                         if (isGraphDirected) {
                             resultGraph.addDirectedEdge(source, destination, weight);
@@ -391,7 +400,7 @@ public class FormatGraphInput {
                             }
                         }
                         if (destination == null) {
-                            destination = new Node(tokens[0]);
+                            destination = new Node(tokens[1]);
                             if (currentNodeNameCount < nodeCount || nodeCount == -1) {
                                 resultGraph.addNode(destination);
                                 currentNodeNameCount++;
