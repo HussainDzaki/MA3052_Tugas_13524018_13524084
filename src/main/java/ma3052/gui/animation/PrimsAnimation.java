@@ -121,6 +121,12 @@ public class PrimsAnimation {
                         }
                     });
                 }
+                stepCount++;
+                int step2 = stepCount;
+                Platform.runLater(() -> {
+                    GraphVisualGUIController.instance
+                            .logMessage("[Step " + step2 + "] Adding edges to neighbour of " + currentNode.getNodeName() + " to queue");
+                });
                 Thread.sleep((long) (animationStepTime));
                 // Waiting... so you can actually see what's happening
             }
