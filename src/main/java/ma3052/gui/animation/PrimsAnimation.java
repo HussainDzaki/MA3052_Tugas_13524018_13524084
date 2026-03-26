@@ -40,10 +40,8 @@ public class PrimsAnimation {
             Node firstNode = graph.getNodeList().getFirst();
             primsQueue.add(new Edge(null, firstNode, 0));
             while (!primsQueue.isEmpty()) {
-                stepCount++;
                 Edge currentEdge = primsQueue.poll();
                 Node currentNode = currentEdge.getDestination();
-                int step = stepCount;
                 if (visitedNode.contains(currentNode)) {
                     final EdgeGUI edgeGUI1 = graphGUI.getEdgeGUI(currentEdge);
                     Edge otherEdge = graph.getEdge(currentNode, currentEdge.getSource());
@@ -57,6 +55,8 @@ public class PrimsAnimation {
                         }
                     });
                     if (currentEdge.getSource() != null) {
+                        stepCount++;
+                        int step = stepCount;
                         Platform.runLater(() -> {
                             GraphVisualGUIController.instance
                                     .logMessage("[Step " + step + "] Checking edge ("
@@ -69,6 +69,8 @@ public class PrimsAnimation {
                     continue;
                 } else {
                     if (currentEdge.getSource() != null) {
+                        stepCount++;
+                        int step = stepCount;
                         Platform.runLater(() -> {
                             GraphVisualGUIController.instance
                                     .logMessage("[Step " + step + "] Checking edge ("
@@ -122,10 +124,11 @@ public class PrimsAnimation {
                     });
                 }
                 stepCount++;
-                int step2 = stepCount;
+                int step = stepCount;
                 Platform.runLater(() -> {
                     GraphVisualGUIController.instance
-                            .logMessage("[Step " + step2 + "] Adding edges to neighbour of " + currentNode.getNodeName() + " to queue");
+                            .logMessage("[Step " + step + "] Adding edges to neighbour of " + currentNode.getNodeName()
+                                    + " to queue");
                 });
                 Thread.sleep((long) (animationStepTime));
                 // Waiting... so you can actually see what's happening
