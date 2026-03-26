@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class DisjointSetUnion<T> {
-    private HashMap<T, T> dsuParent;
+    private HashMap<T, T> dsuParent = new HashMap<>();
     private Random rng = new Random();
 
     public T getParent(T a) {
