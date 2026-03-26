@@ -164,6 +164,8 @@ public class GraphGUI {
             EdgeGUI edgeGUI = new EdgeGUI(edge, getNodeGUI(edge.getSource()), getNodeGUI(edge.getDestination()));
             edgeMap.put(edge, edgeGUI);
             edgeGUIList.add(edgeGUI);
+            // Set drawWeight based on whether edge has a non-default weight
+            edgeGUI.setDrawWeight(edge.getWeight() != Edge.DEFAULT_WEIGHT);
         }
     }
 

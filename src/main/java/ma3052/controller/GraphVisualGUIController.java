@@ -24,10 +24,6 @@ import ma3052.gui.EdgeGUI;
 import ma3052.gui.GraphGUI;
 import ma3052.gui.GridGraphGUI;
 import ma3052.gui.animation.*;
-import ma3052.gui.animation.ComponentAnimation;
-import ma3052.gui.animation.ConnectivityAnimation;
-import ma3052.gui.animation.PathAnimation;
-import ma3052.gui.animation.TraversalAnimation;
 import ma3052.graph.GraphComponent;
 import ma3052.graph.GridGraph;
 import ma3052.graph.IslandCounter;
@@ -560,7 +556,8 @@ public class GraphVisualGUIController {
                         "Have Cycle Checker",
                         "Find Smallest Cycle",
                         "Kruskal's Algorithm",
-                        "Prim's Algorithm");
+                        "Prim's Algorithm",
+                        "Djikstra");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -741,7 +738,8 @@ public class GraphVisualGUIController {
             case "Prim's Algorithm":
                 PrimsAnimation.animate(graphGUI);
                 break;
-
+            case "Djikstra":
+                DijkstraAnimation.animate(graphGUI, startNodeName, endNodeName);
             default:
                 break;
         }
@@ -818,7 +816,16 @@ public class GraphVisualGUIController {
                         labelEndNode.setVisible(true);
                         labelEndNode.setManaged(true);
                         break;
-
+                    case "Djikstra":
+                        startNodeInput.setVisible(true);
+                        startNodeInput.setManaged(true);
+                        labelStartNode.setVisible(true);
+                        labelStartNode.setManaged(true);
+                        endNodeInput.setVisible(true);
+                        endNodeInput.setManaged(true);
+                        labelEndNode.setVisible(true);
+                        labelEndNode.setManaged(true);
+                        break;
                     default:
                         startNodeInput.setVisible(false);
                         startNodeInput.setManaged(false);
