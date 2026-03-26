@@ -20,6 +20,7 @@ import ma3052.App;
 import ma3052.graph.Edge;
 import ma3052.graph.Graph;
 import ma3052.graph.Node;
+import ma3052.gui.EdgeGUI;
 import ma3052.gui.GraphGUI;
 import ma3052.gui.GridGraphGUI;
 import ma3052.gui.animation.*;
@@ -196,6 +197,8 @@ public class GraphVisualGUIController {
                 PathAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 ConnectivityAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 ComponentAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                KruskalAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                PrimsAnimation.setAnimationStepTime(Math.round(500 / multiplier));
             });
         }
 
@@ -555,7 +558,9 @@ public class GraphVisualGUIController {
                         "Bipartite Checker",
                         "Find Diameter",
                         "Have Cycle Checker",
-                        "Find Smallest Cycle");
+                        "Find Smallest Cycle",
+                        "Kruskal's Algorithm",
+                        "Prim's Algorithm");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -730,6 +735,12 @@ public class GraphVisualGUIController {
                 logMessage("The Graph have cycle size: " + Integer.toString(girthPath.size() - 1));
                 logMessage("Have the cycle path: " + CycleDetector.getResultPathString(girthPath));
                 break;
+            case "Kruskal's Algorithm":
+                KruskalAnimation.animate(graphGUI);
+                break;
+            case "Prim's Algorithm":
+                PrimsAnimation.animate(graphGUI);
+                break;
 
             default:
                 break;
@@ -807,29 +818,16 @@ public class GraphVisualGUIController {
                         labelEndNode.setVisible(true);
                         labelEndNode.setManaged(true);
                         break;
-                    case "Connectivity":
-                        startNodeInput.setVisible(false);
-                        startNodeInput.setManaged(false);
-                        labelStartNode.setVisible(false);
-                        labelStartNode.setManaged(false);
-                        endNodeInput.setVisible(false);
-                        endNodeInput.setManaged(false);
-                        labelEndNode.setVisible(false);
-                        labelEndNode.setManaged(false);
-                        break;
-
-                    case "Component":
-                        startNodeInput.setVisible(false);
-                        startNodeInput.setManaged(false);
-                        labelStartNode.setVisible(false);
-                        labelStartNode.setManaged(false);
-                        endNodeInput.setVisible(false);
-                        endNodeInput.setManaged(false);
-                        labelEndNode.setVisible(false);
-                        labelEndNode.setManaged(false);
-                        break;
 
                     default:
+                        startNodeInput.setVisible(false);
+                        startNodeInput.setManaged(false);
+                        labelStartNode.setVisible(false);
+                        labelStartNode.setManaged(false);
+                        endNodeInput.setVisible(false);
+                        endNodeInput.setManaged(false);
+                        labelEndNode.setVisible(false);
+                        labelEndNode.setManaged(false);
                         break;
                 }
                 break;
@@ -1282,4 +1280,9 @@ public class GraphVisualGUIController {
         return graph;
     }
 
+    public void switchWeightedGraph(boolean weighted) {
+        for (Edge edge : graphGUI.getGraph().getEdgeList()) {
+            graphGUI.getEdgeGUI(edge).setDrawWeight(weighted);
+        }
+    }
 }
