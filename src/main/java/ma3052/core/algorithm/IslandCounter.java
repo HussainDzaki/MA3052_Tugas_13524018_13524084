@@ -1,7 +1,11 @@
-package ma3052.graph;
+package ma3052.core.algorithm;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.GridGraph;
+import ma3052.core.graph.Node;
 
 public class IslandCounter {
     /**

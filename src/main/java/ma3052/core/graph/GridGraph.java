@@ -1,4 +1,4 @@
-package ma3052.graph;
+package ma3052.core.graph;
 
 import java.util.HashMap;
 

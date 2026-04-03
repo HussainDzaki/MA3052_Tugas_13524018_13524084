@@ -1,4 +1,4 @@
-package ma3052.graph;
+package ma3052.core.graph;
 
 public class Edge {
     public static final double DEFAULT_WEIGHT = 1;

@@ -1,11 +1,11 @@
-package ma3052.gui;
+package ma3052.gui.graph;
 
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import ma3052.graph.GridGraph;
-import ma3052.graph.IslandCounter;
+import ma3052.core.algorithm.IslandCounter;
+import ma3052.core.graph.GridGraph;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

@@ -9,13 +9,13 @@ import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
-import ma3052.controller.GraphVisualGUIController;
-import ma3052.graph.Edge;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
-import ma3052.gui.EdgeGUI;
-import ma3052.gui.GraphGUI;
-import ma3052.gui.NodeGUI;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
+import ma3052.gui.controller.GraphVisualGUIController;
+import ma3052.gui.graph.EdgeGUI;
+import ma3052.gui.graph.GraphGUI;
+import ma3052.gui.graph.NodeGUI;
 
 public class ComponentAnimation {
      private static volatile long animationStepTime = 500; // in milliseconds

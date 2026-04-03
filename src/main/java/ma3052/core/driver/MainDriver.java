@@ -1,13 +1,13 @@
-package ma3052.driver;
+package ma3052.core.driver;
 
 import java.util.List;
 import java.util.Scanner;
 
-import ma3052.graph.Graph;
-import ma3052.graph.GraphComponent;
-import ma3052.graph.GraphTraversal;
-import ma3052.graph.Node;
-import ma3052.graph.PathSearch;
+import ma3052.core.algorithm.GraphComponent;
+import ma3052.core.algorithm.GraphTraversal;
+import ma3052.core.algorithm.PathSearch;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
 
 public class MainDriver {
     private static final Scanner SCANNER = new Scanner(System.in);

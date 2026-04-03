@@ -1,9 +1,9 @@
-package ma3052.driver;
+package ma3052.core.driver;
 
 import java.util.Scanner;
 
-import ma3052.graph.GridGraph;
-import ma3052.graph.IslandCounter;
+import ma3052.core.algorithm.IslandCounter;
+import ma3052.core.graph.GridGraph;
 
 public class IslandDriver {
     public static void main(String[] args) {

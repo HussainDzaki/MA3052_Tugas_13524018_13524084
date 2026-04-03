@@ -1,4 +1,4 @@
-package ma3052.gui;
+package ma3052.gui.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
 
-import ma3052.graph.Edge;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
 
 public class FormatGraphInput {
     // Node name options

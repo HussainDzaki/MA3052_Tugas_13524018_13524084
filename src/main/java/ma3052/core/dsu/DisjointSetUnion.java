@@ -1,4 +1,4 @@
-package ma3052.dsu;
+package ma3052.core.dsu;
 
 import java.util.HashMap;
 import java.util.Random;

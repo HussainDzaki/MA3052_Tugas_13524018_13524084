@@ -1,8 +1,11 @@
-package ma3052.graph;
+package ma3052.core.algorithm;
 
 import java.util.ArrayList;
 
-import ma3052.dsu.DisjointSetUnion;
+import ma3052.core.dsu.DisjointSetUnion;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
 
 public class KruskalsAlgorithm {
     public static Graph getMinimumSpanningTree(Graph graph) {

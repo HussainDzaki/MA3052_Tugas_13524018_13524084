@@ -1,4 +1,4 @@
-package ma3052.controller;
+package ma3052.gui.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -17,17 +17,17 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
 import ma3052.App;
-import ma3052.graph.Edge;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
-import ma3052.gui.EdgeGUI;
-import ma3052.gui.GraphGUI;
-import ma3052.gui.GridGraphGUI;
+import ma3052.core.algorithm.CycleDetector;
+import ma3052.core.algorithm.GraphComponent;
+import ma3052.core.algorithm.IslandCounter;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.GridGraph;
+import ma3052.core.graph.Node;
 import ma3052.gui.animation.*;
-import ma3052.graph.GraphComponent;
-import ma3052.graph.GridGraph;
-import ma3052.graph.IslandCounter;
-import ma3052.graph.CycleDetector;
+import ma3052.gui.graph.EdgeGUI;
+import ma3052.gui.graph.GraphGUI;
+import ma3052.gui.graph.GridGraphGUI;
 
 import java.io.*;
 import java.util.*;

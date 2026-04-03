@@ -1,4 +1,4 @@
-package ma3052.controller;
+package ma3052.gui.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ma3052.App;
-import ma3052.gui.EdgeGUI;
-import ma3052.gui.FormatGraphInput;
+import ma3052.gui.graph.EdgeGUI;
 
 public class GraphInputController {
     @FXML

@@ -1,10 +1,14 @@
-package ma3052.graph;
+package ma3052.core.algorithm;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
 
 public class PathSearch {
     public static List<Node> searchPathBFS(Graph graph, String startNodeName, String endNodeName) {

@@ -11,12 +11,12 @@ import javafx.scene.paint.Color;
 import javafx.application.Platform;
 import java.util.Set;
 
-import ma3052.controller.GraphVisualGUIController;
-import ma3052.graph.Edge;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
-import ma3052.gui.GraphGUI;
-import ma3052.gui.NodeGUI;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
+import ma3052.gui.controller.GraphVisualGUIController;
+import ma3052.gui.graph.GraphGUI;
+import ma3052.gui.graph.NodeGUI;
 
 public class DijkstraAnimation {
     private static class NodeEntry implements Comparable<NodeEntry> {

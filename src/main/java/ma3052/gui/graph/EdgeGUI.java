@@ -1,11 +1,11 @@
-package ma3052.gui;
+package ma3052.gui.graph;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import ma3052.graph.Edge;
+import ma3052.core.graph.Edge;
 
 public class EdgeGUI {
     // Edge
