@@ -127,6 +127,7 @@ public class EdgeGUI {
             Point2D offset = new Point2D(Math.sin(angleRad), -Math.cos(angleRad)).multiply(15 + lineWidth);
 
             String weightString = Double.toString(edge.getWeight());
+            weightString = weightString.replace("Infinity", "∞");
             double textX = middlePosition.getX() + offset.getX();
             double textY = middlePosition.getY() + offset.getY();
 

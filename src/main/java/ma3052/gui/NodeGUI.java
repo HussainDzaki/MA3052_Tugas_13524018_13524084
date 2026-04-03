@@ -192,6 +192,7 @@ public class NodeGUI {
 
             // Center the text
             String valueString = Double.toString(node.getValue());
+            valueString = valueString.replace("Infinity", "∞");
             double valueWidth = valueString.length() * 7;
             double valueX = position.getX() - valueWidth / 2;
             double valueY = position.getY() + 5;
@@ -204,6 +205,7 @@ public class NodeGUI {
 
             // Draw value in the center
             String valueString = Double.toString(node.getValue());
+            valueString = valueString.replace("Infinity", "∞");
             double valueWidth = valueString.length() * 7;
             double valueX = position.getX() - valueWidth / 2;
             double valueY = position.getY() + 5;
