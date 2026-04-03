@@ -28,7 +28,7 @@ public class GraphGUI {
         Delete, // Delete node and edges
     }
 
-    private Mode mode = Mode.Add;
+    private Mode mode = Mode.Lock;
 
     // Graph data structure
     private Canvas canvas;

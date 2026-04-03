@@ -120,8 +120,8 @@
                         <padding>
                             <Insets bottom="1"/>
                         </padding>
-                        <Button fx:id="btnAddMode" onAction="#switchToAddMode" text="Add" styleClass="button-light-blue"/>
-                        <Button fx:id="btnLockMode" onAction="#switchToLockMode" text="Lock" styleClass="button-dark-blue"/>
+                        <Button fx:id="btnLockMode" onAction="#switchToLockMode" text="Lock" styleClass="button-light-blue"/>
+                        <Button fx:id="btnAddMode" onAction="#switchToAddMode" text="Add" styleClass="button-dark-blue"/>
                         <Button fx:id="btnDeleteMode" onAction="#switchToDeleteMode" text="Delete" styleClass="button-dark-blue"/>
                         <Button fx:id="btnEditMode" onAction="#switchToEditMode" text="Edit" styleClass="button-dark-blue"/>
                     </HBox>
