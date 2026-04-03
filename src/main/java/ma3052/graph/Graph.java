@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.scene.control.Button;
+
 public class Graph {
     private ArrayList<Node> nodeList;
     private ArrayList<Edge> edgeList;
@@ -344,7 +346,7 @@ public class Graph {
         for (Node node : nodeList) {
             for (Edge edge : node.getAdjacencyList()) {
                 if (!hasEdge(edge.getDestination(), edge.getSource())) {
-                    addEdge(edge.getDestination(), edge.getSource());
+                    edge.getDestination().addEdge(edge.getSource());
                 }
             }
         }
