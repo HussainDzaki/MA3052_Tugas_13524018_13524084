@@ -118,11 +118,17 @@ public class GraphInputController {
             String str = inputCount.getValue();
             if (str.equals("Node and Edge Count")) {
                 FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.NodeAndEdgeCount);
+                addNodeFromEdge.setDisable(false);
             } else if (str.equals("Only Node Count")) {
                 FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.OnlyNodeCount);
+                addNodeFromEdge.setDisable(false);
             } else if (str.equals("Only Edge Count")) {
                 FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.OnlyEdgeCount);
+                addNodeFromEdge.setSelected(true);
+                addNodeFromEdge.setDisable(true);
             } else if (str.equals("No Explicit Count")) {
+                addNodeFromEdge.setSelected(true);
+                addNodeFromEdge.setDisable(true);
                 FormatGraphInput.setCurrentCountOption(FormatGraphInput.InputCountOption.NoExplicitCount);
             }
             updateFormat();
