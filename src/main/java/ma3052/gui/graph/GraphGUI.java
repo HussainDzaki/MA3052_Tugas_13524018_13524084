@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Manages the visualization and interaction with graph data structure
  */
-
 public class GraphGUI {
     // What to do when canvas is interacted
     public static enum Mode {
@@ -60,6 +59,9 @@ public class GraphGUI {
     private volatile boolean isDrawing = true;
 
     private ScheduledThreadPoolExecutor threadPoolExecutor;
+
+    // Canvas Update
+    private Runnable onGraphUpdateRunnable = null;
 
     // Node dragging
     private boolean isDragging = false;
@@ -136,6 +138,10 @@ public class GraphGUI {
 
     public void setMode(Mode mode) {
         this.mode = mode;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 
     public Graph getGraph() {
@@ -243,6 +249,9 @@ public class GraphGUI {
 
     public void setDrawEdgeWeight(boolean drawEdgeWeight) {
         this.drawEdgeWeight = drawEdgeWeight;
+        for (Edge edge : getGraph().getEdgeList()) {
+            getEdgeGUI(edge).setDrawWeight(drawEdgeWeight);
+        }
     }
 
     public boolean isDrawNodeValue() {
@@ -458,6 +467,9 @@ public class GraphGUI {
                         addNode(newNode);
                         NodeGUI newNodeGUI = getNodeGUI(newNode);
                         newNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
+                        if (onGraphUpdateRunnable != null) {
+                            onGraphUpdateRunnable.run();
+                        }
                     } else {
                         sourceNodeGUI = nodeGUI;
                         dummyEdgeGUI = new EdgeGUI(null, sourceNodeGUI, dummyNodeGUI);
@@ -465,6 +477,9 @@ public class GraphGUI {
                 } else {
                     if (nodeGUI != null) {
                         addEdge(sourceNodeGUI.getNode(), nodeGUI.getNode());
+                        if (onGraphUpdateRunnable != null) {
+                            onGraphUpdateRunnable.run();
+                        }
                     }
                     sourceNodeGUI = null;
                     dummyEdgeGUI = null;
@@ -476,16 +491,19 @@ public class GraphGUI {
             case Delete:
                 if (nodeGUI != null) {
                     removeNode(nodeGUI.getNode());
+                    if (onGraphUpdateRunnable != null) {
+                        onGraphUpdateRunnable.run();
+                    }
                 } else if (edgeGUI != null) {
                     removeEdge(edgeGUI.getEdge());
+                    if (onGraphUpdateRunnable != null) {
+                        onGraphUpdateRunnable.run();
+                    }
                 }
                 break;
 
             default:
                 break;
-        }
-        if (GraphVisualGUIController.instance != null) {
-            GraphVisualGUIController.instance.updateListFromGraph();
         }
     }
 
@@ -504,6 +522,16 @@ public class GraphGUI {
             }
         }
         dummyNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
+    }
+
+    public void updateGraph() {
+        if (onGraphUpdateRunnable != null) {
+            onGraphUpdateRunnable.run();
+        }
+    }
+
+    public void setOnGraphUpdate(Runnable runnable) {
+        onGraphUpdateRunnable = runnable;
     }
 
     /**

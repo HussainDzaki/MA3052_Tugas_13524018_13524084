@@ -10,15 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import ma3052.App;
-import ma3052.gui.graph.EdgeGUI;
 
-public class GraphInputController {
+public class AdvancedInputController {
+    private GraphVisualGUIController mainController;
+
     @FXML
     private ComboBox<String> nodeLabel;
 
@@ -176,11 +173,10 @@ public class GraphInputController {
             if (selectedFile != null) {
                 Platform.runLater(() -> {
                     try {
-                        if (GraphVisualGUIController.instance != null) {
-                            GraphVisualGUIController.instance
-                                    .setGraph(FormatGraphInput.inputGraphFromFile(selectedFile));
-                            GraphVisualGUIController.instance.switchWeightedGraph(edgeWeight.isSelected());
-                            GraphVisualGUIController.instance.updateListFromGraph();
+                        if (mainController != null) {
+                            mainController.setGraph(FormatGraphInput.inputGraphFromFile(selectedFile));
+                            mainController.getGraphGUI().setDrawEdgeWeight(edgeWeight.isSelected());
+                            mainController.getGraphGUI().updateGraph();
                             ((Stage) (applyInputButton.getScene().getWindow())).close();
                         }
                     } catch (IOException e) {
@@ -194,9 +190,9 @@ public class GraphInputController {
 
         getCurrentGraphButton.setOnAction(event -> {
             try {
-                if (GraphVisualGUIController.instance != null) {
+                if (mainController != null) {
                     inputTextArea
-                            .setText(FormatGraphInput.graphToInputString(GraphVisualGUIController.instance.getGraph()));
+                            .setText(FormatGraphInput.graphToInputString(mainController.getGraph()));
                 }
             } catch (IllegalArgumentException e) {
                 showError(e.getMessage());
@@ -206,11 +202,11 @@ public class GraphInputController {
         applyInputButton.setOnAction(event -> {
             Platform.runLater(() -> {
                 try {
-                    if (GraphVisualGUIController.instance != null) {
-                        GraphVisualGUIController.instance
+                    if (mainController != null) {
+                        mainController
                                 .setGraph(FormatGraphInput.inputGraphFromString(inputTextArea.getText()));
-                        GraphVisualGUIController.instance.switchWeightedGraph(edgeWeight.isSelected());
-                        GraphVisualGUIController.instance.updateListFromGraph();
+                        mainController.getGraphGUI().setDrawEdgeWeight(edgeWeight.isSelected());
+                        mainController.getGraphGUI().updateGraph();
                         ((Stage) (applyInputButton.getScene().getWindow())).close();
                     }
                 } catch (IOException e) {
@@ -246,14 +242,18 @@ public class GraphInputController {
         });
     }
 
+    public void setMainController(GraphVisualGUIController mainController) {
+        this.mainController = mainController;
+    }
+
     private void updateFormat() {
         formatTextArea.setText(FormatGraphInput.getFormatString());
     }
 
     private void updateInputFromGraph() {
-        if (GraphVisualGUIController.instance != null) {
+        if (mainController != null) {
             inputTextArea
-                    .setText(FormatGraphInput.graphToInputString(GraphVisualGUIController.instance.getGraph()));
+                    .setText(FormatGraphInput.graphToInputString(mainController.getGraph()));
         }
     }
 

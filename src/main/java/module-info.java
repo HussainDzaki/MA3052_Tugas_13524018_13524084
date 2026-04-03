@@ -5,8 +5,10 @@ module ma3052 {
 
     opens ma3052 to javafx.fxml;
     opens ma3052.gui.controller to javafx.fxml;
+    opens ma3052.gui.graph to javafx.fxml;
     opens ma3052.core.graph to javafx.fxml;
     exports ma3052;
     exports ma3052.gui.controller;
+    exports ma3052.gui.graph;
     exports ma3052.core.graph;
 }

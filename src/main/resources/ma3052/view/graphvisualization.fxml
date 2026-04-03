@@ -26,86 +26,12 @@
                     <padding>
                         <Insets bottom="5" left="5" right="5" top="5" />
                     </padding>
-                    <HBox styleClass="bg-dark-blue,rounded">
-                        <padding>
-                            <Insets bottom="1"/>
-                        </padding>
-                        <Button fx:id="btnNodeAndEdges" alignment="CENTER" onAction="#switchToNodeAndEdges"
-                        prefHeight="60.0" prefWidth="500.0" text="Node and Edges"
-                        styleClass="button-light-blue,h3"/>
-                        <Button fx:id="btnSwitchToGrid" alignment="CENTER" onAction="#switchToGrid"
-                        prefHeight="60.0" prefWidth="500.0" text="Grid"
-                        styleClass="button-dark-blue,h3"/>
-                    </HBox>
                 </HBox>
             </children>
         </VBox>
     </top>
     <left>
-        <!-- LEFT: Control Menu -->
-        <VBox prefWidth="320.0">
-            <padding>
-                <Insets bottom="15" left="15" right="15" top="10" />
-            </padding>
-            <VBox styleClass="bg-light-orange,rounded" spacing="20" VBox.vgrow="ALWAYS">
-                <padding>
-                    <Insets bottom="10" left="15" right="15" top="10" />
-                </padding>
-                <VBox spacing="10" >
-                    <!-- Header -->
-                    <VBox>
-                        <Label text="Input" styleClass="h2,dark-blue,lexend-bold"/>
-                        <Separator/>
-                    </VBox>
-                    <!-- Node Management Section -->
-                    <VBox fx:id="addNodeVbox" spacing="5">
-                        <Label text="Add Node" styleClass="dark-blue,lexend-bold"/>
-                        <HBox spacing="8" alignment="CENTER">
-                            <VBox spacing="4">
-                                <TextField fx:id="nodeInput" prefWidth="200.0" promptText="Enter node name" />
-                                <TextField fx:id="nodeValueInput" prefWidth="200.0" promptText="Value (optional)" />
-                            </VBox>
-                            <Button fx:id="addNodeButton" minWidth="80.0" onAction="#handleAddNode" text="Add" styleClass="button-light-blue"/>
-                        </HBox>
-                    </VBox>
-                    <!-- Edge Management Section -->
-                    <VBox fx:id="addEdgeVbox" spacing="5">
-                        <Label fx:id="labelAddEdge" text="Add Edge" styleClass="dark-blue,lexend-bold"/>
-                        <HBox spacing="8" alignment="CENTER">
-                            <VBox spacing="4">
-                                <HBox spacing="8">
-                                    <TextField fx:id="edgeStartInput" prefWidth="120.0" promptText="Start" />
-                                    <TextField fx:id="edgeEndInput" prefWidth="120.0" promptText="End" />
-                                </HBox>
-                                <TextField fx:id="edgeWeightInput" prefWidth="120.0" promptText="Weight (Optional)" />
-                            </VBox>
-                            <Button fx:id="addEdgeButton" minWidth="80.0" onAction="#handleAddEdge" text="Add" styleClass="button-light-blue"/>
-                        </HBox>
-                    </VBox>
-                    <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Formatted Input (.txt)" styleClass="button-blue" />
-                    <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" text="Input From .txt" styleClass="button-blue"/>
-                    <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" text="Clear Graph" styleClass="button-red" />
-                    <HBox fx:id="nodeEdgeListHbox" spacing="15">
-                        <VBox spacing="8" HBox.hgrow="ALWAYS">
-                            <Label text="Node List" styleClass="dark-blue,lexend-bold"/>
-                            <TextArea fx:id="nodeListTextArea" prefHeight="200" styleClass="monospace"/>
-                        </VBox>
-                        <VBox spacing="8" HBox.hgrow="ALWAYS">
-                            <Label text="Edge List" styleClass="dark-blue,lexend-bold"/>
-                            <TextArea fx:id="edgeListTextArea" prefHeight="200" styleClass="monospace"/>
-                        </VBox>
-                    </HBox>
-                </VBox>
-                <VBox spacing="10">
-                    <!-- Header -->
-                    <VBox>
-                        <Label text="Config" styleClass="h2,dark-blue,lexend-bold"/>
-                        <Separator/>
-                    </VBox>
-                    <CheckBox fx:id="directedCheckBox" text="Directed" />
-                </VBox>
-            </VBox>
-        </VBox>
+        <fx:include source="graph-input-menu.fxml" fx:id="graphInputMenu"/>
     </left>
     <center>
         <VBox spacing="10">
