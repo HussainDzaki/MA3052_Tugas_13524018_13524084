@@ -15,6 +15,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import ma3052.App;
 import ma3052.core.algorithm.CycleDetector;
@@ -137,6 +138,12 @@ public class GraphVisualGUIController {
     private VBox addNodeVbox;
 
     @FXML
+    private VBox addEdgeVbox;
+
+    @FXML
+    private HBox nodeEdgeListHbox;
+
+    @FXML
     private Label labelSpeedSlider;
 
     @FXML
@@ -206,6 +213,25 @@ public class GraphVisualGUIController {
 
         advancedInput.setVisible(true);
         advancedInput.setManaged(true);
+
+        nodeInput.setOnAction((event) -> {
+            nodeValueInput.requestFocus();
+        });
+        nodeValueInput.setOnAction((event) -> {
+            nodeInput.requestFocus();
+            handleAddNode();
+        });
+
+        edgeStartInput.setOnAction((event) -> {
+            edgeEndInput.requestFocus();
+        });
+        edgeEndInput.setOnAction((event) -> {
+            edgeWeightInput.requestFocus();
+        });
+        edgeWeightInput.setOnAction((event) -> {
+            edgeStartInput.requestFocus();
+            handleAddEdge();
+        });
 
         nodeListTextArea.textProperty().addListener((observable) -> {
             if (updateGraphFromListTimer != null) {
@@ -399,7 +425,7 @@ public class GraphVisualGUIController {
     private void handleAdvancedInput() {
         try {
             // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ma3052/advancedinput.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/advancedinput.fxml"));
             Parent root = loader.load();
 
             // Create scene
@@ -865,41 +891,24 @@ public class GraphVisualGUIController {
         if (mode == ModeGUI.NODE_AND_EDGES_MODE)
             return;
         mode = ModeGUI.NODE_AND_EDGES_MODE;
-        updateAlgorithmComboForMode();
-        startNodeInput.setVisible(true);
-        startNodeInput.setManaged(true);
 
-        labelStartNode.setVisible(true);
-        labelStartNode.setManaged(true);
-        endNodeInput.setVisible(true);
-        endNodeInput.setManaged(true);
-        labelEndNode.setVisible(true);
-        labelEndNode.setManaged(true);
         addNodeVbox.setVisible(true);
         addNodeVbox.setManaged(true);
+        
+        addEdgeVbox.setVisible(true);
+        addEdgeVbox.setManaged(true);
 
-        edgeStartInput.setVisible(true);
-        edgeStartInput.setManaged(true);
-        edgeEndInput.setVisible(true);
-        edgeEndInput.setManaged(true);
-        edgeWeightInput.setVisible(true);
-        edgeWeightInput.setManaged(true);
-
-        addEdgeButton.setVisible(true);
-        addEdgeButton.setManaged(true);
-        labelSpeedSlider.setVisible(true);
-        labelSpeedSlider.setManaged(true);
-
-        speedSlider.setVisible(true);
-        speedSlider.setManaged(true);
-        labelAddEdge.setText("Add Edge: ");
+        nodeEdgeListHbox.setVisible(true);
+        nodeEdgeListHbox.setManaged(true);
 
         addFromFile.setVisible(false);
         addFromFile.setManaged(false);
-
+        
         advancedInput.setVisible(true);
         advancedInput.setManaged(true);
 
+        updateAlgorithmComboForMode();
+        
         btnNodeAndEdges.getStyleClass().add("button-light-blue");
         btnNodeAndEdges.getStyleClass().remove("button-dark-blue");
         btnSwitchToGrid.getStyleClass().add("button-dark-blue");
@@ -922,32 +931,15 @@ public class GraphVisualGUIController {
         if (mode == ModeGUI.GRID_MODE)
             return;
         mode = ModeGUI.GRID_MODE;
-        startNodeInput.setVisible(false);
-        startNodeInput.setManaged(false);
-        labelStartNode.setVisible(false);
-        labelStartNode.setManaged(false);
-        endNodeInput.setVisible(false);
-        endNodeInput.setManaged(false);
-        labelEndNode.setVisible(false);
-        labelEndNode.setManaged(false);
         addNodeVbox.setVisible(false);
         addNodeVbox.setManaged(false);
 
-        edgeStartInput.setVisible(false);
-        edgeStartInput.setManaged(false);
-        edgeEndInput.setVisible(false);
-        edgeEndInput.setManaged(false);
-        edgeWeightInput.setVisible(false);
-        edgeWeightInput.setManaged(false);
-        labelSpeedSlider.setVisible(false);
-        labelSpeedSlider.setManaged(false);
-        labelAddEdge.setText("Grid Set Up");
+        addEdgeVbox.setVisible(false);
+        addEdgeVbox.setManaged(false);
 
-        addEdgeButton.setVisible(false);
-        addEdgeButton.setManaged(false);
+        nodeEdgeListHbox.setVisible(false);
+        nodeEdgeListHbox.setManaged(false);
 
-        speedSlider.setVisible(false);
-        speedSlider.setManaged(false);
         updateAlgorithmComboForMode();
 
         addFromFile.setVisible(true);
