@@ -139,6 +139,9 @@ public class GraphVisualGUIController {
     @FXML
     private Label labelSpeedSlider;
 
+    @FXML
+    private CheckBox directedCheckBox;
+
     public enum ModeGUI {
         NODE_AND_EDGES_MODE, GRID_MODE;
     }
@@ -231,6 +234,10 @@ public class GraphVisualGUIController {
                 }
 
             }, 500);
+        });
+
+        directedCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            graphGUI.getGraph().setDirected(newValue);
         });
 
         // Log initialization
@@ -739,6 +746,9 @@ public class GraphVisualGUIController {
                 PrimsAnimation.animate(graphGUI);
                 break;
             case "Djikstra":
+                if (!validateStartingNode(startNodeName) && !validateEndNode(endNodeName)) {
+                    return;
+                }
                 DijkstraAnimation.animate(graphGUI, startNodeName, endNodeName);
             default:
                 break;
@@ -858,6 +868,7 @@ public class GraphVisualGUIController {
         updateAlgorithmComboForMode();
         startNodeInput.setVisible(true);
         startNodeInput.setManaged(true);
+
         labelStartNode.setVisible(true);
         labelStartNode.setManaged(true);
         endNodeInput.setVisible(true);
@@ -866,10 +877,14 @@ public class GraphVisualGUIController {
         labelEndNode.setManaged(true);
         addNodeVbox.setVisible(true);
         addNodeVbox.setManaged(true);
+
         edgeStartInput.setVisible(true);
         edgeStartInput.setManaged(true);
         edgeEndInput.setVisible(true);
         edgeEndInput.setManaged(true);
+        edgeWeightInput.setVisible(true);
+        edgeWeightInput.setManaged(true);
+
         addEdgeButton.setVisible(true);
         addEdgeButton.setManaged(true);
         labelSpeedSlider.setVisible(true);
@@ -922,6 +937,8 @@ public class GraphVisualGUIController {
         edgeStartInput.setManaged(false);
         edgeEndInput.setVisible(false);
         edgeEndInput.setManaged(false);
+        edgeWeightInput.setVisible(false);
+        edgeWeightInput.setManaged(false);
         labelSpeedSlider.setVisible(false);
         labelSpeedSlider.setManaged(false);
         labelAddEdge.setText("Grid Set Up");
