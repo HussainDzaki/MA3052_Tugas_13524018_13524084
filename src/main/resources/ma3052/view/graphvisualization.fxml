@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.controller.GraphVisualGUIController" stylesheets="@css/GUI.css,@css/Lexend.css">
+<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.gui.controller.GraphVisualGUIController" stylesheets="@../css/GUI.css,@../css/Lexend.css">
     <top>
         <VBox prefHeight="80.0" prefWidth="Infinity" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-light-orange,rounded">
             <padding>
@@ -85,7 +85,7 @@
                     <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Formatted Input (.txt)" styleClass="button-blue" />
                     <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" text="Input From .txt" styleClass="button-blue"/>
                     <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" text="Clear Graph" styleClass="button-red" />
-                    <HBox spacing="15">
+                    <HBox fx:id="nodeEdgeListHbox" spacing="15">
                         <VBox spacing="8" HBox.hgrow="ALWAYS">
                             <Label text="Node List" styleClass="dark-blue,lexend-bold"/>
                             <TextArea fx:id="nodeListTextArea" prefHeight="200" styleClass="monospace"/>
