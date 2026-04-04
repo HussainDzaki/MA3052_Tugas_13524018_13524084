@@ -59,50 +59,6 @@
         </VBox>
     </center>
     <right>
-        <VBox prefWidth="320.0">
-            <padding>
-                <Insets bottom="15" left="15" right="15" top="10" />
-            </padding>
-            <VBox spacing="20" styleClass="bg-light-orange,rounded" VBox.vgrow="ALWAYS">
-                <padding>
-                    <Insets bottom="15" left="15" right="15" top="10" />
-                </padding>
-                <!-- Algorithm Execution Section -->
-                <VBox spacing="10">
-                    <VBox>
-                        <Label text="Algorithm" styleClass="h2,dark-blue,lexend-bold"/>
-                        <Separator/>
-                    </VBox>
-                    <VBox spacing="5">
-                        <Label text="Algorithm Type:" styleClass="dark-blue,lexend-bold"/>
-                        <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" styleClass="bg-white,border-medium,border-black,rounded"/>
-                    </VBox>
-                    <VBox spacing="5">
-                        <Label fx:id="labelStartNode" text="Start Node:" styleClass="dark-blue,lexend-bold" />
-                        <TextField fx:id="startNodeInput" promptText="Enter starting node" />
-                    </VBox>
-                    <VBox spacing="5">
-                        <Label fx:id="labelEndNode" text="End Node:" styleClass="dark-blue,lexend-bold"/>
-                        <TextField fx:id="endNodeInput" promptText="Enter ending node" />
-                    </VBox>
-                    <VBox spacing="5">
-                        <Label fx:id="labelSpeedSlider" text="Speed: (x1)" styleClass="dark-blue,lexend-bold" />
-                        <Slider fx:id="speedSlider" 
-                                max="3" min="-2" value="0"
-                                showTickLabels="false" showTickMarks="true" 
-                                majorTickUnit="1.0" minorTickCount="0" 
-                                blockIncrement="1.0" snapToTicks="true"/>
-                        <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-blue"/>
-                    </VBox>
-                </VBox>
-                <VBox spacing="10">
-                    <VBox>
-                        <Label text="Execution Log" styleClass="h2,dark-blue,lexend-bold" />
-                        <Separator/>
-                    </VBox>
-                    <TextArea fx:id="logArea" editable="false" prefHeight="585.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
-                </VBox>
-            </VBox>
-        </VBox>
+        <fx:include source="GraphAlgorithmMenu.fxml" fx:id="graphAlgorithmMenu"/>
     </right>
 </BorderPane>

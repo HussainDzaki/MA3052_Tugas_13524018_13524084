@@ -7,37 +7,23 @@ import javafx.geometry.Point2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import ma3052.App;
-import ma3052.core.algorithm.CycleDetector;
-import ma3052.core.algorithm.GraphComponent;
-import ma3052.core.algorithm.IslandCounter;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.GridGraph;
 import ma3052.core.graph.Node;
-import ma3052.gui.animation.*;
 import ma3052.gui.controller.GraphVisualizationController.ModeGUI;
-import ma3052.gui.graph.EdgeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.GridGraphGUI;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class GraphInputMenuController {
     private GraphVisualizationController mainController;
@@ -96,7 +82,7 @@ public class GraphInputMenuController {
     @FXML
     private CheckBox directedCheckBox;
 
-    // Timer
+    // Graph
     private GraphGUI graphGUI;
     private GridGraphGUI gridGraphGUI;
     private Timer updateGraphFromListTimer;
@@ -310,26 +296,30 @@ public class GraphInputMenuController {
 
     @FXML
     private void handleAdvancedInput() {
+
         try {
             // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/AdvancedInput.fxml"));
-            ((AdvancedInputController) loader.<AdvancedInputController>getController())
-                    .setMainController(mainController);
-            ;
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GraphVisualization.fxml"));
             Parent root = loader.load();
+            Scene scene = new Scene(root);
 
-            // Create scene
-            Scene scene = new Scene(root, 700, 500);
+            App.primaryStage.setScene(scene);
+            // ((AdvancedInputController) loader.<AdvancedInputController>getController())
+            // .setMainController(mainController);
+            // Parent root = loader.load();
 
-            // Setup stage
-            Stage stage = new Stage();
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(advancedInput.getScene().getWindow());
-            stage.setTitle("Advanced Input");
-            stage.setScene(scene);
-            stage.setWidth(900);
-            stage.setHeight(600);
-            stage.showAndWait();
+            // // Create scene
+            // Scene scene = new Scene(root, 700, 500);
+
+            // // Setup stage
+            // Stage stage = new Stage();
+            // stage.initModality(Modality.WINDOW_MODAL);
+            // stage.initOwner(advancedInput.getScene().getWindow());
+            // stage.setTitle("Advanced Input");
+            // stage.setScene(scene);
+            // stage.setWidth(900);
+            // stage.setHeight(600);
+            // stage.showAndWait();
         } catch (IOException e) {
             mainController.showError(e.getMessage());
         }
