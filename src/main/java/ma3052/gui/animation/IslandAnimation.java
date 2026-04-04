@@ -4,9 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import ma3052.graph.GridGraph;
-import ma3052.graph.Node;
-import ma3052.gui.GridGraphGUI;
+import ma3052.core.graph.GridGraph;
+import ma3052.core.graph.Node;
+import ma3052.gui.graph.GridGraphGUI;
 import javafx.util.Pair;
 
 import java.util.ArrayList;

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="ma3052.gui.controller.GraphAlgorithmMenuController"
+      stylesheets="@../css/GUI.css,@../css/Lexend.css"
+      prefWidth="320.0">
+    <padding>
+        <Insets bottom="15" left="15" right="15" top="10" />
+    </padding>
+    <VBox spacing="20" styleClass="bg-light-orange,rounded" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="15" left="15" right="15" top="10" />
+        </padding>
+        <!-- Algorithm Execution Section -->
+        <VBox spacing="10">
+            <VBox>
+                <Label text="Algorithm" styleClass="h2,dark-blue,lexend-bold"/>
+                <Separator/>
+            </VBox>
+            <VBox spacing="5">
+                <Label text="Algorithm Type:" styleClass="dark-blue,lexend-bold"/>
+                <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" styleClass="bg-white,border-medium,border-black,rounded"/>
+            </VBox>
+            <VBox spacing="5">
+                <Label fx:id="labelStartNode" text="Start Node:" styleClass="dark-blue,lexend-bold" />
+                <TextField fx:id="startNodeInput" promptText="Enter starting node" />
+            </VBox>
+            <VBox spacing="5">
+                <Label fx:id="labelEndNode" text="End Node:" styleClass="dark-blue,lexend-bold"/>
+                <TextField fx:id="endNodeInput" promptText="Enter ending node" />
+            </VBox>
+            <VBox spacing="5">
+                <Label fx:id="labelSpeedSlider" text="Speed: (x1)" styleClass="dark-blue,lexend-bold" />
+                <Slider fx:id="speedSlider" 
+                                max="3" min="-2" value="0"
+                                showTickLabels="false" showTickMarks="true" 
+                                majorTickUnit="1.0" minorTickCount="0" 
+                                blockIncrement="1.0" snapToTicks="true"/>
+                <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-blue"/>
+            </VBox>
+        </VBox>
+        <VBox spacing="10">
+            <VBox>
+                <Label text="Execution Log" styleClass="h2,dark-blue,lexend-bold" />
+                <Separator/>
+            </VBox>
+            <TextArea fx:id="logArea" editable="false" prefHeight="585.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
+        </VBox>
+    </VBox>
+</VBox>

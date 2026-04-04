@@ -21,7 +21,7 @@ public class App extends Application {
         loadFonts();
 
         // Load the FXML file
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("graphvisualization.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GraphVisualization.fxml"));
         Parent root = loader.load();
         
         // Create scene

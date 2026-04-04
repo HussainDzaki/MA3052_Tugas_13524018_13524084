@@ -8,13 +8,13 @@ import java.util.Map;
 
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
-import ma3052.controller.GraphVisualGUIController;
-import ma3052.graph.Edge;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
-import ma3052.gui.EdgeGUI;
-import ma3052.gui.GraphGUI;
-import ma3052.gui.NodeGUI;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
+import ma3052.gui.controller.GraphVisualizationController;
+import ma3052.gui.graph.EdgeGUI;
+import ma3052.gui.graph.GraphGUI;
+import ma3052.gui.graph.NodeGUI;
 
 public class PathAnimation {
     private static volatile long animationStepTime = 500; // in milliseconds
@@ -24,7 +24,7 @@ public class PathAnimation {
     }
 
     public static void animateDFS(GraphGUI graphGUI, String startNode, String endNode) {
-        if (GraphVisualGUIController.instance == null)
+        if (GraphVisualizationController.instance == null)
             return;
 
         try {
@@ -71,7 +71,7 @@ public class PathAnimation {
                     if (edgeGUI2 != null) {
                         edgeGUI2.setLineColor(Color.ORANGE);
                     }
-                    GraphVisualGUIController.instance
+                    GraphVisualizationController.instance
                             .logMessage("[Step " + step + "] Visiting: " + nodeToDraw.getNode().getNodeName());
                 });
 
@@ -141,15 +141,16 @@ public class PathAnimation {
                     }
                 }
 
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-                GraphVisualGUIController.instance.logMessage("DFS Complete! Visited " + visited.size() + " nodes");
-                GraphVisualGUIController.instance.logMessage("Path: " + pathString);
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("DFS Complete! Visited " + visited.size() + " nodes");
+                GraphVisualizationController.instance.logMessage("Path: " + pathString);
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
             } else {
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-                GraphVisualGUIController.instance.logMessage("DFS Complete! Visited " + visited.size() + " nodes");
-                GraphVisualGUIController.instance.logMessage("There is no path from " + startNode + " to " + endNode);
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("DFS Complete! Visited " + visited.size() + " nodes");
+                GraphVisualizationController.instance
+                        .logMessage("There is no path from " + startNode + " to " + endNode);
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -157,7 +158,7 @@ public class PathAnimation {
     }
 
     public static void animateBFS(GraphGUI graphGUI, String startNode, String endNode) {
-        if (GraphVisualGUIController.instance == null)
+        if (GraphVisualizationController.instance == null)
             return;
 
         try {
@@ -204,7 +205,7 @@ public class PathAnimation {
                     if (edgeGUI2 != null) {
                         edgeGUI2.setLineColor(Color.ORANGE);
                     }
-                    GraphVisualGUIController.instance
+                    GraphVisualizationController.instance
                             .logMessage("[Step " + step + "] Visiting: " + nodeToDraw.getNode().getNodeName());
                 });
 
@@ -274,15 +275,16 @@ public class PathAnimation {
                     }
                 }
 
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-                GraphVisualGUIController.instance.logMessage("BFS Complete! Visited " + visited.size() + " nodes");
-                GraphVisualGUIController.instance.logMessage("Path: " + pathString);
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("BFS Complete! Visited " + visited.size() + " nodes");
+                GraphVisualizationController.instance.logMessage("Path: " + pathString);
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
             } else {
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-                GraphVisualGUIController.instance.logMessage("BFS Complete! Visited " + visited.size() + " nodes");
-                GraphVisualGUIController.instance.logMessage("There is no path from " + startNode + " to " + endNode);
-                GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+                GraphVisualizationController.instance.logMessage("BFS Complete! Visited " + visited.size() + " nodes");
+                GraphVisualizationController.instance
+                        .logMessage("There is no path from " + startNode + " to " + endNode);
+                GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

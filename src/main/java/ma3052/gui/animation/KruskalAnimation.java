@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
-import ma3052.controller.GraphVisualGUIController;
-import ma3052.dsu.DisjointSetUnion;
-import ma3052.graph.Edge;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
-import ma3052.gui.EdgeGUI;
-import ma3052.gui.GraphGUI;
-import ma3052.gui.NodeGUI;
+import ma3052.core.dsu.DisjointSetUnion;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
+import ma3052.gui.controller.GraphVisualizationController;
+import ma3052.gui.graph.EdgeGUI;
+import ma3052.gui.graph.GraphGUI;
+import ma3052.gui.graph.NodeGUI;
 
 public class KruskalAnimation {
     private static volatile long animationStepTime = 500; // in milliseconds
@@ -21,7 +21,7 @@ public class KruskalAnimation {
     }
 
     public static void animate(GraphGUI graphGUI) {
-        if (GraphVisualGUIController.instance == null)
+        if (GraphVisualizationController.instance == null)
             return;
 
         try {
@@ -60,7 +60,7 @@ public class KruskalAnimation {
                         if (edgeGUI != null) {
                             edgeGUI.setLineColor(Color.ORANGE);
                         }
-                        GraphVisualGUIController.instance
+                        GraphVisualizationController.instance
                                 .logMessage("[Step " + step + "] Checking edge ("
                                         + u.getNodeName() + ", " + v.getNodeName() + ")"
                                         + " -> YES");
@@ -72,7 +72,7 @@ public class KruskalAnimation {
                         if (edgeGUI != null) {
                             edgeGUI.setLineColor(Color.GRAY);
                         }
-                        GraphVisualGUIController.instance
+                        GraphVisualizationController.instance
                                 .logMessage("[Step " + step + "] Checking edge ("
                                         + u.getNodeName() + ", " + v.getNodeName() + ")"
                                         + " -> NO");
@@ -82,10 +82,10 @@ public class KruskalAnimation {
                 // Waiting... so you can actually see what's happening
             }
 
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-            GraphVisualGUIController.instance.logMessage("Kruskal's Algorithm Completed!");
-            GraphVisualGUIController.instance.logMessage("Total Weight of Spanning Tree: " + totalWeight);
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("Kruskal's Algorithm Completed!");
+            GraphVisualizationController.instance.logMessage("Total Weight of Spanning Tree: " + totalWeight);
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

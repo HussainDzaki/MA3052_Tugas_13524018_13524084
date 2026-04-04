@@ -9,13 +9,13 @@ import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
-import ma3052.controller.GraphVisualGUIController;
-import ma3052.graph.Edge;
-import ma3052.graph.Graph;
-import ma3052.graph.Node;
-import ma3052.gui.EdgeGUI;
-import ma3052.gui.GraphGUI;
-import ma3052.gui.NodeGUI;
+import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
+import ma3052.core.graph.Node;
+import ma3052.gui.controller.GraphVisualizationController;
+import ma3052.gui.graph.EdgeGUI;
+import ma3052.gui.graph.GraphGUI;
+import ma3052.gui.graph.NodeGUI;
 
 public class ComponentAnimation {
      private static volatile long animationStepTime = 500; // in milliseconds
@@ -25,7 +25,7 @@ public class ComponentAnimation {
      }
 
      public static void animate(GraphGUI graphGUI) {
-          if (GraphVisualGUIController.instance == null)
+          if (GraphVisualizationController.instance == null)
                return;
 
           try {
@@ -89,7 +89,7 @@ public class ComponentAnimation {
                               if (edgeGUI2 != null) {
                                    edgeGUI2.setLineColor(Color.ORANGE);
                               }
-                              GraphVisualGUIController.instance
+                              GraphVisualizationController.instance
                                         .logMessage("[Step " + step + "] Visiting: "
                                                   + nodeToDraw.getNode().getNodeName());
                          });
@@ -100,10 +100,10 @@ public class ComponentAnimation {
                     biggestComponent = Math.max(currentSize, biggestComponent);
                }
 
-               GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-               GraphVisualGUIController.instance.logMessage("Total Component: " + totalComponent);
-               GraphVisualGUIController.instance.logMessage("Biggest Component Size: " + biggestComponent);
-               GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+               GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+               GraphVisualizationController.instance.logMessage("Total Component: " + totalComponent);
+               GraphVisualizationController.instance.logMessage("Biggest Component Size: " + biggestComponent);
+               GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
           } catch (InterruptedException e) {
                Thread.currentThread().interrupt();
           }

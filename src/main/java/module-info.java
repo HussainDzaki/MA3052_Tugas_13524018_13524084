@@ -4,9 +4,11 @@ module ma3052 {
     requires transitive javafx.graphics;
 
     opens ma3052 to javafx.fxml;
-    opens ma3052.controller to javafx.fxml;
-    opens ma3052.graph to javafx.fxml;
+    opens ma3052.gui.controller to javafx.fxml;
+    opens ma3052.gui.graph to javafx.fxml;
+    opens ma3052.core.graph to javafx.fxml;
     exports ma3052;
-    exports ma3052.controller;
-    exports ma3052.graph;
+    exports ma3052.gui.controller;
+    exports ma3052.gui.graph;
+    exports ma3052.core.graph;
 }
