@@ -14,7 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class AdvancedInputController {
-    private GraphVisualGUIController mainController;
+    private GraphVisualizationController mainController;
 
     @FXML
     private ComboBox<String> nodeLabel;
@@ -242,7 +242,7 @@ public class AdvancedInputController {
         });
     }
 
-    public void setMainController(GraphVisualGUIController mainController) {
+    public void setMainController(GraphVisualizationController mainController) {
         this.mainController = mainController;
     }
 

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.gui.controller.GraphVisualGUIController" stylesheets="@../css/GUI.css,@../css/Lexend.css">
+<BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ma3052.gui.controller.GraphVisualizationController" stylesheets="@../css/GUI.css,@../css/Lexend.css">
     <top>
         <VBox prefHeight="80.0" prefWidth="Infinity" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-light-orange,rounded">
             <padding>
@@ -31,7 +31,7 @@
         </VBox>
     </top>
     <left>
-        <fx:include source="graph-input-menu.fxml" fx:id="graphInputMenu"/>
+        <fx:include source="GraphInputMenu.fxml" fx:id="graphInputMenu"/>
     </left>
     <center>
         <VBox spacing="10">

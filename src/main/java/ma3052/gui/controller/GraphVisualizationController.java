@@ -42,8 +42,8 @@ import java.util.concurrent.TimeUnit;
  * Manages the visualization and interaction with graph data structure
  * with animated DFS/BFS algorithm visualization and force-directed layout
  */
-public class GraphVisualGUIController {
-    public static GraphVisualGUIController instance = null;
+public class GraphVisualizationController {
+    public static GraphVisualizationController instance = null;
 
     // Graph data structure
     private GraphGUI graphGUI;

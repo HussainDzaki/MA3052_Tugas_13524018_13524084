@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.Node;
-import ma3052.gui.controller.GraphVisualGUIController;
+import ma3052.gui.controller.GraphVisualizationController;
 import ma3052.gui.graph.EdgeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.NodeGUI;
@@ -25,7 +25,7 @@ public class TraversalAnimation {
     }
 
     public static void animateDFS(GraphGUI graphGUI, String startNode) {
-        if (GraphVisualGUIController.instance == null)
+        if (GraphVisualizationController.instance == null)
             return;
 
         try {
@@ -80,24 +80,24 @@ public class TraversalAnimation {
                     if (edgeGUI2 != null) {
                         edgeGUI2.setLineColor(Color.ORANGE);
                     }
-                    GraphVisualGUIController.instance
+                    GraphVisualizationController.instance
                             .logMessage("[Step " + step + "] Visiting: " + nodeToDraw.getNode().getNodeName());
                 });
 
                 // Waiting... so you can actually see what's happening
                 Thread.sleep((long) (animationStepTime));
             }
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-            GraphVisualGUIController.instance.logMessage("DFS Complete! Visited " + visited.size() + " nodes");
-            GraphVisualGUIController.instance.logMessage("Order: " + traversalOrder);
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("DFS Complete! Visited " + visited.size() + " nodes");
+            GraphVisualizationController.instance.logMessage("Order: " + traversalOrder);
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
 
     public static void animateBFS(GraphGUI graphGUI, String startNode) {
-        if (GraphVisualGUIController.instance == null)
+        if (GraphVisualizationController.instance == null)
             return;
 
         try {
@@ -153,17 +153,17 @@ public class TraversalAnimation {
                     if (edgeGUI2 != null) {
                         edgeGUI2.setLineColor(Color.ORANGE);
                     }
-                    GraphVisualGUIController.instance
+                    GraphVisualizationController.instance
                             .logMessage("[Step " + step + "] Visiting: " + nodeToDraw.getNode().getNodeName());
                 });
 
                 // Waiting... so you can actually see what's happening
                 Thread.sleep((long) (animationStepTime));
             }
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-            GraphVisualGUIController.instance.logMessage("BFS Complete! Visited " + visited.size() + " nodes");
-            GraphVisualGUIController.instance.logMessage("Order: " + traversalOrder);
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("BFS Complete! Visited " + visited.size() + " nodes");
+            GraphVisualizationController.instance.logMessage("Order: " + traversalOrder);
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

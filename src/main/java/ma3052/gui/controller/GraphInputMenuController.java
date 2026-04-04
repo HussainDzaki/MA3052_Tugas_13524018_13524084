@@ -28,7 +28,7 @@ import ma3052.core.graph.Graph;
 import ma3052.core.graph.GridGraph;
 import ma3052.core.graph.Node;
 import ma3052.gui.animation.*;
-import ma3052.gui.controller.GraphVisualGUIController.ModeGUI;
+import ma3052.gui.controller.GraphVisualizationController.ModeGUI;
 import ma3052.gui.graph.EdgeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.GridGraphGUI;
@@ -40,7 +40,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class GraphInputMenuController {
-    private GraphVisualGUIController mainController;
+    private GraphVisualizationController mainController;
 
     // Graph type
     @FXML
@@ -170,7 +170,7 @@ public class GraphInputMenuController {
         });
     }
 
-    public void setMainController(GraphVisualGUIController mainController) {
+    public void setMainController(GraphVisualizationController mainController) {
         this.mainController = mainController;
         graphGUI = mainController.getGraphGUI();
         gridGraphGUI = mainController.getGridGraphGUI();
@@ -312,7 +312,7 @@ public class GraphInputMenuController {
     private void handleAdvancedInput() {
         try {
             // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/advancedinput.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/AdvancedInput.fxml"));
             ((AdvancedInputController) loader.<AdvancedInputController>getController())
                     .setMainController(mainController);
             ;

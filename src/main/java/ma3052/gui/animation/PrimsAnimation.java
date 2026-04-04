@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.Node;
-import ma3052.gui.controller.GraphVisualGUIController;
+import ma3052.gui.controller.GraphVisualizationController;
 import ma3052.gui.graph.EdgeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.NodeGUI;
@@ -21,7 +21,7 @@ public class PrimsAnimation {
     }
 
     public static void animate(GraphGUI graphGUI) {
-        if (GraphVisualGUIController.instance == null)
+        if (GraphVisualizationController.instance == null)
             return;
 
         try {
@@ -58,7 +58,7 @@ public class PrimsAnimation {
                         stepCount++;
                         int step = stepCount;
                         Platform.runLater(() -> {
-                            GraphVisualGUIController.instance
+                            GraphVisualizationController.instance
                                     .logMessage("[Step " + step + "] Checking edge ("
                                             + currentEdge.getSource().getNodeName() + ", "
                                             + currentEdge.getDestination().getNodeName() + ")"
@@ -72,7 +72,7 @@ public class PrimsAnimation {
                         stepCount++;
                         int step = stepCount;
                         Platform.runLater(() -> {
-                            GraphVisualGUIController.instance
+                            GraphVisualizationController.instance
                                     .logMessage("[Step " + step + "] Checking edge ("
                                             + currentEdge.getSource().getNodeName() + ", "
                                             + currentEdge.getDestination().getNodeName() + ")"
@@ -126,7 +126,7 @@ public class PrimsAnimation {
                 stepCount++;
                 int step = stepCount;
                 Platform.runLater(() -> {
-                    GraphVisualGUIController.instance
+                    GraphVisualizationController.instance
                             .logMessage("[Step " + step + "] Adding edges to neighbour of " + currentNode.getNodeName()
                                     + " to queue");
                 });
@@ -134,10 +134,10 @@ public class PrimsAnimation {
                 // Waiting... so you can actually see what's happening
             }
 
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
-            GraphVisualGUIController.instance.logMessage("Prims's Algorithm Completed!");
-            GraphVisualGUIController.instance.logMessage("Total Weight of Spanning Tree: " + totalWeight);
-            GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
+            GraphVisualizationController.instance.logMessage("Prims's Algorithm Completed!");
+            GraphVisualizationController.instance.logMessage("Total Weight of Spanning Tree: " + totalWeight);
+            GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

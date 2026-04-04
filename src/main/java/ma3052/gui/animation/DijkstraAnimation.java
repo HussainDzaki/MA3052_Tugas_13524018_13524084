@@ -14,7 +14,7 @@ import java.util.Set;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.Node;
-import ma3052.gui.controller.GraphVisualGUIController;
+import ma3052.gui.controller.GraphVisualizationController;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.NodeGUI;
 
@@ -44,7 +44,7 @@ public class DijkstraAnimation {
     }
 
     public static void animate(GraphGUI graphGUI, String startNode, String endNode) {
-        if (GraphVisualGUIController.instance == null) { // tidak ada graph
+        if (GraphVisualizationController.instance == null) { // tidak ada graph
             return;
         }
         try {
@@ -95,10 +95,10 @@ public class DijkstraAnimation {
 
             Node currBack = destinationNode;
             if (tabelVertex.get(destinationNode) == Double.MAX_VALUE) {
-                GraphVisualGUIController.instance.logMessage("═════════════════");
-                GraphVisualGUIController.instance.logMessage("Dijkstra Complete!");
-                GraphVisualGUIController.instance.logMessage("NO PATH FOUND!");
-                GraphVisualGUIController.instance.logMessage("═════════════════");
+                GraphVisualizationController.instance.logMessage("═════════════════");
+                GraphVisualizationController.instance.logMessage("Dijkstra Complete!");
+                GraphVisualizationController.instance.logMessage("NO PATH FOUND!");
+                GraphVisualizationController.instance.logMessage("═════════════════");
             }
 
             List<Node> path = new ArrayList<>();
@@ -131,10 +131,10 @@ public class DijkstraAnimation {
 
             }
 
-            GraphVisualGUIController.instance.logMessage("═══════════════════");
-            GraphVisualGUIController.instance.logMessage("Dijkstra Complete!");
-            GraphVisualGUIController.instance.logMessage("Path FOUND " + pathToString(path));
-            GraphVisualGUIController.instance.logMessage("════════════════════");
+            GraphVisualizationController.instance.logMessage("═══════════════════");
+            GraphVisualizationController.instance.logMessage("Dijkstra Complete!");
+            GraphVisualizationController.instance.logMessage("Path FOUND " + pathToString(path));
+            GraphVisualizationController.instance.logMessage("════════════════════");
 
         } catch (Exception e) {
             // TODO: handle exception

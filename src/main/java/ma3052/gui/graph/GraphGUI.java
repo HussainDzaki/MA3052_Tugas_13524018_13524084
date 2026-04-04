@@ -9,7 +9,6 @@ import javafx.scene.paint.Color;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.Node;
-import ma3052.gui.controller.GraphVisualGUIController;
 
 import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

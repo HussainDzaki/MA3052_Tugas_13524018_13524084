@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.Node;
-import ma3052.gui.controller.GraphVisualGUIController;
+import ma3052.gui.controller.GraphVisualizationController;
 import ma3052.gui.graph.EdgeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.NodeGUI;
@@ -25,7 +25,7 @@ public class ConnectivityAnimation {
      }
 
      public static void animate(GraphGUI graphGUI) {
-          if (GraphVisualGUIController.instance == null)
+          if (GraphVisualizationController.instance == null)
                return;
 
           try {
@@ -81,7 +81,7 @@ public class ConnectivityAnimation {
                          if (edgeGUI2 != null) {
                               edgeGUI2.setLineColor(Color.ORANGE);
                          }
-                         GraphVisualGUIController.instance
+                         GraphVisualizationController.instance
                                    .logMessage("[Step " + step + "] Visiting: " + nodeToDraw.getNode().getNodeName());
                     });
 
@@ -101,14 +101,13 @@ public class ConnectivityAnimation {
                     });
                }
 
-               GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+               GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
                if (isConnected) {
-                    GraphVisualGUIController.instance.logMessage("The graph is connected!");
+                    GraphVisualizationController.instance.logMessage("The graph is connected!");
+               } else {
+                    GraphVisualizationController.instance.logMessage("The graph is not connected!");
                }
-               else {
-                    GraphVisualGUIController.instance.logMessage("The graph is not connected!");
-               }
-               GraphVisualGUIController.instance.logMessage("═══════════════════════════════════");
+               GraphVisualizationController.instance.logMessage("═══════════════════════════════════");
           } catch (InterruptedException e) {
                Thread.currentThread().interrupt();
           }
