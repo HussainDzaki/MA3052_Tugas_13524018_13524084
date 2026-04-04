@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -299,27 +301,24 @@ public class GraphInputMenuController {
 
         try {
             // Load the FXML file
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GraphVisualization.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/AdvancedInput.fxml"));
+
+            ((AdvancedInputController) loader.<AdvancedInputController>getController())
+                    .setMainController(mainController);
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
-            App.primaryStage.setScene(scene);
-            // ((AdvancedInputController) loader.<AdvancedInputController>getController())
-            // .setMainController(mainController);
-            // Parent root = loader.load();
+            // Create scene
+            Scene scene = new Scene(root, 700, 500);
 
-            // // Create scene
-            // Scene scene = new Scene(root, 700, 500);
-
-            // // Setup stage
-            // Stage stage = new Stage();
-            // stage.initModality(Modality.WINDOW_MODAL);
-            // stage.initOwner(advancedInput.getScene().getWindow());
-            // stage.setTitle("Advanced Input");
-            // stage.setScene(scene);
-            // stage.setWidth(900);
-            // stage.setHeight(600);
-            // stage.showAndWait();
+            // Setup stage
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(advancedInput.getScene().getWindow());
+            stage.setTitle("Advanced Input");
+            stage.setScene(scene);
+            stage.setWidth(900);
+            stage.setHeight(600);
+            stage.showAndWait();
         } catch (IOException e) {
             mainController.showError(e.getMessage());
         }
