@@ -1,0 +1,154 @@
+.root {
+    -fx-font-family: 'Lexend Regular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Lexend Regular', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    -fx-background-color: #fff;
+    color: #000;
+    fill: #000;
+    -fx-text-fill: #000;
+}
+
+.monospace {
+    -fx-font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    font-family: 'Cascadia Code Regular','Consolas', 'Courier New', Courier, monospace;
+}
+
+/* Header */
+.h1 {
+    font-size: 32;
+    -fx-font-size: 32;
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+.h2 {
+    font-size: 20;
+    -fx-font-size: 20;
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+.h3 {
+    font-size: 16;
+    -fx-font-size: 16;
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+/* Border thickness */
+.border-thin {
+    border-width: 1;
+    -fx-border-width: 1;
+}
+.border-medium {
+    border-width: 1.5;
+    -fx-border-width: 1.5;
+}
+.border-thick {
+    border-width: 2;
+    -fx-border-width: 2;
+}
+
+.rounded {
+    border-radius: 8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* Button */
+.button {
+    font-family: 'Lexend Bold';
+    -fx-font-family: 'Lexend Bold';
+    font-size: 13;
+    -fx-background-radius: 8;
+    padding: 4 8;
+    -fx-padding: 6 12;
+    cursor: hand;
+    -fx-cursor: hand;
+    border-radius: 8;
+    -fx-border-radius: 8;
+    border-width: 0;
+    -fx-border-width: 0;
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+/* Text Area and Field */
+.text-area {
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-background-radius: 8;
+    border-radius: 8;
+    -fx-border-radius: 8;
+    -fx-font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    -fx-font-size: 12;
+    font-size: 12;
+}
+.text-field {
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-background-radius: 8;
+    border-radius: 8;
+    -fx-border-radius: 8;
+    -fx-font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    font-family: 'Cascadia Code Regular', 'Consolas', 'Courier New', Courier, monospace;
+    -fx-font-size: 12;
+    font-size: 12;
+    padding: 8 12;
+    -fx-padding: 8 12;
+}
+
+/* Checkbox */
+.check-box > .box {
+    border-radius: 5;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    border-width: 1.5;
+    -fx-border-width: 1.5;
+}
+
+/* Slider */
+.slider .track {
+    border-radius: 8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+.slider .thumb {
+    border-radius: 12;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+/* Separator */
+.separator:horizontal .line {
+    border-color: #000 transparent transparent transparent;
+    -fx-border-color: #000 transparent transparent transparent;
+    border-width: 1;
+    -fx-border-width: 1;
+    -fx-border-insets: 0, 1 0 0 0;
+}
+
+.separator:vertical .line {
+    border-color: transparent transparent transparent #000;
+    -fx-border-color: transparent transparent transparent #000;
+    border-width: 1;
+    -fx-border-width: 1;
+    -fx-border-insets: 0, 0 0 0 1;
+}
+
+/* Cursor */
+.cursor-default {
+    cursor: default;
+    -fx-cursor: default;
+}
+.cursor-pointer {
+    cursor: pointer;
+    -fx-cursor: hand;
+}
+.cursor-grab {
+    cursor: grab;
+    -fx-cursor: "open_hand";
+}
+.cursor-grabbing {
+    cursor: grabbing;
+    -fx-cursor: "close_hand";
+}
