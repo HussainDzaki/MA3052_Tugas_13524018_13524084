@@ -143,42 +143,42 @@ public class GraphVisualizationController {
         if (graphGUI.getMode() == GraphGUI.Mode.Lock)
             return;
         graphGUI.setMode(GraphGUI.Mode.Lock);
-        btnLockMode.getStyleClass().remove("button-dark-blue");
-        btnLockMode.getStyleClass().add("button-light-blue");
-        btnAddMode.getStyleClass().remove("button-light-blue");
-        btnAddMode.getStyleClass().add("button-dark-blue");
-        btnDeleteMode.getStyleClass().remove("button-light-blue");
-        btnDeleteMode.getStyleClass().add("button-dark-blue");
-        btnEditMode.getStyleClass().remove("button-light-blue");
-        btnEditMode.getStyleClass().add("button-dark-blue");
+        btnLockMode.getStyleClass().remove("button-secondary-3");
+        btnLockMode.getStyleClass().add("button-secondary-1");
+        btnAddMode.getStyleClass().remove("button-secondary-1");
+        btnAddMode.getStyleClass().add("button-secondary-3");
+        btnDeleteMode.getStyleClass().remove("button-secondary-1");
+        btnDeleteMode.getStyleClass().add("button-secondary-3");
+        btnEditMode.getStyleClass().remove("button-secondary-1");
+        btnEditMode.getStyleClass().add("button-secondary-3");
     }
 
     public void switchToAddMode() {
         if (graphGUI.getMode() == GraphGUI.Mode.Add)
             return;
         graphGUI.setMode(GraphGUI.Mode.Add);
-        btnLockMode.getStyleClass().remove("button-light-blue");
-        btnLockMode.getStyleClass().add("button-dark-blue");
-        btnAddMode.getStyleClass().remove("button-dark-blue");
-        btnAddMode.getStyleClass().add("button-light-blue");
-        btnDeleteMode.getStyleClass().remove("button-light-blue");
-        btnDeleteMode.getStyleClass().add("button-dark-blue");
-        btnEditMode.getStyleClass().remove("button-light-blue");
-        btnEditMode.getStyleClass().add("button-dark-blue");
+        btnLockMode.getStyleClass().remove("button-secondary-1");
+        btnLockMode.getStyleClass().add("button-secondary-3");
+        btnAddMode.getStyleClass().remove("button-secondary-3");
+        btnAddMode.getStyleClass().add("button-secondary-1");
+        btnDeleteMode.getStyleClass().remove("button-secondary-1");
+        btnDeleteMode.getStyleClass().add("button-secondary-3");
+        btnEditMode.getStyleClass().remove("button-secondary-1");
+        btnEditMode.getStyleClass().add("button-secondary-3");
     }
 
     public void switchToDeleteMode() {
         if (graphGUI.getMode() == GraphGUI.Mode.Delete)
             return;
         graphGUI.setMode(GraphGUI.Mode.Delete);
-        btnLockMode.getStyleClass().remove("button-light-blue");
-        btnLockMode.getStyleClass().add("button-dark-blue");
-        btnAddMode.getStyleClass().remove("button-light-blue");
-        btnAddMode.getStyleClass().add("button-dark-blue");
-        btnDeleteMode.getStyleClass().remove("button-dark-blue");
-        btnDeleteMode.getStyleClass().add("button-light-blue");
-        btnEditMode.getStyleClass().remove("button-light-blue");
-        btnEditMode.getStyleClass().add("button-dark-blue");
+        btnLockMode.getStyleClass().remove("button-secondary-1");
+        btnLockMode.getStyleClass().add("button-secondary-3");
+        btnAddMode.getStyleClass().remove("button-secondary-1");
+        btnAddMode.getStyleClass().add("button-secondary-3");
+        btnDeleteMode.getStyleClass().remove("button-secondary-3");
+        btnDeleteMode.getStyleClass().add("button-secondary-1");
+        btnEditMode.getStyleClass().remove("button-secondary-1");
+        btnEditMode.getStyleClass().add("button-secondary-3");
     }
 
     public void switchToEditMode() {
@@ -187,14 +187,14 @@ public class GraphVisualizationController {
         // if (graphGUI.getMode() == GraphGUI.Mode.Edit)
         // return;
         // graphGUI.setMode(GraphGUI.Mode.Edit);
-        // btnLockMode.getStyleClass().remove("button-light-blue");
-        // btnLockMode.getStyleClass().add("button-dark-blue");
-        // btnAddMode.getStyleClass().remove("button-light-blue");
-        // btnAddMode.getStyleClass().add("button-dark-blue");
-        // btnDeleteMode.getStyleClass().remove("button-light-blue");
-        // btnDeleteMode.getStyleClass().add("button-dark-blue");
-        // btnEditMode.getStyleClass().remove("button-dark-blue");
-        // btnEditMode.getStyleClass().add("button-light-blue");
+        // btnLockMode.getStyleClass().remove("button-secondary-1");
+        // btnLockMode.getStyleClass().add("button-secondary-3");
+        // btnAddMode.getStyleClass().remove("button-secondary-1");
+        // btnAddMode.getStyleClass().add("button-secondary-3");
+        // btnDeleteMode.getStyleClass().remove("button-secondary-1");
+        // btnDeleteMode.getStyleClass().add("button-secondary-3");
+        // btnEditMode.getStyleClass().remove("button-secondary-3");
+        // btnEditMode.getStyleClass().add("button-secondary-1");
     }
 
     private Graph getDefaultGraph() {

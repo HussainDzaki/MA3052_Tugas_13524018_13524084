@@ -303,9 +303,8 @@ public class GraphInputMenuController {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(App.class.getResource("view/AdvancedInput.fxml"));
 
-            ((AdvancedInputController) loader.<AdvancedInputController>getController())
-                    .setMainController(mainController);
             Parent root = loader.load();
+            loader.<AdvancedInputController>getController().setMainController(mainController);
 
             // Create scene
             Scene scene = new Scene(root, 700, 500);
@@ -690,10 +689,10 @@ public class GraphInputMenuController {
 
         // updateAlgorithmComboForMode();
 
-        btnNodeAndEdges.getStyleClass().add("button-light-blue");
-        btnNodeAndEdges.getStyleClass().remove("button-dark-blue");
-        btnSwitchToGrid.getStyleClass().add("button-dark-blue");
-        btnSwitchToGrid.getStyleClass().remove("button-light-blue");
+        btnNodeAndEdges.getStyleClass().add("button-secondary-1");
+        btnNodeAndEdges.getStyleClass().remove("button-secondary-3");
+        btnSwitchToGrid.getStyleClass().add("button-secondary-3");
+        btnSwitchToGrid.getStyleClass().remove("button-secondary-1");
 
         graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
         graphGUI.setDrawing(true);
@@ -729,10 +728,10 @@ public class GraphInputMenuController {
         advancedInput.setVisible(false);
         advancedInput.setManaged(false);
 
-        btnNodeAndEdges.getStyleClass().remove("button-light-blue");
-        btnNodeAndEdges.getStyleClass().add("button-dark-blue");
-        btnSwitchToGrid.getStyleClass().remove("button-dark-blue");
-        btnSwitchToGrid.getStyleClass().add("button-light-blue");
+        btnNodeAndEdges.getStyleClass().remove("button-secondary-1");
+        btnNodeAndEdges.getStyleClass().add("button-secondary-3");
+        btnSwitchToGrid.getStyleClass().remove("button-secondary-3");
+        btnSwitchToGrid.getStyleClass().add("button-secondary-1");
 
         graphGUI.setDrawing(false);
         gridGraphGUI.setDrawing(true);
