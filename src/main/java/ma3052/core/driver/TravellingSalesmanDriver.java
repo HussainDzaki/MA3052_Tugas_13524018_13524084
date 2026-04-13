@@ -19,12 +19,26 @@ public class TravellingSalesmanDriver {
             graph.addUndirectedEdge(scanner.next(), scanner.next(), scanner.nextDouble());
         }
 
-        List<Node> result = TravellingSalesman.solve(graph);
+        System.out.println();
+        System.out.println("Initial Cycle: ");
+        List<Node> result = TravellingSalesman.getHamiltonianCycle(graph);
         double cost = 0;
         for (int i = 0; i < result.size(); i++) {
-            System.out.println(result.get(i).getNodeName());
+            System.out.print(result.get(i).getNodeName() + " -> ");
             cost += result.get(i).getEdge(result.get((i + 1) % result.size())).getWeight();
         }
+        System.out.println(result.get(0).getNodeName());
+        System.out.println("Cost: " + cost);
+
+        System.out.println();
+        System.out.println("Improved Cycle:");
+        result = TravellingSalesman.solve(graph);
+        cost = 0;
+        for (int i = 0; i < result.size(); i++) {
+            System.out.print(result.get(i).getNodeName() + " -> ");
+            cost += result.get(i).getEdge(result.get((i + 1) % result.size())).getWeight();
+        }
+        System.out.println(result.get(0).getNodeName());
         System.out.println("Cost: " + cost);
 
         scanner.close();

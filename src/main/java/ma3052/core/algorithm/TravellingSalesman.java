@@ -24,7 +24,7 @@ public class TravellingSalesman {
         Deque<Node> path = new ArrayDeque<Node>();
         getHamiltonianCycleDFS(graph.getNodeList().getFirst(), graph, path, visitedNodes);
 
-        return new ArrayList<>(path);
+        return new ArrayList<>(path.reversed());
     }
 
     private static boolean getHamiltonianCycleDFS(Node currentNode, Graph graph, Deque<Node> path,
@@ -36,7 +36,9 @@ public class TravellingSalesman {
                 return true;
             }
         } else {
-            for (Edge edge : currentNode.getAdjacencyList()) {
+            List<Edge> edges = new ArrayList<>(currentNode.getAdjacencyList());
+            edges.sort((e1, e2) -> (int) (e1.getWeight() - e2.getWeight()));
+            for (Edge edge : edges) {
                 if (visitedNodes.contains(edge.getDestination()))
                     continue;
                 if (getHamiltonianCycleDFS(edge.getDestination(), graph, path, visitedNodes)) {
@@ -59,7 +61,7 @@ public class TravellingSalesman {
         do {
             hasChanges = false;
             for (int i = 0; i < cycle.size(); i++) {
-                for (int j = i + 1; j < cycle.size(); j++) {
+                for (int j = i + 2; j < cycle.size(); j++) {
                     Node node1 = cycle.get(i);
                     Node node2 = cycle.get(i + 1);
                     Node node3 = cycle.get(j);
