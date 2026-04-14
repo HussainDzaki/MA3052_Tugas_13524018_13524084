@@ -133,7 +133,7 @@ public class DijkstraAnimation {
 
             GraphVisualizationController.instance.logMessage("═══════════════════");
             GraphVisualizationController.instance.logMessage("Dijkstra Complete!");
-            GraphVisualizationController.instance.logMessage("Path FOUND " + pathToString(path));
+            GraphVisualizationController.instance.logMessage("Path FOUND " + graphGUI.pathToString(path));
             GraphVisualizationController.instance.logMessage("════════════════════");
 
         } catch (Exception e) {
@@ -141,18 +141,6 @@ public class DijkstraAnimation {
         }
     }
 
-    private static String pathToString(List<Node> path) {
-        boolean first = true;
-        String res = "";
-        for (int i = 0; i < path.size(); i++) {
-            if (first) {
-                res += path.get(i).getNodeName().toString();
-                first = false;
-            } else {
-                res += " -> " + path.get(i).getNodeName().toString();
-            }
-        }
-        return res;
-    }
+    
 
 }

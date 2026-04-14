@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import ma3052.core.graph.Edge;
+import ma3052.core.graph.Graph;
 
 public class EdgeGUI {
     // Edge
@@ -147,4 +148,6 @@ public class EdgeGUI {
         sourceGUI.addForce(springForce);
         destinationGUI.addForce(springForce.multiply(-1));
     }
+
+    
 }
