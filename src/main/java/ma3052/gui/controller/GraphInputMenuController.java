@@ -303,9 +303,9 @@ public class GraphInputMenuController {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(App.class.getResource("view/AdvancedInput.fxml"));
             Parent root = loader.load();
+
             ((AdvancedInputController) loader.<AdvancedInputController>getController())
                     .setMainController(mainController);
-            
 
             // Create scene
             Scene scene = new Scene(root, 700, 500);

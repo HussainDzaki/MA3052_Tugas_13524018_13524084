@@ -75,6 +75,7 @@ public class GraphAlgorithmMenuController {
                 ComponentAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 KruskalAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 PrimsAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                DijkstraAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 TravellingSalesmanAnimation.setAnimationStepTime(Math.round(500 / multiplier));
             });
         }
