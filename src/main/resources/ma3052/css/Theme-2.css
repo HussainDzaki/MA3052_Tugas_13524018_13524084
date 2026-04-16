@@ -255,6 +255,7 @@
 }
 
 .theme-2 .check-box > .box:selected {
+    background-color: #a9cf01;
     -fx-background-color: #a9cf01;
     border-color: #a9cf01;
     -fx-border-color: #a9cf01;

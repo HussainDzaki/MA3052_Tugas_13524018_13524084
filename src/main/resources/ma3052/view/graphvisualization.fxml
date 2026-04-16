@@ -24,12 +24,9 @@
                 <Insets bottom="5" left="20" right="20" top="10" />
             </padding>
             <children>
+                <HBox HBox.hgrow="ALWAYS"> </HBox>
                 <Label fx:id="appLabel" prefWidth="Infinity" HBox.hgrow="ALWAYS" text="THE ULTIMATE GRAPH VISUALIZATION APP" alignment="CENTER" textAlignment="CENTER" styleClass="h1,lexend-bold,neutral-3,shadow-neutral-1"/>
-                <HBox spacing="16" VBox.vgrow="ALWAYS" alignment="CENTER">
-                    <padding>
-                        <Insets bottom="5" left="5" right="5" top="5" />
-                    </padding>
-                </HBox>
+                <Button fx:id="selectTheme" onAction="#handleSelectTheme" text="Theme" styleClass="button-secondary-1"/>
             </children>
         </VBox>
     </top>

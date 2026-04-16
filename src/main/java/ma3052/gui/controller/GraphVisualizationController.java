@@ -2,9 +2,15 @@ package ma3052.gui.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ma3052.App;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.GridGraph;
 import ma3052.core.graph.Node;
@@ -237,5 +243,35 @@ public class GraphVisualizationController {
             }
         }
         return graph;
+    }
+
+    @FXML
+    private void handleSelectTheme() {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/ThemeMenu.fxml"));
+
+            Parent root = loader.load();
+            loader.<ThemeMenuController>getController().setMainController(this);
+
+            Parent thisRoot = appLabel.getScene().getRoot();
+            root.getStyleClass().removeAll("theme-1", "theme-2");
+            root.getStyleClass().add(thisRoot.getStyleClass().getLast());
+
+            // Create scene
+            Scene scene = new Scene(root, 700, 500);
+
+            // Setup stage
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(appLabel.getScene().getWindow());
+            stage.setTitle("Theme Select");
+            stage.setScene(scene);
+            stage.setWidth(900);
+            stage.setHeight(600);
+            stage.showAndWait();
+        } catch (Exception e) {
+            showError(e.getMessage());
+        }
     }
 }

@@ -213,6 +213,7 @@
 }
 
 .theme-1 .text-area:focused {
+    border-color: #4a90e2;
     -fx-border-color: #4a90e2;
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.2), 6, 0.1, 0, 2);
 }
@@ -228,11 +229,13 @@
 }
 
 .theme-1 .text-field:focused {
+    border-color: #4a90e2;
     -fx-border-color: #4a90e2;
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.2), 4, 0.08, 0, 2);
 }
 
 .theme-1 .text-field:hover {
+    border-color: #9ca3af;
     -fx-border-color: #9ca3af;
 }
 
@@ -245,6 +248,7 @@
 }
 
 .theme-1 .check-box > .box:selected {
+    background-color: #4a90e2;
     -fx-background-color: #4a90e2;
     border-color: #4a90e2;
     -fx-border-color: #4a90e2;

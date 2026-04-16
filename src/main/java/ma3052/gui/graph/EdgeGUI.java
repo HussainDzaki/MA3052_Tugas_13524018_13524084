@@ -133,7 +133,7 @@ public class EdgeGUI {
             double textY = middlePosition.getY() + offset.getY();
 
             context.setFill(textColor);
-            context.setFont(Font.font("Courier New", FontWeight.BOLD, 12));
+            context.setFont(Font.font("Consolas", FontWeight.BOLD, 12));
             context.fillText(weightString, textX, textY);
 
             // TODO: bikin tulisan ga overlap dengan edge kalo mau
