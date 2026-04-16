@@ -11,6 +11,7 @@ import ma3052.gui.animation.*;
 import ma3052.gui.controller.GraphVisualizationController.ModeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.GridGraphGUI;
+import ma3052.core.algorithm.TravellingSalesman;
 
 import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -74,6 +75,8 @@ public class GraphAlgorithmMenuController {
                 ComponentAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 KruskalAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 PrimsAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                DijkstraAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                TravellingSalesmanAnimation.setAnimationStepTime(Math.round(500 / multiplier));
             });
         }
 
@@ -116,7 +119,8 @@ public class GraphAlgorithmMenuController {
                         "Find Smallest Cycle",
                         "Kruskal's Algorithm",
                         "Prim's Algorithm",
-                        "Djikstra");
+                        "Djikstra",
+                        "Travelling Salesman");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -302,6 +306,8 @@ public class GraphAlgorithmMenuController {
                     return;
                 }
                 DijkstraAnimation.animate(graphGUI, startNodeName, endNodeName);
+            case "Travelling Salesman":
+                TravellingSalesmanAnimation.animate(graphGUI);
             default:
                 break;
         }

@@ -186,6 +186,26 @@ public class GraphGUI {
         return edgeMap.get(edge);
     }
 
+    /**
+     * Find EdgeGUI by matching source and destination nodes.
+     * Handles both directed and undirected graphs.
+     * Single-pass implementation for better performance.
+     */
+    public EdgeGUI getEdgeGUI(Node source, Node destination) {
+        for (Edge edge : graph.getEdgeList()) {
+            // Check direct direction
+            if (edge.getSource().equals(source) && edge.getDestination().equals(destination)) {
+                return edgeMap.get(edge);
+            }
+            
+            // Check reverse direction (for undirected or bidirectional graphs)
+            if (edge.getSource().equals(destination) && edge.getDestination().equals(source)) {
+                return edgeMap.get(edge);
+            }
+        }
+        return null;
+    }
+
     public void addNode(Node node) {
         if (!graph.hasNode(node)) {
             graph.addNode(node);
@@ -540,4 +560,19 @@ public class GraphGUI {
         isDrawing = false;
         threadPoolExecutor.shutdown();
     }
+
+    public String pathToString(List<Node> path) {
+        boolean first = true;
+        String res = "";
+        for (int i = 0; i < path.size(); i++) {
+            if (first) {
+                res += path.get(i).getNodeName().toString();
+                first = false;
+            } else {
+                res += " -> " + path.get(i).getNodeName().toString();
+            }
+        }
+        return res;
+    }
+    
 }
