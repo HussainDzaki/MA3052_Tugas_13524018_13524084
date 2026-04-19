@@ -1,5 +1,7 @@
 package ma3052;
 
+import java.util.prefs.Preferences;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,10 +25,15 @@ public class App extends Application {
         // Load the FXML file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GraphVisualization.fxml"));
         Parent root = loader.load();
-        
+
+        Preferences prefs = Preferences.userNodeForPackage(App.class);
+        String theme = prefs.get("Theme", "theme-1");
+        root.getStyleClass().removeIf((style) -> style.contains("theme"));
+        root.getStyleClass().addAll(theme, theme + "-root");
+
         // Create scene
         Scene scene = new Scene(root, 1280, 720);
-        
+
         // Setup stage
         primaryStage.setTitle("Graph Visualization");
         primaryStage.setScene(scene);
