@@ -12,6 +12,14 @@
     -fx-text-fill: #1a2332;
 }
 
+.theme-1 .root {
+    background-color: #f5f7fa;
+    -fx-background-color: #f5f7fa;
+    color: #1a2332;
+    fill: #1a2332;
+    -fx-text-fill: #1a2332;
+}
+
 /* Text colours  */
 .theme-1 .text-secondary-1 {
     color: #4a90e2;
@@ -89,9 +97,8 @@
     -fx-background-color: #f5f7fa;
 }
 .theme-1 .bg-neutral-2 {
-    color: #d1d5db;
-    fill: #d1d5db;
-    -fx-text-fill: #d1d5db;
+    background-color: #d1d5db;
+    -fx-background-color: #d1d5db;
 }
 .theme-1 .bg-neutral-3 {
     background-color: #1a2332;

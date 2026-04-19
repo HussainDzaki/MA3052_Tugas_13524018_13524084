@@ -306,7 +306,12 @@ public class GraphInputMenuController {
             loader.<AdvancedInputController>getController().setMainController(mainController);
 
             Parent thisRoot = advancedInput.getScene().getRoot();
-            root.getStyleClass().add(thisRoot.getStyleClass().getLast());
+            root.getStyleClass().removeIf((style) -> style.contains("theme"));
+            thisRoot.getStyleClass().forEach((style) -> {
+                if (style.contains("theme")) {
+                    root.getStyleClass().add(style);
+                }
+            });
 
             // Create scene
             Scene scene = new Scene(root, 700, 500);

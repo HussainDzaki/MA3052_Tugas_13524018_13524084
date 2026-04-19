@@ -255,8 +255,12 @@ public class GraphVisualizationController {
             loader.<ThemeMenuController>getController().setMainController(this);
 
             Parent thisRoot = appLabel.getScene().getRoot();
-            root.getStyleClass().removeAll("theme-1", "theme-2");
-            root.getStyleClass().add(thisRoot.getStyleClass().getLast());
+            root.getStyleClass().removeIf((style) -> style.contains("-root"));
+            thisRoot.getStyleClass().forEach((style) -> {
+                if (style.contains("-root")) {
+                    root.getStyleClass().add(style);
+                }
+            });
 
             // Create scene
             Scene scene = new Scene(root, 700, 500);

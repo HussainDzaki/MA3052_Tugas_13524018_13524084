@@ -4,7 +4,7 @@
     src: url('font/Cascadia_Code/static/CascadiaCode-Regular.ttf');
 } */
 
-.theme-2.root {
+.theme-2-root {
     background-color: #FFD7D3;
     -fx-background-color: #FFD7D3;
     color: #2c1800;
@@ -89,9 +89,8 @@
     -fx-background-color: #fffbee;
 }
 .theme-2 .bg-neutral-2 {
-    color: #ffd7d3;
-    fill: #ffd7d3;
-    -fx-text-fill: #ffd7d3;
+    background-color: #ffd7d3;
+    -fx-background-color: #ffd7d3;
 }
 .theme-2 .bg-neutral-3 {
     background-color: #2c1800;

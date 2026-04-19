@@ -11,20 +11,20 @@
         fx:controller="ma3052.gui.controller.ThemeMenuController"
         stylesheets="@../css/App.css,@../css/Lexend.css,@../css/Theme-1.css,@../css/Theme-2.css">
     <VBox VBox.vgrow="ALWAYS" spacing="15" styleClass="bg-neutral-2">
-        <VBox>
+        <VBox spacing="15">
             <padding>
                 <Insets bottom="10" left="15" right="15" top="10" />
             </padding>
             <Label text="Theme" styleClass="h1,lexend-bold"/>
             <HBox styleClass="theme-1">
-                <HBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="bg-primary-1">
+                <HBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="bg-primary-1,rounded">
                     <padding>
                         <Insets bottom="10" left="15" right="15" top="10" />
                     </padding>
                     <Label text="Standard" styleClass="h1,text-neutral-1,lexend-bold"/>
                     <HBox HBox.hgrow="ALWAYS">
                     </HBox>
-                    <HBox styleClass="bg-primary-2">
+                    <HBox styleClass="bg-primary-3,rounded">
                         <padding>
                             <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>
@@ -33,14 +33,14 @@
                 </HBox>
             </HBox>
             <HBox styleClass="theme-2">
-                <HBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="bg-primary-1">
+                <HBox alignment="CENTER" HBox.hgrow="ALWAYS" styleClass="bg-primary-1,rounded">
                     <padding>
                         <Insets bottom="10" left="15" right="15" top="10" />
                     </padding>
                     <Label text="Tomato" styleClass="h1,text-neutral-1,lexend-bold"/>
                     <HBox HBox.hgrow="ALWAYS">
                     </HBox>
-                    <HBox styleClass="bg-primary-2">
+                    <HBox styleClass="bg-primary-3,rounded">
                         <padding>
                             <Insets bottom="10" left="15" right="15" top="10" />
                         </padding>

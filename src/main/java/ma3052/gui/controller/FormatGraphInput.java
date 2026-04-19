@@ -535,3 +535,7 @@ public class FormatGraphInput {
         return resultString;
     }
 }
+
+
+// TODO: Input with adjacency list
+// TODO: Input with adjacency matrix

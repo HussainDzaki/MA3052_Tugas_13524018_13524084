@@ -17,18 +17,20 @@
 <BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="ma3052.gui.controller.GraphVisualizationController"
         stylesheets="@../css/App.css,@../css/Lexend.css,@../css/Theme-1.css,@../css/Theme-2.css"
-        styleClass="theme-2">
+        styleClass="theme-2,theme-2-root">
     <top>
-        <VBox prefHeight="80.0" prefWidth="Infinity" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-primary-1,rounded">
+        <HBox prefHeight="80.0" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-primary-1,rounded">
             <padding>
                 <Insets bottom="5" left="20" right="20" top="10" />
             </padding>
             <children>
-                <HBox HBox.hgrow="ALWAYS"> </HBox>
-                <Label fx:id="appLabel" prefWidth="Infinity" HBox.hgrow="ALWAYS" text="THE ULTIMATE GRAPH VISUALIZATION APP" alignment="CENTER" textAlignment="CENTER" styleClass="h1,lexend-bold,neutral-3,shadow-neutral-1"/>
-                <Button fx:id="selectTheme" onAction="#handleSelectTheme" text="Theme" styleClass="button-secondary-1"/>
+                <HBox HBox.hgrow="ALWAYS" prefWidth="100"> </HBox>
+                <Label fx:id="appLabel" text="THE ULTIMATE GRAPH VISUALIZATION APP" alignment="CENTER" textAlignment="CENTER" styleClass="h1,lexend-bold,neutral-3,shadow-neutral-1"/>
+                <HBox HBox.hgrow="ALWAYS" prefWidth="100" alignment="CENTER_RIGHT">
+                    <Button fx:id="selectTheme" onAction="#handleSelectTheme" text="Theme" styleClass="button-secondary-1"/>
+                </HBox>
             </children>
-        </VBox>
+        </HBox>
     </top>
     <left>
         <fx:include source="GraphInputMenu.fxml" fx:id="graphInputMenu"/>
