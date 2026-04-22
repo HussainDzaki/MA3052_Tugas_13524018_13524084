@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class GraphGUI {
     // What to do when canvas is interacted
     public static enum Mode {
+        Move, // Move the whole graph
         Lock, // Fix node position
         Add, // Add node and edges
         Edit, // Edit node name, node value, and edge weight on a window

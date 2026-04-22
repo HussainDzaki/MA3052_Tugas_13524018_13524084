@@ -250,6 +250,15 @@ public class PointGraphGUI {
         }
     }
 
+    public void removeEdge(Node source, Node destination) {
+        if (graph.hasEdge(source, destination)) {
+            Edge edge = graph.getEdge(source, destination);
+            edgeGUIList.remove(edgeMap.get(edge));
+            edgeMap.remove(edge);
+            graph.removeEdge(edge);
+        }
+    }
+
     public void removeEdge(Edge edge) {
         if (graph.hasEdge(edge)) {
             edgeGUIList.remove(edgeMap.get(edge));

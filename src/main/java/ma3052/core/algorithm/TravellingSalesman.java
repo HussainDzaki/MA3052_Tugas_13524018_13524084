@@ -13,6 +13,7 @@ import javafx.util.Pair;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.Node;
+import ma3052.core.graph.PointGraph;
 
 public class TravellingSalesman {
     public static List<Node> getHamiltonianCycle(Graph graph) {
@@ -42,6 +43,42 @@ public class TravellingSalesman {
                 if (visitedNodes.contains(edge.getDestination()))
                     continue;
                 if (getHamiltonianCycleDFS(edge.getDestination(), graph, path, visitedNodes)) {
+                    return true;
+                }
+            }
+        }
+        visitedNodes.remove(currentNode);
+        path.pop();
+        return false;
+    }
+
+    public static List<Node> getHamiltonianCycle(PointGraph graph) {
+        if (graph == null) {
+            return null;
+        }
+
+        Set<Node> visitedNodes = new HashSet<Node>();
+        Deque<Node> path = new ArrayDeque<Node>();
+        getHamiltonianCycleDFS(graph.getNodeList().getFirst(), graph, path, visitedNodes);
+
+        return new ArrayList<>(path.reversed());
+    }
+
+    private static boolean getHamiltonianCycleDFS(Node currentNode, PointGraph graph, Deque<Node> path,
+            Set<Node> visitedNodes) {
+        visitedNodes.add(currentNode);
+        path.push(currentNode);
+        if (visitedNodes.size() == graph.size()) {
+            if (currentNode.isNodeAdjacent(path.peekLast())) {
+                return true;
+            }
+        } else {
+            List<Node> nodes = new ArrayList<>(graph.getNodeList());
+            nodes.sort((n1, n2) -> (int) (graph.getDistance(currentNode, n1) - graph.getDistance(currentNode, n2)));
+            for (Node nextNode : nodes) {
+                if (visitedNodes.contains(nextNode))
+                    continue;
+                if (getHamiltonianCycleDFS(nextNode, graph, path, visitedNodes)) {
                     return true;
                 }
             }
