@@ -308,7 +308,7 @@ public class GraphVisualizationController {
             graphGUI.zoomIn();
         }
         else if (mode == ModeGUI.POINT_MODE) {
-            graphGUI.zoomIn();
+            pointGraphGUI.zoomIn();
         }
     }
 
@@ -318,7 +318,7 @@ public class GraphVisualizationController {
             graphGUI.zoomOut();
         }
         else if (mode == ModeGUI.POINT_MODE) {
-            graphGUI.zoomOut();
+            pointGraphGUI.zoomOut();
         }
     }
 }
