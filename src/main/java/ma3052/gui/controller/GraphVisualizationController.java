@@ -307,11 +307,17 @@ public class GraphVisualizationController {
         if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
             graphGUI.zoomIn();
         }
+        else if (mode == ModeGUI.POINT_MODE) {
+            graphGUI.zoomIn();
+        }
     }
 
     @FXML
     private void zoomOut() {
         if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
+            graphGUI.zoomOut();
+        }
+        else if (mode == ModeGUI.POINT_MODE) {
             graphGUI.zoomOut();
         }
     }

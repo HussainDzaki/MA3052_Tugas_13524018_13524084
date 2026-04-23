@@ -69,9 +69,7 @@ public class TravellingSalesman {
         visitedNodes.add(currentNode);
         path.push(currentNode);
         if (visitedNodes.size() == graph.size()) {
-            if (currentNode.isNodeAdjacent(path.peekLast())) {
-                return true;
-            }
+            return true;
         } else {
             List<Node> nodes = new ArrayList<>(graph.getNodeList());
             nodes.sort((n1, n2) -> (int) (graph.getDistance(currentNode, n1) - graph.getDistance(currentNode, n2)));

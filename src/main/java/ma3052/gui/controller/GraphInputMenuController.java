@@ -530,7 +530,6 @@ public class GraphInputMenuController {
         // Parse grid from content
         PointGraph loadedGraph = FormatPointGraphInput.inputGraphFromFile(file);
         mainController.getPointGraphGUI().setGraph(loadedGraph);
-        mainController.setMode(ModeGUI.GRID_MODE);
 
         mainController.logMessage("═══════════════════════════════════");
         mainController.logMessage("Graph loaded from: " + file.getName());

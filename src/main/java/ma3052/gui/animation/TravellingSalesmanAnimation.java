@@ -261,10 +261,9 @@ public class TravellingSalesmanAnimation {
         for (int i = 0; i < hamiltonCycle.size(); i++) {
             Node node = hamiltonCycle.get(i);
             Node nextNode = hamiltonCycle.get((i + 1) % (hamiltonCycle.size()));
-            graph.addEdge(node, nextNode);
+            graphGUI.addEdge(node, nextNode);
             final NodeGUI nodeGUI = graphGUI.getNodeGUI(node);
             final EdgeGUI edgeGUI = graphGUI.getEdgeGUI(node, nextNode);
-            graphGUI.addEdge(node, nextNode);
             if (edgeGUI != null) {
                 Platform.runLater(() -> {
                     edgeGUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
@@ -394,8 +393,7 @@ public class TravellingSalesmanAnimation {
                 Node nextNode = cycle.get((i + 1) % cycle.size());
                 final NodeGUI nodeGUI = graphGUI.getNodeGUI(node);
                 final EdgeGUI edgeGUI = graphGUI.getEdgeGUI(node, nextNode);
-                Edge edge = node.getEdge(nextNode);
-                totalWeight += edge.getWeight();
+                totalWeight += graph.getDistance(node, nextNode);
                 if (edgeGUI != null) {
                     Platform.runLater(() -> {
                         edgeGUI.setLineColor(EDGE_RESULT_COLOR);

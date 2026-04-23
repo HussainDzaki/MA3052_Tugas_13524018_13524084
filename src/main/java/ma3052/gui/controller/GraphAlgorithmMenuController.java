@@ -224,7 +224,7 @@ public class GraphAlgorithmMenuController {
      */
     private void executeAlgorithm(String selectedAlgorithm, String startNodeName, String endNodeName) {
         System.out.println("SELECTED " + selectedAlgorithm);
-        System.out.println("MODE " + ModeGUI.POINT_MODE);
+        System.out.println("MODE " + mainController.getMode());
         try {
             mainController.setAnimating(true);
             switch (mainController.getMode()) {
@@ -246,7 +246,7 @@ public class GraphAlgorithmMenuController {
                     break;
             }
         } catch (Exception e) {
-                    System.out.println("E");
+            System.out.println("E");
             Platform.runLater(() -> mainController.showError("Algorithm execution error: " + e.getMessage()));
             e.printStackTrace();
         } finally {
