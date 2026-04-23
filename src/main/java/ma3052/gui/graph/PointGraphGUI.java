@@ -13,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 import javafx.stage.WindowEvent;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Node;
@@ -21,12 +22,13 @@ import ma3052.core.graph.PointGraph;
 public class PointGraphGUI {
     // What to do when canvas is interacted
     public static enum Mode {
+        Lock,
         Add, // Add node and edges
         Edit, // Edit node name, node value, and edge weight on a window
         Delete, // Delete node and edges
     }
 
-    private Mode mode = Mode.Add;
+    private Mode mode = Mode.Lock;
 
     // Graph data structure
     private Canvas canvas;
@@ -163,16 +165,6 @@ public class PointGraphGUI {
         double minX = 0;
         double minY = 0;
         for (Node node : graph.getNodeList()) {
-            NodeGUI nodeGUI = new NodeGUI(node);
-            nodeMap.put(node, nodeGUI);
-            nodeGUIList.add(nodeGUI);
-
-            System.out.println(graph.getPosition(node));
-            nodeGUI.setPosition(graph.getPosition(node));
-            nodeGUI.setLockPosition(true);
-            nodeGUI.setRadius(1);
-            nodeGUI.setDrawLabel(false);
-
             if (first) {
                 maxX = graph.getPosition(node).getX();
                 maxY = graph.getPosition(node).getY();
@@ -184,8 +176,22 @@ public class PointGraphGUI {
                 maxY = Math.max(maxY, graph.getPosition(node).getY());
                 minX = Math.min(minX, graph.getPosition(node).getX());
                 minY = Math.min(minY, graph.getPosition(node).getY());
-
             }
+        }
+        double scale = Math.max((maxX - minX), (maxY - minY));
+        for (Node node : graph.getNodeList()) {
+            NodeGUI nodeGUI = new NodeGUI(node);
+            nodeMap.put(node, nodeGUI);
+            nodeGUIList.add(nodeGUI);
+
+            graph.setPosition(node, graph.getPosition(node).subtract(minX, minY).multiply(550 / scale).add(40, 40));
+            graph.setScale(550 / scale);
+
+            System.out.println(graph.getPosition(node));
+            nodeGUI.setPosition(graph.getPosition(node));
+            nodeGUI.setLockPosition(true);
+            nodeGUI.setRadius(1);
+            nodeGUI.setDrawLabel(false);
         }
         for (Edge edge : graph.getEdgeList()) {
             EdgeGUI edgeGUI = new EdgeGUI(edge, getNodeGUI(edge.getSource()), getNodeGUI(edge.getDestination()));
@@ -196,12 +202,13 @@ public class PointGraphGUI {
         }
 
         if (!first) {
-            // graphicsContext.translate((maxX + minX) / 2, (maxY + minY) / 2);
+            // graphicsContext.setTransform(new Affine());
+            // graphicsContext.translate(-(maxX + minX) / 2, -(maxY + minY) / 2);
             System.out.println(
                     graphicsContext.getTransform().transform(graph.getPosition(graph.getNodeList().getFirst())));
 
-            // double scale = Math.min((maxX - minX) / 2, (maxY - minY) / 2);
-            // graphicsContext.scale(scale, scale);
+            // double scale = Math.min((maxX - minX), (maxY - minY));
+            // graphicsContext.scale(1 / scale, 1 / scale);
         }
     }
 

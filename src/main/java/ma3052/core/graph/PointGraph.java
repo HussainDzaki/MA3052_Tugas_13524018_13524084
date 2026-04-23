@@ -10,6 +10,7 @@ import javafx.geometry.Point2D;
 public class PointGraph {
     private Graph graph;
     private Map<Node, Point2D> nodePosition;
+    private double scale = 1;
 
     public PointGraph() {
         graph = new Graph();
@@ -36,6 +37,13 @@ public class PointGraph {
         return graph.getEdgeList();
     }
 
+    public double getScale() {
+        return scale;
+    }
+
+    public void setScale(double scale) {
+        this.scale = scale;
+    }
 
     public Point2D getPosition(Node node) {
         return nodePosition.get(node);
@@ -102,6 +110,6 @@ public class PointGraph {
     }
 
     public double getDistance(Node node1, Node node2) {
-        return nodePosition.get(node2).distance(nodePosition.get(node1));
+        return nodePosition.get(node2).distance(nodePosition.get(node1)) / scale;
     }
 }

@@ -72,7 +72,15 @@ public class TravellingSalesman {
             return true;
         } else {
             List<Node> nodes = new ArrayList<>(graph.getNodeList());
-            nodes.sort((n1, n2) -> (int) (graph.getDistance(currentNode, n1) - graph.getDistance(currentNode, n2)));
+            nodes.sort((n1, n2) -> {
+                if (graph.getDistance(currentNode, n1) > graph.getDistance(currentNode, n2)) {
+                    return 1;
+                } else if (graph.getDistance(currentNode, n1) < graph.getDistance(currentNode, n2)) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
             for (Node nextNode : nodes) {
                 if (visitedNodes.contains(nextNode))
                     continue;

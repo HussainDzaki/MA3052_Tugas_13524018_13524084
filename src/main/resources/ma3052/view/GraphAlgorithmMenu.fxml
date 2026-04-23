@@ -46,7 +46,7 @@
             <VBox spacing="5">
                 <Label fx:id="labelSpeedSlider" text="Speed: (x1)" styleClass="text-secondary-3,lexend-bold" />
                 <Slider fx:id="speedSlider" 
-                                max="4" min="-2" value="0"
+                                max="8" min="-2" value="0"
                                 showTickLabels="false" showTickMarks="false" 
                                 majorTickUnit="1.0" minorTickCount="0" 
                                 blockIncrement="1.0" snapToTicks="true"/>

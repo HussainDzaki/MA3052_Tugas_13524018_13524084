@@ -46,7 +46,7 @@ public class FormatPointGraphInput {
                         String[] tokens = line.split("\\s+");
                         if (!graph.hasNode(tokens[0])) {
                             graph.addNode(new Node(tokens[0]),
-                                    new Point2D(Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2])));
+                                    new Point2D(Double.parseDouble(tokens[2]), -Double.parseDouble(tokens[1])));
                         }
                     }
                     break;
