@@ -382,8 +382,8 @@ public class TravellingSalesmanAnimation {
                                 nodeGUI2.setColor(HAMILTONIAN_COLOR);
                                 nodeGUI3.setColor(HAMILTONIAN_COLOR);
                                 nodeGUI4.setColor(HAMILTONIAN_COLOR);
-                                graphGUI.removeEdge(node1, node2);
-                                graphGUI.removeEdge(node3, node4);
+                                graphGUI.removeEdge(edge12GUI.getEdge());
+                                graphGUI.removeEdge(edge24GUI.getEdge());
                             });
                         }
                         else {

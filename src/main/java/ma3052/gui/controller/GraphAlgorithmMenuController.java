@@ -127,6 +127,10 @@ public class GraphAlgorithmMenuController {
                         "Count Component",
                         "Biggest Component");
                 break;
+            case POINT_MODE:
+                algorithmCombo.getItems().addAll(
+                        "Travelling Salesman");
+                break;
             default:
                 break;
         }
@@ -223,6 +227,9 @@ public class GraphAlgorithmMenuController {
                     break;
                 case GRID_MODE:
                     executeGridAlgorithm(selectedAlgorithm);
+                    break;
+                case POINT_MODE:
+                    executePointAlgorithm(selectedAlgorithm);
                     break;
                 default:
                     break;
@@ -340,6 +347,16 @@ public class GraphAlgorithmMenuController {
         }
     }
 
+    private void executePointAlgorithm(String algorithm) {
+        switch (algorithm) {
+            case "Travelling Salesman":
+                TravellingSalesmanAnimation.animate(mainController.getPointGraphGUI());
+                break;
+        
+            default:
+                break;
+        }
+    }
     public void switchAlgorithm(String algorithm) {
         switch (mainController.getMode()) {
             case NODE_AND_EDGES_MODE:
