@@ -14,8 +14,10 @@ import ma3052.App;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.GridGraph;
 import ma3052.core.graph.Node;
+import ma3052.core.graph.PointGraph;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.GridGraphGUI;
+import ma3052.gui.graph.PointGraphGUI;
 
 /**
  * Controller for Graph Visualization GUI
@@ -27,6 +29,7 @@ public class GraphVisualizationController {
 
     // Graph data structure
     private GraphGUI graphGUI;
+    private PointGraphGUI pointGraphGUI;
     private GridGraphGUI gridGraphGUI;
     private volatile boolean isAnimating = false;
 
@@ -52,7 +55,7 @@ public class GraphVisualizationController {
     private GraphAlgorithmMenuController graphAlgorithmMenuController;
 
     public enum ModeGUI {
-        NODE_AND_EDGES_MODE, GRID_MODE;
+        NODE_AND_EDGES_MODE, GRID_MODE, POINT_MODE;
     }
 
     private ModeGUI mode = ModeGUI.NODE_AND_EDGES_MODE;
@@ -71,6 +74,10 @@ public class GraphVisualizationController {
 
     public GridGraphGUI getGridGraphGUI() {
         return gridGraphGUI;
+    }
+
+    public PointGraphGUI getPointGraphGUI() {
+        return pointGraphGUI;
     }
 
     public ModeGUI getMode() {
@@ -100,12 +107,15 @@ public class GraphVisualizationController {
         // Initialize graph
         graphGUI = new GraphGUI(graphCanvas);
         gridGraphGUI = new GridGraphGUI(graphCanvas);
+        pointGraphGUI = new PointGraphGUI(graphCanvas);
 
         graphGUI.setDrawing(true);
         gridGraphGUI.setDrawing(false);
+        pointGraphGUI.setDrawing(false);
 
         graphGUI.setGraph(getDefaultGraph());
         gridGraphGUI.setGridGraph(getDefaultGridGraph());
+        pointGraphGUI.setGraph(new PointGraph());
 
         graphInputMenuController.setMainController(this);
         graphAlgorithmMenuController.setMainController(this);
@@ -276,6 +286,20 @@ public class GraphVisualizationController {
             stage.showAndWait();
         } catch (Exception e) {
             showError(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void zoomIn() {
+        if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
+            graphGUI.zoomIn();
+        }
+    }
+
+    @FXML
+    private void zoomOut() {
+        if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
+            graphGUI.zoomOut();
         }
     }
 }

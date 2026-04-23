@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="ma3052.gui.controller.GraphVisualizationController"
-        stylesheets="@../css/App.css,@../css/Lexend.css,@../css/Theme-1.css,@../css/Theme-2.css"
+        stylesheets="@../css/App.css,@../css/Theme-1.css,@../css/Theme-2.css,@../css/Lexend.css"
         styleClass="theme-2,theme-2-root">
     <top>
         <HBox prefHeight="80.0" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-primary-1,rounded">
@@ -24,7 +24,8 @@
                 <Insets bottom="5" left="20" right="20" top="10" />
             </padding>
             <children>
-                <HBox HBox.hgrow="ALWAYS" prefWidth="100"> </HBox>
+                <HBox HBox.hgrow="ALWAYS" prefWidth="100">
+                </HBox>
                 <Label fx:id="appLabel" text="THE ULTIMATE GRAPH VISUALIZATION APP" alignment="CENTER" textAlignment="CENTER" styleClass="h1,lexend-bold,neutral-3,shadow-neutral-1"/>
                 <HBox HBox.hgrow="ALWAYS" prefWidth="100" alignment="CENTER_RIGHT">
                     <Button fx:id="selectTheme" onAction="#handleSelectTheme" text="Theme" styleClass="button-secondary-1"/>
@@ -40,8 +41,8 @@
             <padding>
                 <Insets bottom="15" left="10" right="10" top="10" />
             </padding>
-            <VBox prefHeight="587.0" prefWidth="541.0" spacing="5" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
-                <HBox maxWidth="600" alignment="CENTER">
+            <VBox prefHeight="825.0" prefWidth="750.0" spacing="5" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
+                <HBox maxWidth="750" alignment="CENTER">
                     <Label text="Visualization" styleClass="h2,lexend-bold,pink"/>
                     <HBox HBox.hgrow="ALWAYS"/>
                     <HBox styleClass="bg-secondary-3,rounded">
@@ -54,8 +55,18 @@
                         <Button fx:id="btnEditMode" onAction="#switchToEditMode" text="Edit" styleClass="button-secondary-3" minWidth="75"/>
                     </HBox>
                 </HBox>
-                <HBox maxWidth="600" maxHeight="500" styleClass="border-thick,border-neutral-3">
-                    <Canvas fx:id="graphCanvas" width="600.0" height="500.0"/>
+                <HBox maxWidth="850" maxHeight="600">
+                    <VBox HBox.hgrow="ALWAYS" prefWidth="40"/>
+                    <HBox styleClass="border-thick,border-neutral-3">
+                        <Canvas fx:id="graphCanvas" width="750.0" height="600.0"/>
+                    </HBox>
+                    <VBox HBox.hgrow="ALWAYS" alignment="BOTTOM_LEFT" spacing="5">
+                        <padding>
+                            <Insets left="4"/>
+                        </padding>
+                        <Button prefWidth="36" onAction="#zoomIn" text="+" styleClass="h3,button-secondary-3,lexend-black"/>
+                        <Button prefWidth="36" onAction="#zoomOut" text="-" styleClass="h3,button-secondary-3,lexend-black"/>
+                    </VBox>
                 </HBox>
             </VBox>
         </VBox>
