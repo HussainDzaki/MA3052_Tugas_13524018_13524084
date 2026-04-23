@@ -1,6 +1,7 @@
 module ma3052 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.prefs;
     requires transitive javafx.graphics;
 
     opens ma3052 to javafx.fxml;

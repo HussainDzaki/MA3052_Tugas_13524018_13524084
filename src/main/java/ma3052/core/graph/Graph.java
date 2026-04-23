@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javafx.scene.control.Button;
-
 public class Graph {
     private ArrayList<Node> nodeList;
     private ArrayList<Edge> edgeList;

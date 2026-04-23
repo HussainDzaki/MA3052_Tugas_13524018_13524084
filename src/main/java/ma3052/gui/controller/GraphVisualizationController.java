@@ -2,9 +2,15 @@ package ma3052.gui.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ma3052.App;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.GridGraph;
 import ma3052.core.graph.Node;
@@ -143,42 +149,42 @@ public class GraphVisualizationController {
         if (graphGUI.getMode() == GraphGUI.Mode.Lock)
             return;
         graphGUI.setMode(GraphGUI.Mode.Lock);
-        btnLockMode.getStyleClass().remove("button-dark-blue");
-        btnLockMode.getStyleClass().add("button-light-blue");
-        btnAddMode.getStyleClass().remove("button-light-blue");
-        btnAddMode.getStyleClass().add("button-dark-blue");
-        btnDeleteMode.getStyleClass().remove("button-light-blue");
-        btnDeleteMode.getStyleClass().add("button-dark-blue");
-        btnEditMode.getStyleClass().remove("button-light-blue");
-        btnEditMode.getStyleClass().add("button-dark-blue");
+        btnLockMode.getStyleClass().remove("button-secondary-3");
+        btnLockMode.getStyleClass().add("button-secondary-1");
+        btnAddMode.getStyleClass().remove("button-secondary-1");
+        btnAddMode.getStyleClass().add("button-secondary-3");
+        btnDeleteMode.getStyleClass().remove("button-secondary-1");
+        btnDeleteMode.getStyleClass().add("button-secondary-3");
+        btnEditMode.getStyleClass().remove("button-secondary-1");
+        btnEditMode.getStyleClass().add("button-secondary-3");
     }
 
     public void switchToAddMode() {
         if (graphGUI.getMode() == GraphGUI.Mode.Add)
             return;
         graphGUI.setMode(GraphGUI.Mode.Add);
-        btnLockMode.getStyleClass().remove("button-light-blue");
-        btnLockMode.getStyleClass().add("button-dark-blue");
-        btnAddMode.getStyleClass().remove("button-dark-blue");
-        btnAddMode.getStyleClass().add("button-light-blue");
-        btnDeleteMode.getStyleClass().remove("button-light-blue");
-        btnDeleteMode.getStyleClass().add("button-dark-blue");
-        btnEditMode.getStyleClass().remove("button-light-blue");
-        btnEditMode.getStyleClass().add("button-dark-blue");
+        btnLockMode.getStyleClass().remove("button-secondary-1");
+        btnLockMode.getStyleClass().add("button-secondary-3");
+        btnAddMode.getStyleClass().remove("button-secondary-3");
+        btnAddMode.getStyleClass().add("button-secondary-1");
+        btnDeleteMode.getStyleClass().remove("button-secondary-1");
+        btnDeleteMode.getStyleClass().add("button-secondary-3");
+        btnEditMode.getStyleClass().remove("button-secondary-1");
+        btnEditMode.getStyleClass().add("button-secondary-3");
     }
 
     public void switchToDeleteMode() {
         if (graphGUI.getMode() == GraphGUI.Mode.Delete)
             return;
         graphGUI.setMode(GraphGUI.Mode.Delete);
-        btnLockMode.getStyleClass().remove("button-light-blue");
-        btnLockMode.getStyleClass().add("button-dark-blue");
-        btnAddMode.getStyleClass().remove("button-light-blue");
-        btnAddMode.getStyleClass().add("button-dark-blue");
-        btnDeleteMode.getStyleClass().remove("button-dark-blue");
-        btnDeleteMode.getStyleClass().add("button-light-blue");
-        btnEditMode.getStyleClass().remove("button-light-blue");
-        btnEditMode.getStyleClass().add("button-dark-blue");
+        btnLockMode.getStyleClass().remove("button-secondary-1");
+        btnLockMode.getStyleClass().add("button-secondary-3");
+        btnAddMode.getStyleClass().remove("button-secondary-1");
+        btnAddMode.getStyleClass().add("button-secondary-3");
+        btnDeleteMode.getStyleClass().remove("button-secondary-3");
+        btnDeleteMode.getStyleClass().add("button-secondary-1");
+        btnEditMode.getStyleClass().remove("button-secondary-1");
+        btnEditMode.getStyleClass().add("button-secondary-3");
     }
 
     public void switchToEditMode() {
@@ -187,14 +193,14 @@ public class GraphVisualizationController {
         // if (graphGUI.getMode() == GraphGUI.Mode.Edit)
         // return;
         // graphGUI.setMode(GraphGUI.Mode.Edit);
-        // btnLockMode.getStyleClass().remove("button-light-blue");
-        // btnLockMode.getStyleClass().add("button-dark-blue");
-        // btnAddMode.getStyleClass().remove("button-light-blue");
-        // btnAddMode.getStyleClass().add("button-dark-blue");
-        // btnDeleteMode.getStyleClass().remove("button-light-blue");
-        // btnDeleteMode.getStyleClass().add("button-dark-blue");
-        // btnEditMode.getStyleClass().remove("button-dark-blue");
-        // btnEditMode.getStyleClass().add("button-light-blue");
+        // btnLockMode.getStyleClass().remove("button-secondary-1");
+        // btnLockMode.getStyleClass().add("button-secondary-3");
+        // btnAddMode.getStyleClass().remove("button-secondary-1");
+        // btnAddMode.getStyleClass().add("button-secondary-3");
+        // btnDeleteMode.getStyleClass().remove("button-secondary-1");
+        // btnDeleteMode.getStyleClass().add("button-secondary-3");
+        // btnEditMode.getStyleClass().remove("button-secondary-3");
+        // btnEditMode.getStyleClass().add("button-secondary-1");
     }
 
     private Graph getDefaultGraph() {
@@ -237,5 +243,39 @@ public class GraphVisualizationController {
             }
         }
         return graph;
+    }
+
+    @FXML
+    private void handleSelectTheme() {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/ThemeMenu.fxml"));
+
+            Parent root = loader.load();
+            loader.<ThemeMenuController>getController().setMainController(this);
+
+            Parent thisRoot = appLabel.getScene().getRoot();
+            root.getStyleClass().removeIf((style) -> style.contains("-root"));
+            thisRoot.getStyleClass().forEach((style) -> {
+                if (style.contains("-root")) {
+                    root.getStyleClass().add(style);
+                }
+            });
+
+            // Create scene
+            Scene scene = new Scene(root, 700, 500);
+
+            // Setup stage
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(appLabel.getScene().getWindow());
+            stage.setTitle("Theme Select");
+            stage.setScene(scene);
+            stage.setWidth(900);
+            stage.setHeight(600);
+            stage.showAndWait();
+        } catch (Exception e) {
+            showError(e.getMessage());
+        }
     }
 }
