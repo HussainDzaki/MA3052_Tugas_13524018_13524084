@@ -54,51 +54,51 @@
 
 
 .lexend-thin {
-    font-family: 'Lexend Thin';
-    -fx-font-family: 'Lexend Thin';
+    font-family: 'Lexend Thin' !important;
+    -fx-font-family: 'Lexend Thin' !important;
 }
 
 .lexend-extralight {
-    font-family: 'Lexend ExtraLight';
-    -fx-font-family: 'Lexend ExtraLight';
+    font-family: 'Lexend ExtraLight' !important;
+    -fx-font-family: 'Lexend ExtraLight' !important;
 }
 
 .lexend-light {
-    font-family: 'Lexend Light';
-    -fx-font-family: 'Lexend Light';
+    font-family: 'Lexend Light' !important;
+    -fx-font-family: 'Lexend Light' !important;
 }
 
 .lexend {
-    font-family: 'Lexend Regular';
-    -fx-font-family: 'Lexend Regular';
+    font-family: 'Lexend Regular' !important;
+    -fx-font-family: 'Lexend Regular' !important;
 }
 
 .lexend-regular {
-    font-family: 'Lexend Regular';
-    -fx-font-family: 'Lexend Regular';
+    font-family: 'Lexend Regular' !important;
+    -fx-font-family: 'Lexend Regular' !important;
 }
 
 .lexend-medium {
-    font-family: 'Lexend Medium';
-    -fx-font-family: 'Lexend Medium';
+    font-family: 'Lexend Medium' !important;
+    -fx-font-family: 'Lexend Medium' !important;
 }
 
 .lexend-semibold {
-    font-family: 'Lexend SemiBold';
-    -fx-font-family: 'Lexend SemiBold';
+    font-family: 'Lexend SemiBold' !important;
+    -fx-font-family: 'Lexend SemiBold' !important;
 }
 
 .lexend-bold {
-    font-family: 'Lexend Bold';
-    -fx-font-family: 'Lexend Bold';
+    font-family: 'Lexend Bold' !important;
+    -fx-font-family: 'Lexend Bold' !important;
 }
 
 .lexend-extrabold {
-    font-family: 'Lexend ExtraBold';
-    -fx-font-family: 'Lexend ExtraBold';
+    font-family: 'Lexend ExtraBold' !important;
+    -fx-font-family: 'Lexend ExtraBold' !important;
 }
 
 .lexend-black {
-    font-family: 'Lexend Black';
-    -fx-font-family: 'Lexend Black';
+    font-family: 'Lexend Black' !important;
+    -fx-font-family: 'Lexend Black' !important;
 }
