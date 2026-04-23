@@ -38,6 +38,9 @@
                 <Button fx:id="btnNodeAndEdges" alignment="CENTER" onAction="#switchToNodeAndEdges"
                 text="Node and Edges"
                 styleClass="button-secondary-1" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnSwitchToPoint" alignment="CENTER" onAction="#switchToPoint"
+                text="Point"
+                styleClass="button-secondary-3" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                 <Button fx:id="btnSwitchToGrid" alignment="CENTER" onAction="#switchToGrid"
                 text="Grid"
                 styleClass="button-secondary-3" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
