@@ -32,17 +32,17 @@ public class TravellingSalesmanAnimation {
 
     // Node Colors
     private static final Color HAMILTONIAN_COLOR = Color.web("#4a90e2");
-    private static final Color SELECTED_NODE = Color.web("#f59e0b"); 
-    private static final Color TWO_OPT_COLOR = Color.web("#fbbf24"); 
-    private static final Color RESULT_COLOR = Color.web("#ffd53d"); 
+    private static final Color SELECTED_NODE = Color.web("#f59e0b");
+    private static final Color TWO_OPT_COLOR = Color.web("#fbbf24");
+    private static final Color RESULT_COLOR = Color.web("#ffd53d");
 
     // Edge Colors
 
-    private static final Color EDGE_NORMAL_COLOR = Color.web("#000"); 
-    private static final Color EDGE_HAMILTONIAN_COLOR = Color.web("#4a90e2"); 
-    private static final Color EDGE_EXPLORE_COLOR = Color.web("#2f49a9"); 
-    private static final Color EDGE_SELECTED_COLOR = Color.web("#da6e09"); 
-    private static final Color EDGE_RESULT_COLOR = Color.web("#da6e09"); 
+    private static final Color EDGE_NORMAL_COLOR = Color.web("#000");
+    private static final Color EDGE_HAMILTONIAN_COLOR = Color.web("#4a90e2");
+    private static final Color EDGE_EXPLORE_COLOR = Color.web("#2f49a9");
+    private static final Color EDGE_SELECTED_COLOR = Color.web("#da6e09");
+    private static final Color EDGE_RESULT_COLOR = Color.web("#da6e09");
 
     public static void setAnimationStepTime(long animationStepTime) {
         TravellingSalesmanAnimation.animationStepTime = animationStepTime;
@@ -191,8 +191,7 @@ public class TravellingSalesmanAnimation {
                                 if (edge34GUI != null)
                                     edge34GUI.setLineColor(EDGE_NORMAL_COLOR);
                             });
-                        }
-                        else {
+                        } else {
                             // STEP 3: Reset Colors After Comparison
                             Platform.runLater(() -> {
                                 nodeGUI1.setColor(HAMILTONIAN_COLOR);
@@ -237,10 +236,10 @@ public class TravellingSalesmanAnimation {
                 }
             }
             GraphVisualizationController.instance
-                        .logMessage("With Total Weight: " + totalWeight);
-            GraphVisualizationController.instance.logMessage("Initial Hamilton Cycle : " + graphGUI.pathToString(hamiltonCycle));
+                    .logMessage("With Total Weight: " + totalWeight);
+            GraphVisualizationController.instance
+                    .logMessage("Initial Hamilton Cycle : " + graphGUI.pathToString(hamiltonCycle));
             GraphVisualizationController.instance.logMessage("Result Cycle : " + graphGUI.pathToString(cycle));
-
 
         } catch (Exception e) {
             GraphVisualizationController.instance.logMessage("Error during 2-opt animation: " + e.getMessage());
@@ -248,7 +247,7 @@ public class TravellingSalesmanAnimation {
         }
 
     }
-    
+
     public static void animate(PointGraphGUI graphGUI) {
         if (GraphVisualizationController.instance == null || graphGUI == null) {
             return;
@@ -262,6 +261,7 @@ public class TravellingSalesmanAnimation {
         for (int i = 0; i < hamiltonCycle.size(); i++) {
             Node node = hamiltonCycle.get(i);
             Node nextNode = hamiltonCycle.get((i + 1) % (hamiltonCycle.size()));
+            graph.addEdge(node, nextNode);
             final NodeGUI nodeGUI = graphGUI.getNodeGUI(node);
             final EdgeGUI edgeGUI = graphGUI.getEdgeGUI(node, nextNode);
             graphGUI.addEdge(node, nextNode);
@@ -323,35 +323,15 @@ public class TravellingSalesmanAnimation {
                         });
                         Thread.sleep(animationStepTime);
 
-                        // Get edges for comparison
-                        Edge edge1 = node1.getEdge(node2);
-                        Edge edge2 = node3.getEdge(node4);
-                        Edge edge3 = node1.getEdge(node3);
-                        Edge edge4 = node2.getEdge(node4);
-
-                        // If any edge is missing, skip this pair
-                        if (edge1 == null || edge2 == null || edge3 == null || edge4 == null) {
-                            // Reset colors
-                            Platform.runLater(() -> {
-                                nodeGUI1.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI2.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI3.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI4.setColor(HAMILTONIAN_COLOR);
-                                if (edge12GUI != null)
-                                    edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                                if (edge34GUI != null)
-                                    edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                            });
-                            continue;
-                        }
-
-                        double currentDist = edge1.getWeight() + edge2.getWeight();
-                        double newDist = edge3.getWeight() + edge4.getWeight();
+                        double currentDist = graph.getDistance(node1, node2) + graph.getDistance(node3, node4);
+                        double newDist = graph.getDistance(node1, node3) + graph.getDistance(node2, node4);
 
                         // STEP 2: Show New Potential Edges (if better)
                         if (currentDist > newDist) {
                             GraphVisualizationController.instance
                                     .logMessage("Found improvement: " + currentDist + " > " + newDist);
+                            graphGUI.addEdge(node1, node3);
+                            graphGUI.addEdge(node2, node4);
                             final EdgeGUI edge13GUI = graphGUI.getEdgeGUI(node1, node3);
                             final EdgeGUI edge24GUI = graphGUI.getEdgeGUI(node2, node4);
 
@@ -375,7 +355,7 @@ public class TravellingSalesmanAnimation {
                                 cycle.set(j - k + 1, temp);
                             }
                             hasChanges = true;
-                            
+
                             // STEP 3: Reset Colors After Comparison
                             Platform.runLater(() -> {
                                 nodeGUI1.setColor(HAMILTONIAN_COLOR);
@@ -385,8 +365,7 @@ public class TravellingSalesmanAnimation {
                                 graphGUI.removeEdge(edge12GUI.getEdge());
                                 graphGUI.removeEdge(edge24GUI.getEdge());
                             });
-                        }
-                        else {
+                        } else {
                             // STEP 3: Reset Colors After Comparison
                             Platform.runLater(() -> {
                                 nodeGUI1.setColor(HAMILTONIAN_COLOR);
@@ -431,10 +410,10 @@ public class TravellingSalesmanAnimation {
                 }
             }
             GraphVisualizationController.instance
-                        .logMessage("With Total Weight: " + totalWeight);
-            GraphVisualizationController.instance.logMessage("Initial Hamilton Cycle : " + graphGUI.pathToString(hamiltonCycle));
+                    .logMessage("With Total Weight: " + totalWeight);
+            GraphVisualizationController.instance
+                    .logMessage("Initial Hamilton Cycle : " + graphGUI.pathToString(hamiltonCycle));
             GraphVisualizationController.instance.logMessage("Result Cycle : " + graphGUI.pathToString(cycle));
-
 
         } catch (Exception e) {
             GraphVisualizationController.instance.logMessage("Error during 2-opt animation: " + e.getMessage());

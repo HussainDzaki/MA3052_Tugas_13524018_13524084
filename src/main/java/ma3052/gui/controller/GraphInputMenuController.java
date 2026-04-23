@@ -733,6 +733,15 @@ public class GraphInputMenuController {
         btnSwitchToPoint.getStyleClass().add("button-secondary-3");
 
         graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
+
+        graphGUI.getCanvas().setManaged(true);
+        gridGraphGUI.getCanvas().setManaged(false);
+        pointGraphGUI.getCanvas().setManaged(false);
+
+        graphGUI.getCanvas().setVisible(true);
+        gridGraphGUI.getCanvas().setVisible(false);
+        pointGraphGUI.getCanvas().setVisible(false);
+
         graphGUI.setDrawing(true);
         gridGraphGUI.setDrawing(false);
         pointGraphGUI.setDrawing(false);
@@ -774,6 +783,14 @@ public class GraphInputMenuController {
         btnSwitchToPoint.getStyleClass().remove("button-secondary-1");
         btnSwitchToPoint.getStyleClass().add("button-secondary-3");
 
+        graphGUI.getCanvas().setManaged(false);
+        gridGraphGUI.getCanvas().setManaged(true);
+        pointGraphGUI.getCanvas().setManaged(false);
+
+        graphGUI.getCanvas().setVisible(false);
+        gridGraphGUI.getCanvas().setVisible(true);
+        pointGraphGUI.getCanvas().setVisible(false);
+
         graphGUI.setDrawing(false);
         gridGraphGUI.setDrawing(true);
         pointGraphGUI.setDrawing(false);
@@ -811,6 +828,14 @@ public class GraphInputMenuController {
         btnSwitchToGrid.getStyleClass().add("button-secondary-3");
         btnSwitchToPoint.getStyleClass().remove("button-secondary-3");
         btnSwitchToPoint.getStyleClass().add("button-secondary-1");
+
+        graphGUI.getCanvas().setManaged(false);
+        gridGraphGUI.getCanvas().setManaged(false);
+        pointGraphGUI.getCanvas().setManaged(true);
+
+        graphGUI.getCanvas().setVisible(false);
+        gridGraphGUI.getCanvas().setVisible(false);
+        pointGraphGUI.getCanvas().setVisible(true);
 
         graphGUI.setDrawing(false);
         gridGraphGUI.setDrawing(false);

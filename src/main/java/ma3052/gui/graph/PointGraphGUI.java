@@ -157,29 +157,51 @@ public class PointGraphGUI {
         edgeMap.clear();
         nodeGUIList.clear();
         edgeGUIList.clear();
+        boolean first = true;
+        double maxX = 0;
+        double maxY = 0;
+        double minX = 0;
+        double minY = 0;
         for (Node node : graph.getNodeList()) {
             NodeGUI nodeGUI = new NodeGUI(node);
             nodeMap.put(node, nodeGUI);
             nodeGUIList.add(nodeGUI);
 
-            // Randomize position
-            double width = canvas.getWidth();
-            double height = canvas.getHeight();
-            double randomX = Math.random() * (width - 100) + 50;
-            double randomY = Math.random() * (height - 100) + 50;
-            Point2D pos = canvasToNodePosition(new Point2D(randomX, randomY));
-            nodeGUI.setPosition(pos);
+            System.out.println(graph.getPosition(node));
+            nodeGUI.setPosition(graph.getPosition(node));
             nodeGUI.setLockPosition(true);
-            nodeGUI.setRadius(3);
+            nodeGUI.setRadius(1);
             nodeGUI.setDrawLabel(false);
-            graph.setPosition(node, pos);
+
+            if (first) {
+                maxX = graph.getPosition(node).getX();
+                maxY = graph.getPosition(node).getY();
+                minX = graph.getPosition(node).getX();
+                minY = graph.getPosition(node).getY();
+                first = false;
+            } else {
+                maxX = Math.max(maxX, graph.getPosition(node).getX());
+                maxY = Math.max(maxY, graph.getPosition(node).getY());
+                minX = Math.min(minX, graph.getPosition(node).getX());
+                minY = Math.min(minY, graph.getPosition(node).getY());
+
+            }
         }
         for (Edge edge : graph.getEdgeList()) {
             EdgeGUI edgeGUI = new EdgeGUI(edge, getNodeGUI(edge.getSource()), getNodeGUI(edge.getDestination()));
             edgeMap.put(edge, edgeGUI);
             edgeGUIList.add(edgeGUI);
             // Set drawWeight based on whether edge has a non-default weight
-            edgeGUI.setDrawWeight(edge.getWeight() != Edge.DEFAULT_WEIGHT);
+            edgeGUI.setDrawWeight(false);
+        }
+
+        if (!first) {
+            // graphicsContext.translate((maxX + minX) / 2, (maxY + minY) / 2);
+            System.out.println(
+                    graphicsContext.getTransform().transform(graph.getPosition(graph.getNodeList().getFirst())));
+
+            // double scale = Math.min((maxX - minX) / 2, (maxY - minY) / 2);
+            // graphicsContext.scale(scale, scale);
         }
     }
 
@@ -392,17 +414,13 @@ public class PointGraphGUI {
     }
 
     public void zoomIn() {
-        if (canvasScale < 1.45) {
-            graphicsContext.scale((canvasScale + 0.10) / canvasScale, (canvasScale + 0.10) / canvasScale);
-            canvasScale += 0.10;
-        }
+        graphicsContext.scale(1.25, 1.25);
+        canvasScale *= 1.25;
     }
 
     public void zoomOut() {
-        if (canvasScale > 0.55) {
-            graphicsContext.scale((canvasScale - 0.10) / canvasScale, (canvasScale - 0.10) / canvasScale);
-            canvasScale -= 0.10;
-        }
+        graphicsContext.scale(0.8, 0.8);
+        canvasScale *= 0.8;
     }
 
     private NodeGUI getNodeGUIOnPosition(Point2D pos) {

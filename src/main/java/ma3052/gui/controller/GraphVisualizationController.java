@@ -38,7 +38,11 @@ public class GraphVisualizationController {
     private Label appLabel;
 
     @FXML
-    private Canvas graphCanvas;
+    private Canvas graphCanvas1;
+    @FXML
+    private Canvas graphCanvas2;
+    @FXML
+    private Canvas graphCanvas3;
 
     @FXML
     private Button btnLockMode;
@@ -105,13 +109,21 @@ public class GraphVisualizationController {
         instance = this;
 
         // Initialize graph
-        graphGUI = new GraphGUI(graphCanvas);
-        gridGraphGUI = new GridGraphGUI(graphCanvas);
-        pointGraphGUI = new PointGraphGUI(graphCanvas);
+        graphGUI = new GraphGUI(graphCanvas1);
+        gridGraphGUI = new GridGraphGUI(graphCanvas2);
+        pointGraphGUI = new PointGraphGUI(graphCanvas3);
 
         graphGUI.setDrawing(true);
         gridGraphGUI.setDrawing(false);
         pointGraphGUI.setDrawing(false);
+
+        graphGUI.getCanvas().setManaged(true);
+        gridGraphGUI.getCanvas().setManaged(false);
+        pointGraphGUI.getCanvas().setManaged(false);
+
+        graphGUI.getCanvas().setVisible(true);
+        gridGraphGUI.getCanvas().setVisible(false);
+        pointGraphGUI.getCanvas().setVisible(false);
 
         graphGUI.setGraph(getDefaultGraph());
         gridGraphGUI.setGridGraph(getDefaultGridGraph());
@@ -128,10 +140,11 @@ public class GraphVisualizationController {
             appLabel.requestFocus();
             graphInputMenuController.updateListFromGraph();
 
-            graphCanvas.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+            graphCanvas1.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
                 // Stop both drawing thread
                 graphGUI.stop();
                 gridGraphGUI.stop();
+                pointGraphGUI.stop();
             });
         });
     }
