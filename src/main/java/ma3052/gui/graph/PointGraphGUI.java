@@ -13,7 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-
+import javafx.stage.WindowEvent;
 import ma3052.core.graph.Edge;
 import ma3052.core.graph.Node;
 import ma3052.core.graph.PointGraph;
@@ -21,13 +21,12 @@ import ma3052.core.graph.PointGraph;
 public class PointGraphGUI {
     // What to do when canvas is interacted
     public static enum Mode {
-        Move,
         Add, // Add node and edges
         Edit, // Edit node name, node value, and edge weight on a window
         Delete, // Delete node and edges
     }
 
-    private Mode mode = Mode.Move;
+    private Mode mode = Mode.Add;
 
     // Graph data structure
     private Canvas canvas;
@@ -45,7 +44,7 @@ public class PointGraphGUI {
     // Animation parameters
     private static final double MIN_DISTANCE = 120;
     private static final double COULOMB_CONSTANT = 400;
-    private static final double CENTER_GRAVITY_CONSTANT = 300;
+    private static final double CENTER_GRAVITY_CONSTANT = 2000;
 
     // Force-directed layout parameters
     private static final double FIXED_DELTA_TIME = 0.02; // 50 fps
@@ -55,7 +54,7 @@ public class PointGraphGUI {
     private static final double MAX_DISTANCE_FROM_EDGE_TO_CLICK = 10;
 
     // Animation
-    private volatile boolean isPhysicEnabled = true;
+    private volatile boolean isPhysicEnabled = false;
     private volatile boolean isDrawing = true;
 
     private ScheduledThreadPoolExecutor threadPoolExecutor;
@@ -63,9 +62,16 @@ public class PointGraphGUI {
     // Canvas Update
     private Runnable onGraphUpdateRunnable = null;
 
+    // Canvas moving
+    private boolean isMoving = false;
+    private Point2D movePosition = new Point2D(0, 0);
+
+    // Canvas scale
+    private double canvasScale = 1;
+
     // Node dragging
     private boolean isDragging = false;
-    private Point2D dragOffset;
+    private boolean initialLockPosition = false;
     private NodeGUI draggedNodeGUI;
 
     // Node clicking
@@ -100,32 +106,30 @@ public class PointGraphGUI {
         dummyNodeGUI.setColor(Color.TRANSPARENT);
         dummyNodeGUI.setTextColor(Color.TRANSPARENT);
 
-        canvas.setOnMousePressed(event -> {
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             onCanvasClickStart(event);
             onCanvasDragStart(event);
         });
 
-        canvas.setOnMouseDragged(event -> {
-            onCanvasDragMove(event);
-        });
-
-        canvas.setOnMouseReleased(event -> {
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
             onCanvasClickEnd(event);
             onCanvasDragEnd(event);
         });
 
-        canvas.setOnMouseExited(event -> {
-            onCanvasDragEnd(event);
-            sourceNodeGUI = null;
-            dummyEdgeGUI = null;
-        });
-
-        canvas.setOnMouseMoved(event -> {
+        canvas.addEventHandler(MouseEvent.MOUSE_MOVED, event -> {
             onCanvasHover(event);
         });
 
         Platform.runLater(() -> {
-            canvas.getScene().getWindow().setOnCloseRequest(event -> {
+            canvas.getScene().addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+                onCanvasDragMove(event);
+            });
+            canvas.getScene().addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+                onCanvasDragEnd(event);
+                sourceNodeGUI = null;
+                dummyEdgeGUI = null;
+            });
+            canvas.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
                 threadPoolExecutor.shutdown();
             });
         });
@@ -163,8 +167,12 @@ public class PointGraphGUI {
             double height = canvas.getHeight();
             double randomX = Math.random() * (width - 100) + 50;
             double randomY = Math.random() * (height - 100) + 50;
-            nodeGUI.setPosition(new Point2D(randomX, randomY));
+            Point2D pos = canvasToNodePosition(new Point2D(randomX, randomY));
+            nodeGUI.setPosition(pos);
             nodeGUI.setLockPosition(true);
+            nodeGUI.setRadius(3);
+            nodeGUI.setDrawLabel(false);
+            graph.setPosition(node, pos);
         }
         for (Edge edge : graph.getEdgeList()) {
             EdgeGUI edgeGUI = new EdgeGUI(edge, getNodeGUI(edge.getSource()), getNodeGUI(edge.getDestination()));
@@ -207,9 +215,9 @@ public class PointGraphGUI {
         return null;
     }
 
-    public void addNode(Node node, Point2D position) {
+    public void addNode(Node node, Point2D pos) {
         if (!graph.hasNode(node)) {
-            graph.addNode(node, position);
+            graph.addNode(node, pos);
             NodeGUI nodeGUI = new NodeGUI(node);
             nodeGUIList.add(nodeGUI);
             nodeMap.put(node, nodeGUI);
@@ -220,7 +228,6 @@ public class PointGraphGUI {
             double randomX = Math.random() * (width - 100) + 50;
             double randomY = Math.random() * (height - 100) + 50;
             nodeGUI.setPosition(new Point2D(randomX, randomY));
-            nodeGUI.setLockPosition(true);
         }
     }
 
@@ -247,15 +254,6 @@ public class PointGraphGUI {
             EdgeGUI edgeGUI = new EdgeGUI(edge, nodeMap.get(source), nodeMap.get(destination));
             edgeGUIList.add(edgeGUI);
             edgeMap.put(edge, edgeGUI);
-        }
-    }
-
-    public void removeEdge(Node source, Node destination) {
-        if (graph.hasEdge(source, destination)) {
-            Edge edge = graph.getEdge(source, destination);
-            edgeGUIList.remove(edgeMap.get(edge));
-            edgeMap.remove(edge);
-            graph.removeEdge(edge);
         }
     }
 
@@ -308,7 +306,8 @@ public class PointGraphGUI {
         // System.out.println("Updating physics");
         // Add force to the center
         for (NodeGUI nodeGUI : nodeGUIList) {
-            Point2D offset = new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2).subtract(nodeGUI.getPosition());
+            Point2D offset = canvasToNodePosition(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2))
+                    .subtract(nodeGUI.getPosition());
             Point2D gravityForce = offset.normalize().multiply(CENTER_GRAVITY_CONSTANT);
             nodeGUI.addForce(gravityForce);
         }
@@ -338,9 +337,6 @@ public class PointGraphGUI {
         for (NodeGUI nodeGUI : nodeGUIList) {
             nodeGUI.update(FIXED_DELTA_TIME);
             nodeGUI.setForce(Point2D.ZERO); // Reset force
-            nodeGUI.clampPosition(
-                    nodeGUI.getRadius() + 10, nodeGUI.getRadius() + 10,
-                    canvas.getWidth() - nodeGUI.getRadius() - 10, canvas.getHeight() - nodeGUI.getRadius() - 10);
         }
     }
 
@@ -359,9 +355,31 @@ public class PointGraphGUI {
         }
     }
 
+    private Point2D canvasToNodePosition(Point2D point) {
+        try {
+            return graphicsContext.getTransform().inverseTransform(point);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return point;
+    }
+
+    private Point2D sceneToNodePosition(Point2D point) {
+        try {
+            return graphicsContext.getTransform().inverseTransform(canvas.sceneToLocal(point));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return point;
+    }
+
     private void clearCanvas() {
+        graphicsContext.save();
         graphicsContext.setFill(Color.WHITE);
-        graphicsContext.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        Point2D start = canvasToNodePosition(new Point2D(0, 0));
+        Point2D end = canvasToNodePosition(new Point2D(canvas.getWidth(), canvas.getHeight()));
+        graphicsContext.fillRect(start.getX(), start.getY(), end.getX() - start.getX(), end.getY() - start.getY());
+        graphicsContext.restore();
     }
 
     private void updateCanvas() {
@@ -373,9 +391,23 @@ public class PointGraphGUI {
         });
     }
 
-    private NodeGUI getNodeGUIOnPosition(double x, double y) {
+    public void zoomIn() {
+        if (canvasScale < 1.45) {
+            graphicsContext.scale((canvasScale + 0.10) / canvasScale, (canvasScale + 0.10) / canvasScale);
+            canvasScale += 0.10;
+        }
+    }
+
+    public void zoomOut() {
+        if (canvasScale > 0.55) {
+            graphicsContext.scale((canvasScale - 0.10) / canvasScale, (canvasScale - 0.10) / canvasScale);
+            canvasScale -= 0.10;
+        }
+    }
+
+    private NodeGUI getNodeGUIOnPosition(Point2D pos) {
         for (NodeGUI nodeGUI : nodeGUIList) {
-            if (nodeGUI.getPosition().subtract(x, y).magnitude() <= nodeGUI
+            if (nodeGUI.getPosition().subtract(pos).magnitude() <= nodeGUI
                     .getRadius()) {
                 return nodeGUI;
             }
@@ -383,8 +415,7 @@ public class PointGraphGUI {
         return null;
     }
 
-    private EdgeGUI getEdgeGUIOnPosition(double x, double y) {
-        Point2D pos = new Point2D(x, y);
+    private EdgeGUI getEdgeGUIOnPosition(Point2D pos) {
         for (EdgeGUI edgeGUI : edgeGUIList) {
             Point2D node1 = edgeGUI.getSourceGUI().getPosition();
             Point2D node2 = edgeGUI.getDestinationGUI().getPosition();
@@ -430,30 +461,42 @@ public class PointGraphGUI {
     }
 
     private void onCanvasDragStart(MouseEvent event) {
-        NodeGUI nodeGUI = getNodeGUIOnPosition(event.getX(), event.getY());
+        movePosition = new Point2D(event.getSceneX(), event.getSceneY());
+        NodeGUI nodeGUI = getNodeGUIOnPosition(sceneToNodePosition(movePosition));
         if (nodeGUI != null) {
             isDragging = true;
             draggedNodeGUI = nodeGUI;
-            dragOffset = nodeGUI.getPosition().subtract(event.getX(), event.getY());
+            initialLockPosition = draggedNodeGUI.isLockPosition();
+            // draggedNodeGUI.setLockPosition(true);
+        } else {
+            isMoving = true;
         }
     }
 
     private void onCanvasDragMove(MouseEvent event) {
+        Point2D deltaPosition = new Point2D(
+                (event.getSceneX() - movePosition.getX()) / canvasScale,
+                (event.getSceneY() - movePosition.getY()) / canvasScale);
+        movePosition = new Point2D(event.getSceneX(), event.getSceneY());
         if (isDragging) {
-            Point2D currentPosition = new Point2D(event.getX(), event.getY());
-            draggedNodeGUI.setPosition(currentPosition.add(dragOffset));
-            draggedNodeGUI.clampPosition(
-                    draggedNodeGUI.getRadius() + 10, draggedNodeGUI.getRadius() + 10,
-                    canvas.getWidth() - draggedNodeGUI.getRadius() - 10,
-                    canvas.getHeight() - draggedNodeGUI.getRadius() - 10);
-            graph.setPosition(draggedNodeGUI.getNode(), draggedNodeGUI.getPosition());
+            draggedNodeGUI.setPosition(draggedNodeGUI.getPosition().add(deltaPosition));
         }
-        dummyNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
+        if (isMoving) {
+            graphicsContext.translate(deltaPosition.getX(), deltaPosition.getY());
+        }
+        dummyNodeGUI.setPosition(sceneToNodePosition(movePosition));
     }
 
     private void onCanvasDragEnd(MouseEvent event) {
         if (isDragging) {
+            // If is actually dragged, not just a click
+            if (startClickPosition.distance(event.getX(), event.getY()) > 5) {
+                draggedNodeGUI.setLockPosition(initialLockPosition);
+            }
             isDragging = false;
+        }
+        if (isMoving) {
+            isMoving = false;
         }
     }
 
@@ -469,16 +512,18 @@ public class PointGraphGUI {
     }
 
     private void onCanvasClick(MouseEvent event) {
-        NodeGUI nodeGUI = getNodeGUIOnPosition(event.getX(), event.getY());
-        EdgeGUI edgeGUI = getEdgeGUIOnPosition(event.getX(), event.getY());
+        Point2D pos = new Point2D(event.getSceneX(), event.getSceneY());
+        NodeGUI nodeGUI = getNodeGUIOnPosition(sceneToNodePosition(pos));
+        EdgeGUI edgeGUI = getEdgeGUIOnPosition(sceneToNodePosition(pos));
         switch (mode) {
             case Add:
                 if (sourceNodeGUI == null) {
                     if (nodeGUI == null) {
                         Node newNode = new Node(getNextNodeName());
-                        addNode(newNode, new Point2D(event.getX(), event.getY()));
+                        addNode(newNode, sceneToNodePosition(pos));
                         NodeGUI newNodeGUI = getNodeGUI(newNode);
-                        newNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
+                        newNodeGUI.setDrawLabel(false);
+                        newNodeGUI.setPosition(sceneToNodePosition(pos));
                         if (onGraphUpdateRunnable != null) {
                             onGraphUpdateRunnable.run();
                         }
@@ -520,20 +565,23 @@ public class PointGraphGUI {
     }
 
     private void onCanvasHover(MouseEvent event) {
-        NodeGUI nodeGUI = getNodeGUIOnPosition(event.getX(), event.getY());
-        EdgeGUI edgeGUI = getEdgeGUIOnPosition(event.getX(), event.getY());
+        Point2D pos = new Point2D(event.getSceneX(), event.getSceneY());
+        NodeGUI nodeGUI = getNodeGUIOnPosition(sceneToNodePosition(pos));
+        EdgeGUI edgeGUI = getEdgeGUIOnPosition(sceneToNodePosition(pos));
         if (nodeGUI != null || edgeGUI != null && (mode == Mode.Delete || mode == Mode.Edit)) {
             if (!isCursorPointing) {
                 canvas.getStyleClass().add("cursor-pointer");
+                // canvas.getStyleClass().remove("cursor-grab");
                 isCursorPointing = true;
             }
         } else {
             if (isCursorPointing) {
                 canvas.getStyleClass().remove("cursor-pointer");
+                // canvas.getStyleClass().add("cursor-grab");
                 isCursorPointing = false;
             }
         }
-        dummyNodeGUI.setPosition(new Point2D(event.getX(), event.getY()));
+        dummyNodeGUI.setPosition(sceneToNodePosition(pos));
     }
 
     public void updateGraph() {
