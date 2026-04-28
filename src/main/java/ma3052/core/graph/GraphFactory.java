@@ -155,6 +155,7 @@ public class GraphFactory {
     public static Graph createStarGraph(int n) {
         return createStarGraph(n, NodeNameOption.OneIndexed);
     }
+
     public static Graph createStarGraph(int n, NodeNameOption option) {
         Graph graph = new Graph();
         for (int i = 0; i < n; i++) {
@@ -172,12 +173,33 @@ public class GraphFactory {
 
     public static Graph createWheelGraph(int n, NodeNameOption option) {
         Graph graph = new Graph();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i <= n; i++) {
             graph.addNode(new Node(getNodeName(i, option)));
         }
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             graph.addEdge(getNodeName(0, option), getNodeName(i, option));
-            graph.addEdge(getNodeName(i, option), getNodeName(i % (n - 1) + 1, option));
+            graph.addEdge(getNodeName(i, option), getNodeName(i % n + 1, option));
+        }
+        return graph;
+    }
+
+    public static Graph createWheelGraph(int n, int c) {
+        return createWheelGraph(n, c, NodeNameOption.OneIndexed);
+    }
+
+    public static Graph createWheelGraph(int n, int c, NodeNameOption option) {
+        Graph graph = new Graph();
+        for (int i = 0; i <= n; i++) {
+            graph.addNode(new Node(getNodeName(i, option)));
+        }
+        for (int i = 1; i <= n; i++) {
+            graph.addEdge(getNodeName(0, option), getNodeName(i, option));
+            for (int j = 0; j < c; j++) {
+                if (j > 0) {
+                    graph.addEdge(getNodeName(i + (j - 1) * c, option), getNodeName(i + j * c, option));
+                }
+                graph.addEdge(getNodeName(i + j * c, option), getNodeName(i % n + 1 + j * c, option));
+            }
         }
         return graph;
     }
