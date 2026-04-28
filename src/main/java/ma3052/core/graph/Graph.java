@@ -1,6 +1,7 @@
 package ma3052.core.graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -22,14 +23,14 @@ public class Graph {
         this.directed = directed;
     }
 
-    public Graph(Collection<Node> nodes) {
-        nodeList = new ArrayList<Node>(nodes);
+    public Graph(Node... nodes) {
+        nodeList = new ArrayList<Node>(Arrays.asList(nodes));
         edgeList = new ArrayList<Edge>();
         directed = false;
     }
 
-    public Graph(Collection<Node> nodes, boolean directed) {
-        nodeList = new ArrayList<Node>(nodes);
+    public Graph(boolean directed, Node... nodes) {
+        nodeList = new ArrayList<Node>(Arrays.asList(nodes));
         edgeList = new ArrayList<Edge>();
         this.directed = directed;
     }
@@ -62,8 +63,10 @@ public class Graph {
         }
     }
 
-    public void addNodes(Collection<Node> node) {
-        nodeList.addAll(node);
+    public void addNode(Node... nodes) {
+        for (Node node : nodes) {
+            addNode(node);
+        }
     }
 
     public void removeNode(Node node) {
@@ -75,7 +78,7 @@ public class Graph {
         }
     }
 
-    public void removeNodes(Collection<Node> nodes) {
+    public void removeNode(Node... nodes) {
         for (Node node : nodes) {
             removeNode(node);
         }
