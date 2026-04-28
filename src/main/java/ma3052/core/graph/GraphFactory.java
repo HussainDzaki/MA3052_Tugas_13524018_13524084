@@ -143,7 +143,7 @@ public class GraphFactory {
         }
         Graph graph = new Graph();
         for (int d = 0; d < depth; d++) {
-            for (int i = 0; i < (1 << d); i++) {
+            for (int i = 0; i < (1 << d) - 1; i++) {
                 graph.addEdge(getNodeName(i, option), getNodeName(2 * i + 1, option));
                 graph.addEdge(getNodeName(i, option), getNodeName(2 * i + 2, option));
             }
