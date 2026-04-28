@@ -103,11 +103,11 @@ public class GraphFactory {
         return graph;
     }
 
-    public static Graph createPathGraph(int n) {
-        return createPathGraph(n, NodeNameOption.OneIndexed);
+    public static Graph createLinearGraph(int n) {
+        return createLinearGraph(n, NodeNameOption.OneIndexed);
     }
 
-    public static Graph createPathGraph(int n, NodeNameOption option) {
+    public static Graph createLinearGraph(int n, NodeNameOption option) {
         Graph graph = new Graph();
         for (int i = 0; i < n; i++) {
             graph.addNode(new Node(getNodeName(i, option)));
@@ -152,6 +152,9 @@ public class GraphFactory {
         return graph;
     }
 
+    public static Graph createStarGraph(int n) {
+        return createStarGraph(n, NodeNameOption.OneIndexed);
+    }
     public static Graph createStarGraph(int n, NodeNameOption option) {
         Graph graph = new Graph();
         for (int i = 0; i < n; i++) {
