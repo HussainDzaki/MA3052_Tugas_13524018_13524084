@@ -127,6 +127,10 @@ public class GraphAlgorithmMenuController {
                         "Count Component",
                         "Biggest Component");
                 break;
+            case POINT_MODE:
+                algorithmCombo.getItems().addAll(
+                        "Travelling Salesman");
+                break;
             default:
                 break;
         }
@@ -155,6 +159,11 @@ public class GraphAlgorithmMenuController {
             endNodeName = endNodeInput.getText().trim();
             logMessage("═══════════════════════════════════");
             logMessage("Starting " + selectedAlgorithm + " from node: " + startNodeName);
+            logMessage("═══════════════════════════════════");
+        }
+        if (mainController.getMode() == ModeGUI.POINT_MODE) {
+            logMessage("═══════════════════════════════════");
+            logMessage("Starting " + selectedAlgorithm);
             logMessage("═══════════════════════════════════");
         }
 
@@ -214,20 +223,30 @@ public class GraphAlgorithmMenuController {
      * Execute the selected algorithm based on mode and algorithm type
      */
     private void executeAlgorithm(String selectedAlgorithm, String startNodeName, String endNodeName) {
+        System.out.println("SELECTED " + selectedAlgorithm);
+        System.out.println("MODE " + mainController.getMode());
         try {
             mainController.setAnimating(true);
             switch (mainController.getMode()) {
                 case NODE_AND_EDGES_MODE:
                     graphGUI.resetColors();
+                    System.out.println("A ");
                     executeNodeAndEdgesAlgorithm(selectedAlgorithm, startNodeName, endNodeName);
                     break;
                 case GRID_MODE:
+                    System.out.println("B");
                     executeGridAlgorithm(selectedAlgorithm);
                     break;
+                case POINT_MODE:
+                    System.out.println("C");
+                    executePointAlgorithm(selectedAlgorithm);
+                    break;
                 default:
+                    System.out.println("D");
                     break;
             }
         } catch (Exception e) {
+            System.out.println("E");
             Platform.runLater(() -> mainController.showError("Algorithm execution error: " + e.getMessage()));
             e.printStackTrace();
         } finally {
@@ -335,6 +354,19 @@ public class GraphAlgorithmMenuController {
                     logMessage("═══════════════════════════════════");
                 });
                 break;
+            default:
+                break;
+        }
+    }
+
+    private void executePointAlgorithm(String algorithm) {
+        System.out.println("me cute");
+        switch (algorithm) {
+            case "Travelling Salesman":
+                System.out.println("TRAVELLING SALESMANN!!!!");
+                TravellingSalesmanAnimation.animate(mainController.getPointGraphGUI());
+                break;
+
             default:
                 break;
         }

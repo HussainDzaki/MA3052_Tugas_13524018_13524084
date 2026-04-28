@@ -33,26 +33,6 @@
     -fx-font-weight: bold;
 }
 
-/* Border thickness */
-.border-thin {
-    border-width: 1;
-    -fx-border-width: 1;
-}
-.border-medium {
-    border-width: 1.5;
-    -fx-border-width: 1.5;
-}
-.border-thick {
-    border-width: 2;
-    -fx-border-width: 2;
-}
-
-.rounded {
-    border-radius: 8;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-}
-
 /* Button */
 .button {
     font-family: 'Lexend Bold';
@@ -65,8 +45,6 @@
     -fx-cursor: hand;
     border-radius: 8;
     -fx-border-radius: 8;
-    border-width: 0;
-    -fx-border-width: 0;
     font-weight: bold;
     -fx-font-weight: bold;
 }
@@ -151,4 +129,32 @@
 .cursor-grabbing {
     cursor: grabbing;
     -fx-cursor: "close_hand";
+}
+
+/* Border */
+.border-solid {
+    border-style: solid;
+    -fx-border-style: solid;
+}
+.border-none {
+    border-style: none;
+    -fx-border-style: none;
+}
+.border-thin {
+    border-width: 1;
+    -fx-border-width: 1;
+}
+.border-medium {    
+    border-width: 1.5;
+    -fx-border-width: 1.5 ; 
+}
+.border-thick {
+    border-width: 2;
+    -fx-border-width: 2;
+}
+
+.rounded {
+    border-radius: 8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
 }

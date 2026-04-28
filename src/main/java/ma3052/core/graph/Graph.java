@@ -57,7 +57,9 @@ public class Graph {
     }
 
     public void addNode(Node node) {
-        nodeList.add(node);
+        if (!hasNode(node)) {
+            nodeList.add(node);
+        }
     }
 
     public void addNodes(Collection<Node> node) {

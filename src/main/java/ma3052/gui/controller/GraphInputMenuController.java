@@ -20,9 +20,11 @@ import ma3052.core.graph.Edge;
 import ma3052.core.graph.Graph;
 import ma3052.core.graph.GridGraph;
 import ma3052.core.graph.Node;
+import ma3052.core.graph.PointGraph;
 import ma3052.gui.controller.GraphVisualizationController.ModeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.GridGraphGUI;
+import ma3052.gui.graph.PointGraphGUI;
 
 import java.io.*;
 import java.util.*;
@@ -35,6 +37,8 @@ public class GraphInputMenuController {
     private Button btnNodeAndEdges;
     @FXML
     private Button btnSwitchToGrid;
+    @FXML
+    private Button btnSwitchToPoint;
 
     // Node input
     @FXML
@@ -87,6 +91,7 @@ public class GraphInputMenuController {
     // Graph
     private GraphGUI graphGUI;
     private GridGraphGUI gridGraphGUI;
+    private PointGraphGUI pointGraphGUI;
     private Timer updateGraphFromListTimer;
 
     @FXML
@@ -162,6 +167,7 @@ public class GraphInputMenuController {
         this.mainController = mainController;
         graphGUI = mainController.getGraphGUI();
         gridGraphGUI = mainController.getGridGraphGUI();
+        pointGraphGUI = mainController.getPointGraphGUI();
     }
 
     /**
@@ -343,16 +349,25 @@ public class GraphInputMenuController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load File");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("Text Files", "*.txt", "*.tsp"),
                 new FileChooser.ExtensionFilter("All Files", "*.*"));
 
         File selectedFile = fileChooser.showOpenDialog(addFromFile.getScene().getWindow());
         if (selectedFile != null) {
             try {
-                if (mainController.getMode() == ModeGUI.GRID_MODE) {
-                    loadGridFromFile(selectedFile);
-                } else {
-                    loadGraphFromFile(selectedFile);
+                switch (mainController.getMode()) {
+                    case NODE_AND_EDGES_MODE:
+                        loadGraphFromFile(selectedFile);
+
+                    case GRID_MODE:
+                        loadGridFromFile(selectedFile);
+                        break;
+
+                    case POINT_MODE:
+                        loadPointFromFile(selectedFile);
+
+                    default:
+                        break;
                 }
             } catch (IOException e) {
                 mainController.showError("Error reading file: " + e.getMessage());
@@ -508,6 +523,19 @@ public class GraphInputMenuController {
         mainController.logMessage("Grid loaded from: " + file.getName());
         mainController
                 .logMessage("Grid size: " + loadedGrid.getRowSize() + " rows x " + loadedGrid.getColSize() + " cols");
+        mainController.logMessage("═══════════════════════════════════");
+    }
+
+    private void loadPointFromFile(File file) throws IOException, IllegalArgumentException {
+        // Parse grid from content
+        PointGraph loadedGraph = FormatPointGraphInput.inputGraphFromFile(file);
+        mainController.getPointGraphGUI().setGraph(loadedGraph);
+
+        mainController.logMessage("═══════════════════════════════════");
+        mainController.logMessage("Graph loaded from: " + file.getName());
+        mainController
+                .logMessage("Loaded " + mainController.getPointGraphGUI().getGraph().getNodeList().size() + " points");
+
         mainController.logMessage("═══════════════════════════════════");
     }
 
@@ -700,10 +728,22 @@ public class GraphInputMenuController {
         btnNodeAndEdges.getStyleClass().remove("button-secondary-3");
         btnSwitchToGrid.getStyleClass().add("button-secondary-3");
         btnSwitchToGrid.getStyleClass().remove("button-secondary-1");
+        btnSwitchToPoint.getStyleClass().remove("button-secondary-1");
+        btnSwitchToPoint.getStyleClass().add("button-secondary-3");
 
         graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
+
+        graphGUI.getCanvas().setManaged(true);
+        gridGraphGUI.getCanvas().setManaged(false);
+        pointGraphGUI.getCanvas().setManaged(false);
+
+        graphGUI.getCanvas().setVisible(true);
+        gridGraphGUI.getCanvas().setVisible(false);
+        pointGraphGUI.getCanvas().setVisible(false);
+
         graphGUI.setDrawing(true);
         gridGraphGUI.setDrawing(false);
+        pointGraphGUI.setDrawing(false);
 
         mainController.logMessage("═══════════════════════════════════");
         mainController.logMessage("Switched to Node and Edges view");
@@ -739,12 +779,69 @@ public class GraphInputMenuController {
         btnNodeAndEdges.getStyleClass().add("button-secondary-3");
         btnSwitchToGrid.getStyleClass().remove("button-secondary-3");
         btnSwitchToGrid.getStyleClass().add("button-secondary-1");
+        btnSwitchToPoint.getStyleClass().remove("button-secondary-1");
+        btnSwitchToPoint.getStyleClass().add("button-secondary-3");
+
+        graphGUI.getCanvas().setManaged(false);
+        gridGraphGUI.getCanvas().setManaged(true);
+        pointGraphGUI.getCanvas().setManaged(false);
+
+        graphGUI.getCanvas().setVisible(false);
+        gridGraphGUI.getCanvas().setVisible(true);
+        pointGraphGUI.getCanvas().setVisible(false);
 
         graphGUI.setDrawing(false);
         gridGraphGUI.setDrawing(true);
+        pointGraphGUI.setDrawing(false);
 
         mainController.logMessage("═══════════════════════════════════");
         mainController.logMessage("Switched to Grid view");
+        mainController.logMessage("═══════════════════════════════════");
+    }
+
+    @FXML
+    private void switchToPoint() {
+        if (mainController.getMode() == ModeGUI.POINT_MODE)
+            return;
+        mainController.setMode(ModeGUI.POINT_MODE);
+        addNodeVbox.setVisible(false);
+        addNodeVbox.setManaged(false);
+
+        addEdgeVbox.setVisible(false);
+        addEdgeVbox.setManaged(false);
+
+        nodeEdgeListHbox.setVisible(false);
+        nodeEdgeListHbox.setManaged(false);
+
+        // updateAlgorithmComboForMode();
+
+        addFromFile.setVisible(true);
+        addFromFile.setManaged(true);
+
+        advancedInput.setVisible(false);
+        advancedInput.setManaged(false);
+
+        btnNodeAndEdges.getStyleClass().remove("button-secondary-1");
+        btnNodeAndEdges.getStyleClass().add("button-secondary-3");
+        btnSwitchToGrid.getStyleClass().remove("button-secondary-1");
+        btnSwitchToGrid.getStyleClass().add("button-secondary-3");
+        btnSwitchToPoint.getStyleClass().remove("button-secondary-3");
+        btnSwitchToPoint.getStyleClass().add("button-secondary-1");
+
+        graphGUI.getCanvas().setManaged(false);
+        gridGraphGUI.getCanvas().setManaged(false);
+        pointGraphGUI.getCanvas().setManaged(true);
+
+        graphGUI.getCanvas().setVisible(false);
+        gridGraphGUI.getCanvas().setVisible(false);
+        pointGraphGUI.getCanvas().setVisible(true);
+
+        graphGUI.setDrawing(false);
+        gridGraphGUI.setDrawing(false);
+        pointGraphGUI.setDrawing(true);
+
+        mainController.logMessage("═══════════════════════════════════");
+        mainController.logMessage("Switched to Point view");
         mainController.logMessage("═══════════════════════════════════");
     }
 }

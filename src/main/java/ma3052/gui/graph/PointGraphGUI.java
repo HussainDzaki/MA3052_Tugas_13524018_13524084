@@ -1,27 +1,28 @@
 package ma3052.gui.graph;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 import javafx.stage.WindowEvent;
 import ma3052.core.graph.Edge;
-import ma3052.core.graph.Graph;
 import ma3052.core.graph.Node;
+import ma3052.core.graph.PointGraph;
 
-import java.util.*;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-/**
- * Manages the visualization and interaction with graph data structure
- */
-public class GraphGUI {
+public class PointGraphGUI {
     // What to do when canvas is interacted
     public static enum Mode {
-        Lock, // Fix node position
+        Lock,
         Add, // Add node and edges
         Edit, // Edit node name, node value, and edge weight on a window
         Delete, // Delete node and edges
@@ -32,7 +33,7 @@ public class GraphGUI {
     // Graph data structure
     private Canvas canvas;
     private GraphicsContext graphicsContext;
-    private Graph graph;
+    private PointGraph graph;
     private List<NodeGUI> nodeGUIList;
     private List<EdgeGUI> edgeGUIList;
     private Map<Node, NodeGUI> nodeMap;
@@ -55,7 +56,7 @@ public class GraphGUI {
     private static final double MAX_DISTANCE_FROM_EDGE_TO_CLICK = 10;
 
     // Animation
-    private volatile boolean isPhysicEnabled = true;
+    private volatile boolean isPhysicEnabled = false;
     private volatile boolean isDrawing = true;
 
     private ScheduledThreadPoolExecutor threadPoolExecutor;
@@ -86,8 +87,8 @@ public class GraphGUI {
     private EdgeGUI dummyEdgeGUI; // For drawing edge to the cursor
     private NodeGUI sourceNodeGUI;
 
-    public GraphGUI(Canvas canvas) {
-        graph = new Graph();
+    public PointGraphGUI(Canvas canvas) {
+        graph = new PointGraph();
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.nodeMap = new HashMap<>();
@@ -148,39 +149,71 @@ public class GraphGUI {
         return canvas;
     }
 
-    public Graph getGraph() {
+    public PointGraph getGraph() {
         return graph;
     }
 
-    public void setGraph(Graph graph) {
+    public void setGraph(PointGraph graph) {
         this.graph = graph;
         nodeMap.clear();
         edgeMap.clear();
         nodeGUIList.clear();
         edgeGUIList.clear();
+        boolean first = true;
+        double maxX = 0;
+        double maxY = 0;
+        double minX = 0;
+        double minY = 0;
+        for (Node node : graph.getNodeList()) {
+            if (first) {
+                maxX = graph.getPosition(node).getX();
+                maxY = graph.getPosition(node).getY();
+                minX = graph.getPosition(node).getX();
+                minY = graph.getPosition(node).getY();
+                first = false;
+            } else {
+                maxX = Math.max(maxX, graph.getPosition(node).getX());
+                maxY = Math.max(maxY, graph.getPosition(node).getY());
+                minX = Math.min(minX, graph.getPosition(node).getX());
+                minY = Math.min(minY, graph.getPosition(node).getY());
+            }
+        }
+        double scale = Math.max((maxX - minX), (maxY - minY));
         for (Node node : graph.getNodeList()) {
             NodeGUI nodeGUI = new NodeGUI(node);
             nodeMap.put(node, nodeGUI);
             nodeGUIList.add(nodeGUI);
 
-            // Randomize position
-            double width = canvas.getWidth();
-            double height = canvas.getHeight();
-            double randomX = Math.random() * (width - 100) + 50;
-            double randomY = Math.random() * (height - 100) + 50;
-            nodeGUI.setPosition(new Point2D(randomX, randomY));
+            graph.setPosition(node, graph.getPosition(node).subtract(minX, minY).multiply(550 / scale).add(40, 40));
+            graph.setScale(550 / scale);
+
+            System.out.println(graph.getPosition(node));
+            nodeGUI.setPosition(graph.getPosition(node));
+            nodeGUI.setLockPosition(true);
+            nodeGUI.setRadius(1);
+            nodeGUI.setDrawLabel(false);
         }
         for (Edge edge : graph.getEdgeList()) {
             EdgeGUI edgeGUI = new EdgeGUI(edge, getNodeGUI(edge.getSource()), getNodeGUI(edge.getDestination()));
             edgeMap.put(edge, edgeGUI);
             edgeGUIList.add(edgeGUI);
             // Set drawWeight based on whether edge has a non-default weight
-            edgeGUI.setDrawWeight(edge.getWeight() != Edge.DEFAULT_WEIGHT);
+            edgeGUI.setDrawWeight(false);
+        }
+
+        if (!first) {
+            // graphicsContext.setTransform(new Affine());
+            // graphicsContext.translate(-(maxX + minX) / 2, -(maxY + minY) / 2);
+            System.out.println(
+                    graphicsContext.getTransform().transform(graph.getPosition(graph.getNodeList().getFirst())));
+
+            // double scale = Math.min((maxX - minX), (maxY - minY));
+            // graphicsContext.scale(1 / scale, 1 / scale);
         }
     }
 
     public void clearGraph() {
-        setGraph(new Graph());
+        setGraph(new PointGraph());
     }
 
     public NodeGUI getNodeGUI(Node node) {
@@ -211,9 +244,9 @@ public class GraphGUI {
         return null;
     }
 
-    public void addNode(Node node) {
+    public void addNode(Node node, Point2D pos) {
         if (!graph.hasNode(node)) {
-            graph.addNode(node);
+            graph.addNode(node, pos);
             NodeGUI nodeGUI = new NodeGUI(node);
             nodeGUIList.add(nodeGUI);
             nodeMap.put(node, nodeGUI);
@@ -244,8 +277,6 @@ public class GraphGUI {
     }
 
     public void addEdge(Node source, Node destination) {
-        addNode(source);
-        addNode(destination);
         if (!graph.hasEdge(source, destination)) {
             graph.addEdge(source, destination);
             Edge edge = graph.getEdge(source, destination);
@@ -346,10 +377,10 @@ public class GraphGUI {
 
     private void drawEdges() {
         if (dummyEdgeGUI != null) {
-            dummyEdgeGUI.draw(graphicsContext, graph.isDirected());
+            dummyEdgeGUI.draw(graphicsContext, false);
         }
         for (EdgeGUI edgeGUI : edgeGUIList) {
-            edgeGUI.draw(graphicsContext, graph.isDirected());
+            edgeGUI.draw(graphicsContext, false);
         }
     }
 
@@ -390,17 +421,13 @@ public class GraphGUI {
     }
 
     public void zoomIn() {
-        if (canvasScale < 1.45) {
-            graphicsContext.scale((canvasScale + 0.10) / canvasScale, (canvasScale + 0.10) / canvasScale);
-            canvasScale += 0.10;
-        }
+        graphicsContext.scale(1.25, 1.25);
+        canvasScale *= 1.25;
     }
 
     public void zoomOut() {
-        if (canvasScale > 0.55) {
-            graphicsContext.scale((canvasScale - 0.10) / canvasScale, (canvasScale - 0.10) / canvasScale);
-            canvasScale -= 0.10;
-        }
+        graphicsContext.scale(0.8, 0.8);
+        canvasScale *= 0.8;
     }
 
     private NodeGUI getNodeGUIOnPosition(Point2D pos) {
@@ -465,7 +492,7 @@ public class GraphGUI {
             isDragging = true;
             draggedNodeGUI = nodeGUI;
             initialLockPosition = draggedNodeGUI.isLockPosition();
-            draggedNodeGUI.setLockPosition(true);
+            // draggedNodeGUI.setLockPosition(true);
         } else {
             isMoving = true;
         }
@@ -488,7 +515,7 @@ public class GraphGUI {
     private void onCanvasDragEnd(MouseEvent event) {
         if (isDragging) {
             // If is actually dragged, not just a click
-            if (mode != Mode.Lock || startClickPosition.distance(event.getX(), event.getY()) > 5) {
+            if (startClickPosition.distance(event.getX(), event.getY()) > 5) {
                 draggedNodeGUI.setLockPosition(initialLockPosition);
             }
             isDragging = false;
@@ -514,23 +541,13 @@ public class GraphGUI {
         NodeGUI nodeGUI = getNodeGUIOnPosition(sceneToNodePosition(pos));
         EdgeGUI edgeGUI = getEdgeGUIOnPosition(sceneToNodePosition(pos));
         switch (mode) {
-            case Lock:
-                if (nodeGUI != null) {
-                    if (initialLockPosition) {
-                        nodeGUI.setBorderWidth(3);
-                        nodeGUI.setLockPosition(false);
-                    } else {
-                        nodeGUI.setBorderWidth(5);
-                        nodeGUI.setLockPosition(true);
-                    }
-                }
-                break;
             case Add:
                 if (sourceNodeGUI == null) {
                     if (nodeGUI == null) {
                         Node newNode = new Node(getNextNodeName());
-                        addNode(newNode);
+                        addNode(newNode, sceneToNodePosition(pos));
                         NodeGUI newNodeGUI = getNodeGUI(newNode);
+                        newNodeGUI.setDrawLabel(false);
                         newNodeGUI.setPosition(sceneToNodePosition(pos));
                         if (onGraphUpdateRunnable != null) {
                             onGraphUpdateRunnable.run();
