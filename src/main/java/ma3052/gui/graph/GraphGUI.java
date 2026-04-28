@@ -393,19 +393,29 @@ public class GraphGUI {
 
     public void zoomIn() {
         if (canvasScale < 1.80) {
-            Point2D canvasCenter = graphicsContext.getTransform().transform(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2));
-            graphicsContext.translate(-canvasCenter.getX() * 0.25, -canvasCenter.getY() * 0.25);
-            graphicsContext.scale(1.25, 1.25);
-            canvasScale *= 1.25;
+            try {
+                Point2D graphCenter = graphicsContext.getTransform()
+                        .inverseTransform(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2));
+                graphicsContext.translate(-graphCenter.getX() * 0.25, -graphCenter.getY() * 0.25);
+                graphicsContext.scale(1.25, 1.25);
+                canvasScale *= 1.25;
+            } catch (Exception e) {
+                // do nothing
+            }
         }
     }
 
     public void zoomOut() {
         if (canvasScale > 0.25) {
-            Point2D canvasCenter = graphicsContext.getTransform().transform(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2));
-            graphicsContext.translate(canvasCenter.getX() * 0.20, canvasCenter.getY() * 0.20);
-            graphicsContext.scale(0.80, 0.80);
-            canvasScale *= 0.80;
+            try {
+                Point2D graphCenter = graphicsContext.getTransform()
+                        .inverseTransform(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2));
+                graphicsContext.translate(graphCenter.getX() * 0.20, graphCenter.getY() * 0.20);
+                graphicsContext.scale(0.80, 0.80);
+                canvasScale *= 0.80;
+            } catch (Exception e) {
+                // do nothing
+            }
         }
     }
 
