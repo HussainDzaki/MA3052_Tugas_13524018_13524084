@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import ma3052.core.graph.Edge;
-import ma3052.core.graph.Graph;
 
 public class EdgeGUI {
     // Edge
@@ -23,7 +22,8 @@ public class EdgeGUI {
 
     // Physics config
     private static final double SPRING_CONSTANT = 200;
-    private static final double SPRING_LENGTH = 120;
+    private static final double MIN_SPRING_LENGTH = 120;
+    private static final double MAX_SPRING_LENGTH = 120;
 
     public EdgeGUI(Edge edge, NodeGUI sourceGUI, NodeGUI destinationGUI) {
         this.edge = edge;
@@ -144,10 +144,14 @@ public class EdgeGUI {
         // Add spring force to both node
         // Hooke's Law: F = -kx
         Point2D offset = destinationGUI.getPosition().subtract(sourceGUI.getPosition());
-        Point2D springForce = offset.normalize().multiply(SPRING_CONSTANT * (offset.magnitude() - SPRING_LENGTH));
+        Point2D springForce = new Point2D(0, 0);
+        if (offset.magnitude() < MIN_SPRING_LENGTH) {
+            springForce = offset.normalize().multiply(SPRING_CONSTANT * (offset.magnitude() - MIN_SPRING_LENGTH));
+        } else if (offset.magnitude() > MAX_SPRING_LENGTH) {
+            springForce = offset.normalize().multiply(SPRING_CONSTANT * (offset.magnitude() - MAX_SPRING_LENGTH));
+        }
         sourceGUI.addForce(springForce);
         destinationGUI.addForce(springForce.multiply(-1));
     }
 
-    
 }
