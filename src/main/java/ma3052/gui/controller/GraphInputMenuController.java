@@ -168,6 +168,8 @@ public class GraphInputMenuController {
         graphGUI = mainController.getGraphGUI();
         gridGraphGUI = mainController.getGridGraphGUI();
         pointGraphGUI = mainController.getPointGraphGUI();
+
+        graphGUI.setOnGraphUpdate(() -> updateListFromGraph());
     }
 
     /**
