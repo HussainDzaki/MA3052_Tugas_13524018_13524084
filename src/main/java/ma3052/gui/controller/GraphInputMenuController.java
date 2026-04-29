@@ -335,13 +335,13 @@ public class GraphInputMenuController {
         }
     }
 
-    @FXML 
+    @FXML
     private void handleGenerateGraph() {
         try {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GraphGenerator.fxml"));
             Parent root = loader.load();
-            // loader.<AdvancedInputController>getController().setMainController(mainController);
+            loader.<GraphGeneratorController>getController().setMainController(mainController);
 
             Parent thisRoot = advancedInput.getScene().getRoot();
             root.getStyleClass().removeIf((style) -> style.contains("theme"));
@@ -364,7 +364,8 @@ public class GraphInputMenuController {
         } catch (IOException e) {
             mainController.showError(e.getMessage());
         }
-    } 
+    }
+
     /**
      * Handle loading graph or grid from file based on current mode
      */
@@ -796,7 +797,7 @@ public class GraphInputMenuController {
         nodeEdgeListHbox.setVisible(false);
         nodeEdgeListHbox.setManaged(false);
 
-        // updateAlgorithmComboForMode();
+        mainController.getGraphAlgorithmMenuController().updateAlgorithmComboForMode();
 
         addFromFile.setVisible(true);
         addFromFile.setManaged(true);
@@ -842,7 +843,7 @@ public class GraphInputMenuController {
         nodeEdgeListHbox.setVisible(false);
         nodeEdgeListHbox.setManaged(false);
 
-        // updateAlgorithmComboForMode();
+        mainController.getGraphAlgorithmMenuController().updateAlgorithmComboForMode();
 
         addFromFile.setVisible(true);
         addFromFile.setManaged(true);

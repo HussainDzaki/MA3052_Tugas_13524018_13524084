@@ -251,7 +251,7 @@ public class GraphVisualizationController {
     }
 
     private Graph getDefaultGraph() {
-        return GraphFactory.createCompleteBinaryGraph(5);
+        return GraphFactory.createCirculantGraph(7, 1, 2);
         // Graph graph = new Graph();
         // graph.addNode(new Node("1"));
         // graph.addNode(new Node("2"));
