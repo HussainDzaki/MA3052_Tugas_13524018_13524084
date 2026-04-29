@@ -77,37 +77,40 @@ public class GraphFactory {
         return graph;
     }
 
-    public static Graph createCompleteBipartiteGraph(int n, int M) {
-        return createCompleteBipartiteGraph(n, M, BipartiteNameOption.UV, NodeNameOption.OneIndexed);
+    public static Graph createCompleteBipartiteGraph(int n, int m) {
+        return createCompleteBipartiteGraph(n, m, NodeNameOption.OneIndexed, BipartiteNameOption.UV);
     }
 
-    public static Graph createCompleteBipartiteGraph(int n, int M,
-            BipartiteNameOption bipartiteNameOption,
-            NodeNameOption nodeNameOption) {
+    public static Graph createCompleteBipartiteGraph(int n, int m, NodeNameOption nodeNameOption) {
+        return createCompleteBipartiteGraph(n, m, nodeNameOption, BipartiteNameOption.UV);
+    }
+
+    public static Graph createCompleteBipartiteGraph(int n, int m,
+            NodeNameOption nodeNameOption, BipartiteNameOption bipartiteNameOption) {
         Graph graph = new Graph();
         for (int i = 0; i < n; i++) {
             graph.addNode(new Node(getBipartiteName(true, bipartiteNameOption) + getNodeName(i, nodeNameOption)));
         }
-        for (int j = 0; j < M; j++) {
+        for (int j = 0; j < m; j++) {
             graph.addNode(new Node(getBipartiteName(false, bipartiteNameOption)
                     + getNodeName(j + (bipartiteNameOption == BipartiteNameOption.NONE ? n : 0), nodeNameOption)));
         }
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < M; j++) {
+            for (int j = 0; j < m; j++) {
                 graph.addEdge(
                         getBipartiteName(true, bipartiteNameOption) + getNodeName(i, nodeNameOption),
                         getBipartiteName(false, bipartiteNameOption) + getNodeName(
-                                (bipartiteNameOption == BipartiteNameOption.NONE ? n : 0), nodeNameOption));
+                                (bipartiteNameOption == BipartiteNameOption.NONE ? j : 0), nodeNameOption));
             }
         }
         return graph;
     }
 
-    public static Graph createLinearGraph(int n) {
-        return createLinearGraph(n, NodeNameOption.OneIndexed);
+    public static Graph createPathGraph(int n) {
+        return createPathGraph(n, NodeNameOption.OneIndexed);
     }
 
-    public static Graph createLinearGraph(int n, NodeNameOption option) {
+    public static Graph createPathGraph(int n, NodeNameOption option) {
         Graph graph = new Graph();
         for (int i = 0; i < n; i++) {
             graph.addNode(new Node(getNodeName(i, option)));
@@ -157,10 +160,10 @@ public class GraphFactory {
 
     public static Graph createStarGraph(int n, NodeNameOption option) {
         Graph graph = new Graph();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i <= n; i++) {
             graph.addNode(new Node(getNodeName(i, option)));
         }
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             graph.addEdge(getNodeName(0, option), getNodeName(i, option));
         }
         return graph;
@@ -240,8 +243,27 @@ public class GraphFactory {
             graph.addNode(new Node(getNodeName(i, option)));
         }
         for (int i = 0; i < n; i++) {
+            if (i < n - 1) {
+                graph.addEdge(getNodeName(i, option), getNodeName((i + 1) % n, option));
+                graph.addEdge(getNodeName(i + n, option), getNodeName((i + 1) % n + n, option));
+            }
+            graph.addEdge(getNodeName(i, option), getNodeName(i + n, option));
+        }
+        return graph;
+    }
+
+    public static Graph createCircularLadderGraph(int n) {
+        return createLadderGraph(n, NodeNameOption.OneIndexed);
+    }
+
+    public static Graph createCircularLadderGraph(int n, NodeNameOption option) {
+        Graph graph = new Graph();
+        for (int i = 0; i < 2 * n; i++) {
+            graph.addNode(new Node(getNodeName(i, option)));
+        }
+        for (int i = 0; i < n; i++) {
             graph.addEdge(getNodeName(i, option), getNodeName((i + 1) % n, option));
-            graph.addEdge(getNodeName(i + n, option), getNodeName((i + 1 % n) + n, option));
+            graph.addEdge(getNodeName(i + n, option), getNodeName((i + 1) % n + n, option));
             graph.addEdge(getNodeName(i, option), getNodeName(i + n, option));
         }
         return graph;
@@ -270,11 +292,19 @@ public class GraphFactory {
         return graph;
     }
 
-    public static Graph createPetersenGraph(int n, int k) {
-        return createPetersenGraph(n, k, NodeNameOption.OneIndexed);
+    public static Graph createPetersenGraph() {
+        return createGeneralizedPetersenGraph(5, 2);
     }
 
-    public static Graph createPetersenGraph(int n, int k, NodeNameOption option) {
+    public static Graph createPetersenGraph(NodeNameOption option) {
+        return createGeneralizedPetersenGraph(5, 2, option);
+    }
+
+    public static Graph createGeneralizedPetersenGraph(int n, int k) {
+        return createGeneralizedPetersenGraph(n, k, NodeNameOption.OneIndexed);
+    }
+
+    public static Graph createGeneralizedPetersenGraph(int n, int k, NodeNameOption option) {
         if (k > n / 2) {
             throw new IllegalArgumentException("k must be less or equal than n / 2. Got: n = " + n + ", k = " + k);
         }
@@ -306,7 +336,7 @@ public class GraphFactory {
         }
         for (int si : s) {
             for (int i = 0; i < n; i++) {
-                graph.addEdge(getNodeName(0, option), getNodeName((i + si) % n, option));
+                graph.addEdge(getNodeName(i, option), getNodeName((i + si) % n, option));
             }
         }
         return graph;

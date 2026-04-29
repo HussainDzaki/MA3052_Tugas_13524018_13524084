@@ -1,6 +1,6 @@
 .theme-2 * {
     -fx-primary-color-1: #ff613a; 
-    -fx-primary-color-2: #ed6e50; 
+    -fx-primary-color-2: #d14425; 
     -fx-primary-color-3: #f3917c; 
     -fx-secondary-color-1: #a9cf01; 
     -fx-secondary-color-2: #fbbf24; 
@@ -187,9 +187,15 @@
     -fx-background-color: -fx-secondary-color-2;
     -fx-text-fill: -fx-secondary-color-3;
 }
+.theme-2 .button-secondary-2 * {
+    -fx-text-fill: -fx-secondary-color-3;
+}
 .theme-2 .button-secondary-2:hover {
     background-color: -fx-secondary-color-3;
     -fx-background-color: -fx-secondary-color-3;
+    -fx-text-fill: -fx-neutral-color-2;
+}
+.theme-2 .button-secondary-2:hover * {
     -fx-text-fill: -fx-neutral-color-2;
 }
 .theme-2 .button-secondary-3 {
@@ -197,9 +203,15 @@
     -fx-background-color: -fx-secondary-color-3;
     -fx-text-fill: -fx-neutral-color-2;
 }
+.theme-2 .button-secondary-3 *{
+    -fx-text-fill: -fx-neutral-color-2;
+}
 .theme-2 .button-secondary-3:hover {
     background-color: -fx-secondary-color-2;
     -fx-background-color: -fx-secondary-color-2;
+    -fx-text-fill: -fx-secondary-color-3;
+}
+.theme-2 .button-secondary-3:hover * {
     -fx-text-fill: -fx-secondary-color-3;
 }
 
