@@ -63,7 +63,7 @@ public class Graph {
         }
     }
 
-    public void addNode(Node... nodes) {
+    public void addNodes(Node... nodes) {
         for (Node node : nodes) {
             addNode(node);
         }
@@ -78,7 +78,7 @@ public class Graph {
         }
     }
 
-    public void removeNode(Node... nodes) {
+    public void removeNodes(Node... nodes) {
         for (Node node : nodes) {
             removeNode(node);
         }
