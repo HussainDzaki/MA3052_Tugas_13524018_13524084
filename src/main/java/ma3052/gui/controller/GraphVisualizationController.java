@@ -101,6 +101,14 @@ public class GraphVisualizationController {
         this.isAnimating = isAnimating;
     }
 
+    public GraphAlgorithmMenuController getGraphAlgorithmMenuController() {
+        return graphAlgorithmMenuController;
+    }
+
+    public GraphInputMenuController getGraphInputMenuController() {
+        return graphInputMenuController;
+    }
+
     /**
      * Initialize the controller
      * Called after FXML file has been loaded
@@ -243,7 +251,7 @@ public class GraphVisualizationController {
     }
 
     private Graph getDefaultGraph() {
-        return GraphFactory.createWheelGraph(5);
+        return GraphFactory.createCompleteBinaryGraph(5);
         // Graph graph = new Graph();
         // graph.addNode(new Node("1"));
         // graph.addNode(new Node("2"));

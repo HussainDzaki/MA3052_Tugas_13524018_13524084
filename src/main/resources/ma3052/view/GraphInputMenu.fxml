@@ -78,6 +78,7 @@
                 </HBox>
             </VBox>
             <Button fx:id="advancedInput" maxWidth="Infinity" onAction="#handleAdvancedInput" text="Formatted Input (.txt)" styleClass="button-secondary-2" />
+            <Button fx:id="graphGenerator" maxWidth="Infinity" onAction="#handleGenerateGraph" text="Generate Graph" styleClass="button-secondary-2" />
             <Button fx:id="addFromFile" maxWidth="Infinity" onAction="#handleAddFromFile" text="Input From .txt" styleClass="button-secondary-2"/>
             <Button fx:id="clearButton" maxWidth="Infinity" onAction="#handleClear" text="Clear Graph" styleClass="button-danger" />
             <HBox fx:id="nodeEdgeListHbox" spacing="15">
