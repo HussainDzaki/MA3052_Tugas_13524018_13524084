@@ -330,6 +330,12 @@ public class PointGraphGUI {
         }
     }
 
+    public void resetEdges() {
+        while (!graph.getEdgeList().isEmpty()) {
+            removeEdge(graph.getEdgeList().getFirst());
+        }
+    }
+
     private void updatePhysics() {
         // System.out.println("Updating physics");
         // Add force to the center

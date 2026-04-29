@@ -39,6 +39,5 @@ public class ThemeMenuController {
         } catch (Exception e) {
             // TODO: handle exception
         }
-        System.out.println(prefs.get("Theme", "no-theme :("));
     }
 }
