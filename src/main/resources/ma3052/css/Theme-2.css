@@ -1,12 +1,18 @@
-/* @font-face {
-    font-family: 'Cascadia Code Regular';
-    -fx-font-family: 'Cascadia Code Regular';
-    src: url('font/Cascadia_Code/static/CascadiaCode-Regular.ttf');
-} */
+.theme-2 * {
+    -fx-primary-color-1: #ff613a; 
+    -fx-primary-color-2: #ed6e50; 
+    -fx-primary-color-3: #f3917c; 
+    -fx-secondary-color-1: #a9cf01; 
+    -fx-secondary-color-2: #fbbf24; 
+    -fx-secondary-color-3: #653600; 
+    -fx-neutral-color-1: #fffbee; 
+    -fx-neutral-color-2: #ffd7d3; 
+    -fx-neutral-color-3: #2c1800; 
+}
 
 .theme-2-root {
-    background-color: #FFD7D3;
-    -fx-background-color: #FFD7D3;
+    background-color: #ffd7d3;
+    -fx-background-color: #ffd7d3;
     color: #2c1800;
     fill: #2c1800;
     -fx-text-fill: #2c1800;
@@ -14,126 +20,130 @@
 
 /* Text colours  */
 .theme-2 .text-secondary-1 {
-    color: #a9cf01;
-    fill: #a9cf01;
-    -fx-text-fill: #a9cf01;
+    color: -fx-secondary-color-1;
+    fill: -fx-secondary-color-1;
+    -fx-text-fill: -fx-secondary-color-1;
 }
 .theme-2 .text-secondary-2 {
-    color: #fbbf24;
-    fill: #fbbf24;
-    -fx-text-fill: #fbbf24;
+    color: -fx-secondary-color-2;
+    fill: -fx-secondary-color-2;
+    -fx-text-fill: -fx-secondary-color-2;
 }
 .theme-2 .text-secondary-3 {
-    color: #653600;
-    fill: #653600;
-    -fx-text-fill: #653600;
+    color: -fx-secondary-color-3;
+    fill: -fx-secondary-color-3;
+    -fx-text-fill: -fx-secondary-color-3;
 }
 .theme-2 .text-primary-1 {
-    color: #ff613a;
-    fill: #ff613a;
-    -fx-text-fill: #ff613a;
+    color: -fx-primary-color-1;
+    fill: -fx-primary-color-1;
+    -fx-text-fill: -fx-primary-color-1;
 }
 .theme-2 .text-primary-2 {
-    color: #ed6e50;
-    fill: #ed6e50;
-    -fx-text-fill: #ed6e50;
+    color: -fx-primary-color-2;
+    fill: -fx-primary-color-2;
+    -fx-text-fill: -fx-primary-color-2;
 }
 .theme-2 .text-primary-3 {
-    color: #f3917c;
-    fill: #f3917c;
-    -fx-text-fill: #f3917c;
+    color: -fx-primary-color-3;
+    fill: -fx-primary-color-3;
+    -fx-text-fill: -fx-primary-color-3;
 }
 .theme-2 .text-neutral-1 {
-    color: #fffbee;
-    fill: #fffbee;
-    -fx-text-fill: #fffbee;
+    color: -fx-neutral-color-1;
+    fill: -fx-neutral-color-1;
+    -fx-text-fill: -fx-neutral-color-1;
 }
 .theme-2 .text-neutral-2 {
-    color: #ffd7d3;
-    fill: #ffd7d3;
-    -fx-text-fill: #ffd7d3;
+    color: -fx-neutral-color-2;
+    fill: -fx-neutral-color-2;
+    -fx-text-fill: -fx-neutral-color-2;
 }
 .theme-2 .text-neutral-3 {
-    color: #2c1800;
-    fill: #2c1800;
-    -fx-text-fill: #2c1800;
+    color: -fx-neutral-color-3;
+    fill: -fx-neutral-color-3;
+    -fx-text-fill: -fx-neutral-color-3;
 }
 
 /* Background colours  */
+.theme-2 .bg-root {
+    background-color: -fx-neutral-color-2;
+    -fx-background-color: -fx-neutral-color-2;
+}
 .theme-2 .bg-secondary-1 {
-    background-color: #a9cf01;
-    -fx-background-color: #a9cf01;
+    background-color: -fx-secondary-color-1;
+    -fx-background-color: -fx-secondary-color-1;
 }
 .theme-2 .bg-secondary-2 {
-    background-color: #fbbf24;
-    -fx-background-color: #fbbf24;
+    background-color: -fx-secondary-color-2;
+    -fx-background-color: -fx-secondary-color-2;
 }
 .theme-2 .bg-secondary-3 {
-    background-color: #653600;
-    -fx-background-color: #653600;
+    background-color: -fx-secondary-color-3;
+    -fx-background-color: -fx-secondary-color-3;
 }
 .theme-2 .bg-primary-1 {
-    background-color: #ff613a;
-    -fx-background-color: #ff613a;
+    background-color: -fx-primary-color-1;
+    -fx-background-color: -fx-primary-color-1;
 }
 .theme-2 .bg-primary-2 {
-    background-color: #ed6e50;
-    -fx-background-color: #ed6e50;
+    background-color: -fx-primary-color-2;
+    -fx-background-color: -fx-primary-color-2;
 }
 .theme-2 .bg-primary-3 {
-    background-color: #f3917c;
-    -fx-background-color: #f3917c;
+    background-color: -fx-primary-color-3;
+    -fx-background-color: -fx-primary-color-3;
 }
 .theme-2 .bg-neutral-1 {
-    background-color: #fffbee;
-    -fx-background-color: #fffbee;
+    background-color: -fx-neutral-color-1;
+    -fx-background-color: -fx-neutral-color-1;
 }
 .theme-2 .bg-neutral-2 {
-    background-color: #ffd7d3;
-    -fx-background-color: #ffd7d3;
+    background-color: -fx-neutral-color-2;
+    -fx-background-color: -fx-neutral-color-2;
 }
 .theme-2 .bg-neutral-3 {
-    background-color: #2c1800;
-    -fx-background-color: #2c1800;
+    background-color: -fx-neutral-color-3;
+    -fx-background-color: -fx-neutral-color-3;
 }
 
 /* Border colours  */
 .theme-2 .border-secondary-1 {
-    border-color: #a9cf01;
-    -fx-border-color: #a9cf01;
+    border-color: -fx-secondary-color-1;
+    -fx-border-color: -fx-secondary-color-1;
 }
 .theme-2 .border-secondary-2 {
-    border-color: #fbbf24;
-    -fx-border-color: #fbbf24;
+    border-color: -fx-secondary-color-2;
+    -fx-border-color: -fx-secondary-color-2;
 }
 .theme-2 .border-secondary-3 {
-    border-color: #653600;
-    -fx-border-color: #653600;
+    border-color: -fx-secondary-color-3;
+    -fx-border-color: -fx-secondary-color-3;
 }
 .theme-2 .border-primary-1 {
-    border-color: #ff613a;
-    -fx-border-color: #ff613a;
+    border-color: -fx-primary-color-1;
+    -fx-border-color: -fx-primary-color-1;
 }
 .theme-2 .border-primary-2 {
-    border-color: #fbbf24;
-    -fx-border-color: #fbbf24;
+    border-color: -fx-secondary-color-2;
+    -fx-border-color: -fx-secondary-color-2;
 }
 .theme-2 .border-primary-3 {
     border-color: #b36109;
     -fx-border-color: #b36109;
 }
 .theme-2 .border-neutral-1 {
-    border-color: #fffbee;
-    -fx-border-color: #fffbee;
+    border-color: -fx-neutral-color-1;
+    -fx-border-color: -fx-neutral-color-1;
 }
 .theme-2 .bg-neutral-2 {
-    color: #ffd7d3;
-    fill: #ffd7d3;
-    -fx-text-fill: #ffd7d3;
+    color: -fx-neutral-color-2;
+    fill: -fx-neutral-color-2;
+    -fx-text-fill: -fx-neutral-color-2;
 }
 .theme-2 .border-neutral-3 {
-    border-color: #2c1800;
-    -fx-border-color: #2c1800;
+    border-color: -fx-neutral-color-3;
+    -fx-border-color: -fx-neutral-color-3;
 }
 
 /* Shadows colours */
@@ -160,43 +170,43 @@
 }
 
 .theme-2 .button:focused {
-    -fx-effect: dropshadow(gaussian, #a9cf01, 6, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, -fx-secondary-color-1, 6, 0.3, 0, 0);
 }
 
 .theme-2 .button-secondary-1 {
-    background-color: #a9cf01;
-    -fx-background-color: #a9cf01;
-    -fx-text-fill: #653600;
+    background-color: -fx-secondary-color-1;
+    -fx-background-color: -fx-secondary-color-1;
+    -fx-text-fill: -fx-secondary-color-3;
 }
 .theme-2 .button-secondary-1:hover {
-    background-color: #fbbf24;
-    -fx-background-color: #fbbf24;
+    background-color: -fx-secondary-color-2;
+    -fx-background-color: -fx-secondary-color-2;
 }
 .theme-2 .button-secondary-2 {
-    background-color: #fbbf24;
-    -fx-background-color: #fbbf24;
-    -fx-text-fill: #653600;
+    background-color: -fx-secondary-color-2;
+    -fx-background-color: -fx-secondary-color-2;
+    -fx-text-fill: -fx-secondary-color-3;
 }
 .theme-2 .button-secondary-2:hover {
-    background-color: #653600;
-    -fx-background-color: #653600;
-    -fx-text-fill: #ffd7d3;
+    background-color: -fx-secondary-color-3;
+    -fx-background-color: -fx-secondary-color-3;
+    -fx-text-fill: -fx-neutral-color-2;
 }
 .theme-2 .button-secondary-3 {
-    background-color: #653600;
-    -fx-background-color: #653600;
-    -fx-text-fill: #ffd7d3;
+    background-color: -fx-secondary-color-3;
+    -fx-background-color: -fx-secondary-color-3;
+    -fx-text-fill: -fx-neutral-color-2;
 }
 .theme-2 .button-secondary-3:hover {
-    background-color: #fbbf24;
-    -fx-background-color: #fbbf24;
-    -fx-text-fill: #653600;
+    background-color: -fx-secondary-color-2;
+    -fx-background-color: -fx-secondary-color-2;
+    -fx-text-fill: -fx-secondary-color-3;
 }
 
 .theme-2 .button-danger {
     background-color: #dc2626;
     -fx-background-color: #dc2626;
-    -fx-text-fill: #fffbee;
+    -fx-text-fill: -fx-neutral-color-1;
 }
 .theme-2 .button-danger:hover {
     background-color: #ef4444;
@@ -204,70 +214,70 @@
 }
 
 .theme-2 .text-area {
-    -fx-border-color: #ffd7d3;
-    border-color: #ffd7d3;
-    -fx-background-color: #fffbee;
-    background-color: #fffbee;
-    -fx-text-fill: #2c1800;
-    -fx-control-inner-background: #fffbee;
+    -fx-border-color: -fx-neutral-color-2;
+    border-color: -fx-neutral-color-2;
+    -fx-background-color: -fx-neutral-color-1;
+    background-color: -fx-neutral-color-1;
+    -fx-text-fill: -fx-neutral-color-3;
+    -fx-control-inner-background: -fx-neutral-color-1;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 4, 0.05, 0, 2);
 }
 
 .theme-2 .text-area:focused {
-    border-color: #fbbf24;
-    -fx-border-color: #fbbf24;
+    border-color: -fx-secondary-color-2;
+    -fx-border-color: -fx-secondary-color-2;
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.2), 6, 0.1, 0, 2);
 }
 
 .theme-2 .text-area:hover {
-    border-color: #ffd7d3;
-    -fx-border-color: #ffd7d3;
+    border-color: -fx-neutral-color-2;
+    -fx-border-color: -fx-neutral-color-2;
 }
 
 .theme-2 .text-field {
-    -fx-border-color: #ffd7d3;
-    border-color: #ffd7d3;
-    -fx-background-color: #fffbee;
-    background-color: #fffbee;
-    -fx-text-fill: #2c1800;
-    -fx-control-inner-background: #fffbee;
+    -fx-border-color: -fx-neutral-color-2;
+    border-color: -fx-neutral-color-2;
+    -fx-background-color: -fx-neutral-color-1;
+    background-color: -fx-neutral-color-1;
+    -fx-text-fill: -fx-neutral-color-3;
+    -fx-control-inner-background: -fx-neutral-color-1;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 2, 0.05, 0, 1);
 }
 
 .theme-2 .text-field:focused {
-    border-color: #fbbf24;
-    -fx-border-color: #fbbf24;
+    border-color: -fx-secondary-color-2;
+    -fx-border-color: -fx-secondary-color-2;
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.2), 4, 0.08, 0, 2);
 }
 
 .theme-2 .text-field:hover {
-    border-color: #ffd7d3;
-    -fx-border-color: #ffd7d3;
+    border-color: -fx-neutral-color-2;
+    -fx-border-color: -fx-neutral-color-2;
 }
 
 .theme-2 .check-box > .box {
-    background-color: #fffbee;
-    -fx-background-color: #fffbee;
-    border-color: #ffd7d3;
-    -fx-border-color: #ffd7d3;
+    background-color: -fx-neutral-color-1;
+    -fx-background-color: -fx-neutral-color-1;
+    border-color: -fx-neutral-color-2;
+    -fx-border-color: -fx-neutral-color-2;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 2, 0.05, 0, 1);
 }
 
 .theme-2 .check-box > .box:selected {
-    background-color: #a9cf01;
-    -fx-background-color: #a9cf01;
-    border-color: #a9cf01;
-    -fx-border-color: #a9cf01;
+    background-color: -fx-secondary-color-1;
+    -fx-background-color: -fx-secondary-color-1;
+    border-color: -fx-secondary-color-1;
+    -fx-border-color: -fx-secondary-color-1;
 }
 
 .theme-2 .separator:horizontal .line {
-    border-color: #2c1800 transparent transparent transparent;
-    -fx-border-color: #2c1800 transparent transparent transparent;
+    border-color: -fx-neutral-color-3 transparent transparent transparent;
+    -fx-border-color: -fx-neutral-color-3 transparent transparent transparent;
 }
 
 .theme-2 .separator:vertical .line {
-    border-color: transparent transparent transparent #2c1800;
-    -fx-border-color: transparent transparent transparent #2c1800;
+    border-color: transparent transparent transparent -fx-neutral-color-3;
+    -fx-border-color: transparent transparent transparent -fx-neutral-color-3;
 }
 
 /* Slider - Modern Style */
@@ -284,8 +294,8 @@
 }
 
 .theme-2 .slider .thumb {
-    background-color: #a9cf01;
-    -fx-background-color: #a9cf01;
+    background-color: -fx-secondary-color-1;
+    -fx-background-color: -fx-secondary-color-1;
     border-color: transparent;
     -fx-border-color: transparent;
     border-width: 0;
