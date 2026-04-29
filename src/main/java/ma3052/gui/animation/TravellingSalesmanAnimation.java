@@ -115,17 +115,17 @@ public class TravellingSalesmanAnimation {
                         final EdgeGUI edge12GUI = graphGUI.getEdgeGUI(node1, node2);
                         final EdgeGUI edge34GUI = graphGUI.getEdgeGUI(node3, node4);
 
-                        Platform.runLater(() -> {
-                            nodeGUI1.setColor(SELECTED_NODE);
-                            nodeGUI2.setColor(SELECTED_NODE);
-                            nodeGUI3.setColor(SELECTED_NODE);
-                            nodeGUI4.setColor(SELECTED_NODE);
-                            if (edge12GUI != null)
-                                edge12GUI.setLineColor(EDGE_SELECTED_COLOR);
-                            if (edge34GUI != null)
-                                edge34GUI.setLineColor(EDGE_SELECTED_COLOR);
-                        });
-                        Thread.sleep(animationStepTime);
+                        // Platform.runLater(() -> {
+                        // nodeGUI1.setColor(SELECTED_NODE);
+                        // nodeGUI2.setColor(SELECTED_NODE);
+                        // nodeGUI3.setColor(SELECTED_NODE);
+                        // nodeGUI4.setColor(SELECTED_NODE);
+                        // if (edge12GUI != null)
+                        // edge12GUI.setLineColor(EDGE_SELECTED_COLOR);
+                        // if (edge34GUI != null)
+                        // edge34GUI.setLineColor(EDGE_SELECTED_COLOR);
+                        // });
+                        // Thread.sleep(animationStepTime);
 
                         // Get edges for comparison
                         Edge edge1 = node1.getEdge(node2);
@@ -136,16 +136,16 @@ public class TravellingSalesmanAnimation {
                         // If any edge is missing, skip this pair
                         if (edge1 == null || edge2 == null || edge3 == null || edge4 == null) {
                             // Reset colors
-                            Platform.runLater(() -> {
-                                nodeGUI1.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI2.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI3.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI4.setColor(HAMILTONIAN_COLOR);
-                                if (edge12GUI != null)
-                                    edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                                if (edge34GUI != null)
-                                    edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                            });
+                            // Platform.runLater(() -> {
+                            // nodeGUI1.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI2.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI3.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI4.setColor(HAMILTONIAN_COLOR);
+                            // if (edge12GUI != null)
+                            // edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                            // if (edge34GUI != null)
+                            // edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                            // });
                             continue;
                         }
 
@@ -191,20 +191,20 @@ public class TravellingSalesmanAnimation {
                                 if (edge34GUI != null)
                                     edge34GUI.setLineColor(EDGE_NORMAL_COLOR);
                             });
+                            Thread.sleep(animationStepTime);
                         } else {
                             // STEP 3: Reset Colors After Comparison
-                            Platform.runLater(() -> {
-                                nodeGUI1.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI2.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI3.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI4.setColor(HAMILTONIAN_COLOR);
-                                if (edge12GUI != null)
-                                    edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                                if (edge34GUI != null)
-                                    edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                            });
+                            // Platform.runLater(() -> {
+                            // nodeGUI1.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI2.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI3.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI4.setColor(HAMILTONIAN_COLOR);
+                            // if (edge12GUI != null)
+                            // edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                            // if (edge34GUI != null)
+                            // edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                            // });
                         }
-                        Thread.sleep(animationStepTime / 2);
                     }
                 }
             } while (hasChanges);
@@ -310,17 +310,17 @@ public class TravellingSalesmanAnimation {
                         final EdgeGUI edge12GUI = graphGUI.getEdgeGUI(node1, node2);
                         final EdgeGUI edge34GUI = graphGUI.getEdgeGUI(node3, node4);
 
-                        Platform.runLater(() -> {
-                            nodeGUI1.setColor(SELECTED_NODE);
-                            nodeGUI2.setColor(SELECTED_NODE);
-                            nodeGUI3.setColor(SELECTED_NODE);
-                            nodeGUI4.setColor(SELECTED_NODE);
-                            if (edge12GUI != null)
-                                edge12GUI.setLineColor(EDGE_SELECTED_COLOR);
-                            if (edge34GUI != null)
-                                edge34GUI.setLineColor(EDGE_SELECTED_COLOR);
-                        });
-                        Thread.sleep(animationStepTime);
+                        // Platform.runLater(() -> {
+                        // nodeGUI1.setColor(SELECTED_NODE);
+                        // nodeGUI2.setColor(SELECTED_NODE);
+                        // nodeGUI3.setColor(SELECTED_NODE);
+                        // nodeGUI4.setColor(SELECTED_NODE);
+                        // if (edge12GUI != null)
+                        // edge12GUI.setLineColor(EDGE_SELECTED_COLOR);
+                        // if (edge34GUI != null)
+                        // edge34GUI.setLineColor(EDGE_SELECTED_COLOR);
+                        // });
+                        // Thread.sleep(animationStepTime);
 
                         double currentDist = graph.getDistance(node1, node2) + graph.getDistance(node3, node4);
                         double newDist = graph.getDistance(node1, node3) + graph.getDistance(node2, node4);
@@ -341,9 +341,13 @@ public class TravellingSalesmanAnimation {
                                 nodeGUI3.setColor(TWO_OPT_COLOR);
                                 nodeGUI4.setColor(TWO_OPT_COLOR);
                                 if (edge13GUI != null)
-                                    edge13GUI.setLineColor(EDGE_EXPLORE_COLOR);
+                                    edge13GUI.setLineColor(EDGE_SELECTED_COLOR);
                                 if (edge24GUI != null)
-                                    edge24GUI.setLineColor(EDGE_EXPLORE_COLOR);
+                                    edge24GUI.setLineColor(EDGE_SELECTED_COLOR);
+                                if (edge12GUI != null)
+                                    edge12GUI.setLineColor(EDGE_SELECTED_COLOR);
+                                if (edge34GUI != null)
+                                    edge34GUI.setLineColor(EDGE_SELECTED_COLOR);
                             });
                             Thread.sleep(animationStepTime);
 
@@ -361,27 +365,31 @@ public class TravellingSalesmanAnimation {
                                 nodeGUI2.setColor(HAMILTONIAN_COLOR);
                                 nodeGUI3.setColor(HAMILTONIAN_COLOR);
                                 nodeGUI4.setColor(HAMILTONIAN_COLOR);
-                                if (edge12GUI != null) {
-                                    graphGUI.removeEdge(edge12GUI.getEdge());
-                                }
-                                if (edge34GUI != null) {
-                                    graphGUI.removeEdge(edge34GUI.getEdge());
-                                }
+                                if (edge13GUI != null)
+                                    edge13GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                                if (edge24GUI != null)
+                                    edge24GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
                             });
+                            Thread.sleep(animationStepTime);
+                            if (edge12GUI != null) {
+                                graphGUI.removeEdge(edge12GUI.getEdge());
+                            }
+                            if (edge34GUI != null) {
+                                graphGUI.removeEdge(edge34GUI.getEdge());
+                            }
                         } else {
                             // STEP 3: Reset Colors After Comparison
-                            Platform.runLater(() -> {
-                                nodeGUI1.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI2.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI3.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI4.setColor(HAMILTONIAN_COLOR);
-                                if (edge12GUI != null)
-                                    edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                                if (edge34GUI != null)
-                                    edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                            });
+                            // Platform.runLater(() -> {
+                            // nodeGUI1.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI2.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI3.setColor(HAMILTONIAN_COLOR);
+                            // nodeGUI4.setColor(HAMILTONIAN_COLOR);
+                            // if (edge12GUI != null)
+                            // edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                            // if (edge34GUI != null)
+                            // edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                            // });
                         }
-                        Thread.sleep(animationStepTime / 2);
                     }
                 }
             } while (hasChanges);
