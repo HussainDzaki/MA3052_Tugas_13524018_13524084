@@ -39,7 +39,7 @@
             <CheckBox fx:id="randomNodeEgde" text="Random Node/Edge"/>
             <Button fx:id="addFromFileButton" prefWidth="Infinity" text="Input .txt" styleClass="button-secondary-2,lexend-bold"/>
             <Button fx:id="applyInputButton" prefWidth="Infinity" text="Apply Input" styleClass="button-secondary-2,lexend-bold"/>
-            <Button fx:id="getCurrentGraphButton" prefWidth="Infinity" text="Reset Input" styleClass="button-red,lexend-bold"/>
+            <Button fx:id="getCurrentGraphButton" prefWidth="Infinity" text="Reset Input" styleClass="button-danger,lexend-bold"/>
         </VBox>
         <!-- Format -->
         <VBox prefWidth="400" spacing = "5" VBox.vgrow="ALWAYS">
