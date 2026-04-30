@@ -99,8 +99,9 @@ public class GraphFactory {
             for (int j = 0; j < m; j++) {
                 graph.addEdge(
                         getBipartiteName(true, bipartiteNameOption) + getNodeName(i, nodeNameOption),
-                        getBipartiteName(false, bipartiteNameOption) + getNodeName(
-                                (bipartiteNameOption == BipartiteNameOption.NONE ? j : 0), nodeNameOption));
+                        getBipartiteName(false, bipartiteNameOption) +
+                                getNodeName(j + (bipartiteNameOption == BipartiteNameOption.NONE ? n : 0),
+                                        nodeNameOption));
             }
         }
         return graph;
