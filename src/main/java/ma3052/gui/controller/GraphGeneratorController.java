@@ -52,6 +52,8 @@ public class GraphGeneratorController {
     @FXML
     private Label graphLabel;
     @FXML
+    private VBox nodeNamingVBox;
+    @FXML
     private ComboBox<String> namingComboBox;
     @FXML
     private VBox firstInputVBox;
@@ -268,8 +270,8 @@ public class GraphGeneratorController {
                         secondInputTextField.setPromptText("S1 S2 S3 ... Sk");
                         break;
                 }
-                namingComboBox.setManaged(currentGraphType != "Hypercube Graph");
-                namingComboBox.setVisible(currentGraphType != "Hypercube Graph");
+                nodeNamingVBox.setManaged(currentGraphType != "Hypercube Graph");
+                nodeNamingVBox.setVisible(currentGraphType != "Hypercube Graph");
             });
         }
         namingComboBox.getItems().addAll("One Indexed", "Zero Indexed", "Alphabetic");

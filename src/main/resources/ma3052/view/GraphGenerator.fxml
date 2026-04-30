@@ -51,7 +51,7 @@
                             <Label fx:id="secondInputLabel" text="K" styleClass="lexend-bold"/>
                             <TextField fx:id="secondInputTextField" text="2"/>
                         </VBox>
-                        <VBox spacing="5">
+                        <VBox fx:id="nodeNamingVBox" spacing="5">
                             <Label text="Node Naming" styleClass="lexend-bold"/>
                             <ComboBox fx:id="namingComboBox" styleClass="bg-neutral-1,border-medium,border-neutral-3,rounded"/>
                         </VBox>
