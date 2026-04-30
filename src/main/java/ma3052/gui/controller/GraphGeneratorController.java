@@ -390,6 +390,7 @@ public class GraphGeneratorController {
                             getNoneNameOption(), s));
                     break;
             }
+            mainController.getGraphInputMenuController().updateListFromGraph();
             ((Stage) (graphGrid.getScene().getWindow())).close();
         } catch (Exception e) {
             mainController.showError(e.getMessage());
