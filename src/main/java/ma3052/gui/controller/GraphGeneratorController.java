@@ -19,6 +19,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import ma3052.App;
 import ma3052.core.graph.GraphFactory;
+import ma3052.core.graph.GraphFactory.BipartiteNameOption;
 import ma3052.core.graph.GraphFactory.NodeNameOption;
 import ma3052.gui.graph.GraphGUI;
 
@@ -54,7 +55,11 @@ public class GraphGeneratorController {
     @FXML
     private VBox nodeNamingVBox;
     @FXML
-    private ComboBox<String> namingComboBox;
+    private ComboBox<String> nodeNamingComboBox;
+    @FXML
+    private VBox graphNamingVBox;
+    @FXML
+    private ComboBox<String> graphNamingComboBox;
     @FXML
     private VBox firstInputVBox;
     @FXML
@@ -270,12 +275,16 @@ public class GraphGeneratorController {
                         secondInputTextField.setPromptText("S1 S2 S3 ... Sk");
                         break;
                 }
-                nodeNamingVBox.setManaged(currentGraphType != "Hypercube Graph");
-                nodeNamingVBox.setVisible(currentGraphType != "Hypercube Graph");
+                nodeNamingVBox.setManaged(!currentGraphType.equals("Hypercube Graph"));
+                nodeNamingVBox.setVisible(!currentGraphType.equals("Hypercube Graph"));
+                graphNamingVBox.setManaged(currentGraphType.equals("Complete Bipartite Graph"));
+                graphNamingVBox.setVisible(currentGraphType.equals("Complete Bipartite Graph"));
             });
         }
-        namingComboBox.getItems().addAll("One Indexed", "Zero Indexed", "Alphabetic");
-        namingComboBox.setValue("One Indexed");
+        nodeNamingComboBox.getItems().addAll("One Indexed", "Zero Indexed", "Alphabetic");
+        nodeNamingComboBox.setValue("One Indexed");
+        graphNamingComboBox.getItems().addAll("UV", "XY", "AB", "NONE");
+        graphNamingComboBox.setValue("UV");
     }
 
     private VBox addCell(int row, int col) {
@@ -291,7 +300,7 @@ public class GraphGeneratorController {
     }
 
     private NodeNameOption getNoneNameOption() {
-        switch (namingComboBox.getValue()) {
+        switch (nodeNamingComboBox.getValue()) {
             case "Zero Indexed":
                 return NodeNameOption.ZeroIndexed;
 
@@ -303,6 +312,22 @@ public class GraphGeneratorController {
 
             default:
                 return NodeNameOption.ZeroIndexed;
+        }
+    }
+
+    private BipartiteNameOption getGraphNameOption() {
+        switch (graphNamingComboBox.getValue()) {
+            case "UV":
+                return BipartiteNameOption.UV;
+
+            case "XY":
+                return BipartiteNameOption.XY;
+
+            case "AB":
+                return BipartiteNameOption.AB;
+
+            default:
+                return BipartiteNameOption.NONE;
         }
     }
 
@@ -324,7 +349,7 @@ public class GraphGeneratorController {
                     graphGUI.setGraph(GraphFactory.createCompleteBipartiteGraph(
                             Integer.parseInt(firstInputTextField.getText()),
                             Integer.parseInt(secondInputTextField.getText()),
-                            getNoneNameOption()));
+                            getNoneNameOption(), getGraphNameOption()));
                     break;
                 case "Path Graph":
                     graphGUI.setGraph(GraphFactory.createPathGraph(

@@ -53,7 +53,11 @@
                         </VBox>
                         <VBox fx:id="nodeNamingVBox" spacing="5">
                             <Label text="Node Naming" styleClass="lexend-bold"/>
-                            <ComboBox fx:id="namingComboBox" styleClass="bg-neutral-1,border-medium,border-neutral-3,rounded"/>
+                            <ComboBox fx:id="nodeNamingComboBox" styleClass="bg-neutral-1,border-medium,border-neutral-3,rounded"/>
+                        </VBox>
+                        <VBox fx:id="graphNamingVBox" spacing="5" managed="false" visible="false">
+                            <Label text="Graph Naming" styleClass="lexend-bold"/>
+                            <ComboBox fx:id="graphNamingComboBox" styleClass="bg-neutral-1,border-medium,border-neutral-3,rounded"/>
                         </VBox>
                         <HBox alignment="CENTER">
                             <Button fx:id="generateButton" text="Generate" onAction="#handleGenerateGraph" prefWidth="300" styleClass="h3,button-secondary-1"/>
