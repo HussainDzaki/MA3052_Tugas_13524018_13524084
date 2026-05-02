@@ -77,6 +77,7 @@ public class GraphAlgorithmMenuController {
                 PrimsAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 DijkstraAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 TravellingSalesmanAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                BipartiteMatchingAnimation.setAnimationStepTime(Math.round(500 / multiplier));
             });
         }
 
@@ -120,7 +121,10 @@ public class GraphAlgorithmMenuController {
                         "Kruskal's Algorithm",
                         "Prim's Algorithm",
                         "Djikstra",
-                        "Travelling Salesman");
+                        "Travelling Salesman",
+                        "Maximum Matching",
+                        "Time Labeling"
+                    );
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -327,6 +331,13 @@ public class GraphAlgorithmMenuController {
                 DijkstraAnimation.animate(graphGUI, startNodeName, endNodeName);
             case "Travelling Salesman":
                 TravellingSalesmanAnimation.animate(graphGUI);
+                break;
+            case "Maximum Matching":
+                BipartiteMatchingAnimation.animateHopCroftKarp(graphGUI);
+                break;
+            case "Time Labeling":
+                BipartiteMatchingAnimation.animateHopCroftKarpTimeLabeling(graphGUI);
+                break;
             default:
                 break;
         }
