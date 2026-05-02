@@ -59,7 +59,8 @@ public class TravellingSalesman {
 
         Set<Node> visitedNodes = new HashSet<Node>();
         Deque<Node> path = new ArrayDeque<Node>();
-        getHamiltonianCycleDFS(graph.getNodeList().get(0), graph, path, visitedNodes);
+        getHamiltonianCycleDFS(graph.getNodeList().get((int) Math.floor(Math.random() * graph.size())),
+                graph, path, visitedNodes);
 
         return new ArrayList<>(path.reversed());
     }

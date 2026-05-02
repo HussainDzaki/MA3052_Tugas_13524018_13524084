@@ -13,6 +13,10 @@
     font-family: 'Cascadia Code Regular','Consolas', 'Courier New', Courier, monospace;
 }
 
+.label {
+    -fx-wrap-text: true;
+}
+
 /* Header */
 .h1 {
     font-size: 32;

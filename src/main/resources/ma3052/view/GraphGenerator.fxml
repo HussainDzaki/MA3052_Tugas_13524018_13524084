@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<VBox xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="ma3052.gui.controller.GraphGeneratorController"
+        stylesheets="@../css/App.css,@../css/Lexend.css,@../css/Theme-1.css,@../css/Theme-2.css">
+    <AnchorPane VBox.vgrow="ALWAYS">
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true" AnchorPane.topAnchor="-1" AnchorPane.rightAnchor="-1" AnchorPane.bottomAnchor="-1" AnchorPane.leftAnchor="-1">
+            <padding>
+                <Insets bottom="1" left="1" right="1" top="1"/>
+            </padding>
+            <content>
+                <VBox spacing="20" styleClass="bg-root,border-none">
+                    <padding>
+                        <Insets bottom="10" left="15" right="15" top="10" />
+                    </padding>
+                    <HBox alignment="CENTER" spacing="20" styleClass="bg-primary-1,rounded">
+                        <padding>
+                            <Insets bottom="10" left="15" right="15" top="10" />
+                        </padding>
+                        <Label text="Graph Generator" styleClass="h1,lexend-bold"/>
+                    </HBox>
+                    <VBox spacing="10" styleClass="bg-primary-1,rounded">
+                        <padding>
+                            <Insets bottom="10" left="15" right="15" top="10" />
+                        </padding>
+                        <HBox styleClass="bg-primary-2,rounded">
+                            <padding>
+                                <Insets bottom="10" left="15" right="15" top="10" />
+                            </padding>
+                            <Label fx:id="graphLabel" text="Selected: Complete Graph" styleClass="h3,text-neutral-1,lexend-bold"/>
+                        </HBox>
+                        <VBox fx:id="firstInputVBox" spacing="5">
+                            <Label fx:id="firstInputLabel" text="Node Count" styleClass="lexend-bold"/>
+                            <TextField fx:id="firstInputTextField" text="5"/>
+                        </VBox>
+                        <VBox fx:id="secondInputVBox" spacing="5" managed="false" visible="false">
+                            <Label fx:id="secondInputLabel" text="K" styleClass="lexend-bold"/>
+                            <TextField fx:id="secondInputTextField" text="2"/>
+                        </VBox>
+                        <VBox fx:id="nodeNamingVBox" spacing="5">
+                            <Label text="Node Naming" styleClass="lexend-bold"/>
+                            <ComboBox fx:id="nodeNamingComboBox" styleClass="bg-neutral-1,border-medium,border-neutral-3,rounded"/>
+                        </VBox>
+                        <VBox fx:id="graphNamingVBox" spacing="5" managed="false" visible="false">
+                            <Label text="Graph Naming" styleClass="lexend-bold"/>
+                            <ComboBox fx:id="graphNamingComboBox" styleClass="bg-neutral-1,border-medium,border-neutral-3,rounded"/>
+                        </VBox>
+                        <HBox alignment="CENTER">
+                            <Button fx:id="generateButton" text="Generate" onAction="#handleGenerateGraph" prefWidth="300" styleClass="h3,button-secondary-1"/>
+                        </HBox>
+                    </VBox>
+                    <HBox alignment="CENTER">
+                        <Label textAlignment="CENTER" text="Graph Selection" styleClass="h2,lexend-bold"/>
+                    </HBox>
+                    <GridPane fx:id="graphGrid" hgap="10" vgap="10" styleClass="bg-none">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="33.33333333" />
+                            <ColumnConstraints percentWidth="33.33333333" />
+                            <ColumnConstraints percentWidth="33.33333333" />
+                        </columnConstraints>
+                    </GridPane>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </AnchorPane>
+</VBox>

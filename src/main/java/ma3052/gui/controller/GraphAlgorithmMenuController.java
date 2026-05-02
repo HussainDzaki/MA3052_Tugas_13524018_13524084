@@ -11,6 +11,7 @@ import ma3052.gui.animation.*;
 import ma3052.gui.controller.GraphVisualizationController.ModeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.GridGraphGUI;
+import ma3052.gui.graph.PointGraphGUI;
 import ma3052.core.algorithm.TravellingSalesman;
 
 import java.util.*;
@@ -47,6 +48,7 @@ public class GraphAlgorithmMenuController {
     private TextArea logArea;
 
     private GraphGUI graphGUI;
+    private PointGraphGUI pointGraphGUI;
     private GridGraphGUI gridGraphGUI;
 
     private ScheduledThreadPoolExecutor threadPoolExecutor;
@@ -92,6 +94,7 @@ public class GraphAlgorithmMenuController {
     public void setMainController(GraphVisualizationController mainController) {
         this.mainController = mainController;
         graphGUI = mainController.getGraphGUI();
+        pointGraphGUI = mainController.getPointGraphGUI();
         gridGraphGUI = mainController.getGridGraphGUI();
         updateAlgorithmComboForMode();
     }
@@ -99,7 +102,7 @@ public class GraphAlgorithmMenuController {
     /**
      * Update algorithm combo options based on current mode
      */
-    private void updateAlgorithmComboForMode() {
+    public void updateAlgorithmComboForMode() {
         if (algorithmCombo == null)
             return;
 
@@ -178,6 +181,17 @@ public class GraphAlgorithmMenuController {
                 TimeUnit.MILLISECONDS);
     }
 
+    @FXML
+    private void handleResetAlgorithm() {
+        if (mainController.isAnimating()) {
+            mainController.showError("Animation already in progress");
+            return;
+        }
+        graphGUI.resetColors();
+        pointGraphGUI.resetEdges();
+        pointGraphGUI.resetColors();
+    }
+
     /**
      * Validate if graph data is available
      */
@@ -227,30 +241,25 @@ public class GraphAlgorithmMenuController {
      * Execute the selected algorithm based on mode and algorithm type
      */
     private void executeAlgorithm(String selectedAlgorithm, String startNodeName, String endNodeName) {
-        System.out.println("SELECTED " + selectedAlgorithm);
-        System.out.println("MODE " + mainController.getMode());
         try {
             mainController.setAnimating(true);
             switch (mainController.getMode()) {
                 case NODE_AND_EDGES_MODE:
                     graphGUI.resetColors();
-                    System.out.println("A ");
                     executeNodeAndEdgesAlgorithm(selectedAlgorithm, startNodeName, endNodeName);
                     break;
                 case GRID_MODE:
-                    System.out.println("B");
                     executeGridAlgorithm(selectedAlgorithm);
                     break;
                 case POINT_MODE:
-                    System.out.println("C");
+                    pointGraphGUI.resetEdges();
+                    pointGraphGUI.resetColors();
                     executePointAlgorithm(selectedAlgorithm);
                     break;
                 default:
-                    System.out.println("D");
                     break;
             }
         } catch (Exception e) {
-            System.out.println("E");
             Platform.runLater(() -> mainController.showError("Algorithm execution error: " + e.getMessage()));
             e.printStackTrace();
         } finally {
@@ -371,10 +380,8 @@ public class GraphAlgorithmMenuController {
     }
 
     private void executePointAlgorithm(String algorithm) {
-        System.out.println("me cute");
         switch (algorithm) {
             case "Travelling Salesman":
-                System.out.println("TRAVELLING SALESMANN!!!!");
                 TravellingSalesmanAnimation.animate(mainController.getPointGraphGUI());
                 break;
 

@@ -43,7 +43,7 @@
                 <Label fx:id="labelEndNode" text="End Node:" styleClass="text-secondary-3,lexend-bold"/>
                 <TextField fx:id="endNodeInput" promptText="Enter ending node" />
             </VBox>
-            <VBox spacing="5">
+            <VBox spacing="10">
                 <Label fx:id="labelSpeedSlider" text="Speed: (x1)" styleClass="text-secondary-3,lexend-bold" />
                 <Slider fx:id="speedSlider" 
                                 max="8" min="-2" value="0"
@@ -51,6 +51,7 @@
                                 majorTickUnit="1.0" minorTickCount="0" 
                                 blockIncrement="1.0" snapToTicks="true"/>
                 <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-secondary-2"/>
+                <Button fx:id="resetButton" maxWidth="Infinity" onAction="#handleResetAlgorithm" text="Reset" styleClass="button-secondary-2"/>
             </VBox>
         </VBox>
         <VBox spacing="10">

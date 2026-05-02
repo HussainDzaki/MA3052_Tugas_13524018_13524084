@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ma3052.App;
 import ma3052.core.graph.Graph;
+import ma3052.core.graph.GraphFactory;
 import ma3052.core.graph.GridGraph;
 import ma3052.core.graph.Node;
 import ma3052.core.graph.PointGraph;
@@ -100,6 +101,14 @@ public class GraphVisualizationController {
         this.isAnimating = isAnimating;
     }
 
+    public GraphAlgorithmMenuController getGraphAlgorithmMenuController() {
+        return graphAlgorithmMenuController;
+    }
+
+    public GraphInputMenuController getGraphInputMenuController() {
+        return graphInputMenuController;
+    }
+
     /**
      * Initialize the controller
      * Called after FXML file has been loaded
@@ -169,45 +178,60 @@ public class GraphVisualizationController {
     }
 
     public void switchToLockMode() {
-        if (graphGUI.getMode() == GraphGUI.Mode.Lock)
+        if (mode == ModeGUI.NODE_AND_EDGES_MODE && graphGUI.getMode() == GraphGUI.Mode.Lock)
+            return;
+        if (mode == ModeGUI.POINT_MODE && pointGraphGUI.getMode() == PointGraphGUI.Mode.Lock)
             return;
         graphGUI.setMode(GraphGUI.Mode.Lock);
-        btnLockMode.getStyleClass().remove("button-secondary-3");
-        btnLockMode.getStyleClass().add("button-secondary-1");
-        btnAddMode.getStyleClass().remove("button-secondary-1");
-        btnAddMode.getStyleClass().add("button-secondary-3");
-        btnDeleteMode.getStyleClass().remove("button-secondary-1");
-        btnDeleteMode.getStyleClass().add("button-secondary-3");
-        btnEditMode.getStyleClass().remove("button-secondary-1");
-        btnEditMode.getStyleClass().add("button-secondary-3");
+        pointGraphGUI.setMode(PointGraphGUI.Mode.Lock);
+        Platform.runLater(() -> {
+            btnLockMode.getStyleClass().remove("button-secondary-3");
+            btnLockMode.getStyleClass().add("button-secondary-1");
+            btnAddMode.getStyleClass().remove("button-secondary-1");
+            btnAddMode.getStyleClass().add("button-secondary-3");
+            btnDeleteMode.getStyleClass().remove("button-secondary-1");
+            btnDeleteMode.getStyleClass().add("button-secondary-3");
+            btnEditMode.getStyleClass().remove("button-secondary-1");
+            btnEditMode.getStyleClass().add("button-secondary-3");
+        });
     }
 
     public void switchToAddMode() {
-        if (graphGUI.getMode() == GraphGUI.Mode.Add)
+        if (mode == ModeGUI.NODE_AND_EDGES_MODE && graphGUI.getMode() == GraphGUI.Mode.Add)
+            return;
+        if (mode == ModeGUI.POINT_MODE && pointGraphGUI.getMode() == PointGraphGUI.Mode.Add)
             return;
         graphGUI.setMode(GraphGUI.Mode.Add);
-        btnLockMode.getStyleClass().remove("button-secondary-1");
-        btnLockMode.getStyleClass().add("button-secondary-3");
-        btnAddMode.getStyleClass().remove("button-secondary-3");
-        btnAddMode.getStyleClass().add("button-secondary-1");
-        btnDeleteMode.getStyleClass().remove("button-secondary-1");
-        btnDeleteMode.getStyleClass().add("button-secondary-3");
-        btnEditMode.getStyleClass().remove("button-secondary-1");
-        btnEditMode.getStyleClass().add("button-secondary-3");
+        pointGraphGUI.setMode(PointGraphGUI.Mode.Add);
+        Platform.runLater(() -> {
+            btnLockMode.getStyleClass().remove("button-secondary-1");
+            btnLockMode.getStyleClass().add("button-secondary-3");
+            btnAddMode.getStyleClass().remove("button-secondary-3");
+            btnAddMode.getStyleClass().add("button-secondary-1");
+            btnDeleteMode.getStyleClass().remove("button-secondary-1");
+            btnDeleteMode.getStyleClass().add("button-secondary-3");
+            btnEditMode.getStyleClass().remove("button-secondary-1");
+            btnEditMode.getStyleClass().add("button-secondary-3");
+        });
     }
 
     public void switchToDeleteMode() {
-        if (graphGUI.getMode() == GraphGUI.Mode.Delete)
+        if (mode == ModeGUI.NODE_AND_EDGES_MODE && graphGUI.getMode() == GraphGUI.Mode.Delete)
+            return;
+        if (mode == ModeGUI.POINT_MODE && pointGraphGUI.getMode() == PointGraphGUI.Mode.Delete)
             return;
         graphGUI.setMode(GraphGUI.Mode.Delete);
-        btnLockMode.getStyleClass().remove("button-secondary-1");
-        btnLockMode.getStyleClass().add("button-secondary-3");
-        btnAddMode.getStyleClass().remove("button-secondary-1");
-        btnAddMode.getStyleClass().add("button-secondary-3");
-        btnDeleteMode.getStyleClass().remove("button-secondary-3");
-        btnDeleteMode.getStyleClass().add("button-secondary-1");
-        btnEditMode.getStyleClass().remove("button-secondary-1");
-        btnEditMode.getStyleClass().add("button-secondary-3");
+        pointGraphGUI.setMode(PointGraphGUI.Mode.Delete);
+        Platform.runLater(() -> {
+            btnLockMode.getStyleClass().remove("button-secondary-1");
+            btnLockMode.getStyleClass().add("button-secondary-3");
+            btnAddMode.getStyleClass().remove("button-secondary-1");
+            btnAddMode.getStyleClass().add("button-secondary-3");
+            btnDeleteMode.getStyleClass().remove("button-secondary-3");
+            btnDeleteMode.getStyleClass().add("button-secondary-1");
+            btnEditMode.getStyleClass().remove("button-secondary-1");
+            btnEditMode.getStyleClass().add("button-secondary-3");
+        });
     }
 
     public void switchToEditMode() {
@@ -227,25 +251,26 @@ public class GraphVisualizationController {
     }
 
     private Graph getDefaultGraph() {
-        Graph graph = new Graph();
-        graph.addNode(new Node("1"));
-        graph.addNode(new Node("2"));
-        graph.addNode(new Node("3"));
-        graph.addNode(new Node("4"));
-        graph.addNode(new Node("5"));
-        graph.addNode(new Node("6"));
-        graph.addNode(new Node("7"));
-        graph.addEdge("1", "2");
-        graph.addEdge("1", "5");
-        graph.addEdge("1", "6");
-        graph.addEdge("2", "5");
-        graph.addEdge("2", "3");
-        graph.addEdge("3", "6");
-        graph.addEdge("4", "5");
-        graph.addEdge("4", "6");
-        graph.addEdge("4", "7");
-        graph.addEdge("5", "7");
-        return graph;
+        return GraphFactory.createCirculantGraph(7, 1, 2);
+        // Graph graph = new Graph();
+        // graph.addNode(new Node("1"));
+        // graph.addNode(new Node("2"));
+        // graph.addNode(new Node("3"));
+        // graph.addNode(new Node("4"));
+        // graph.addNode(new Node("5"));
+        // graph.addNode(new Node("6"));
+        // graph.addNode(new Node("7"));
+        // graph.addEdge("1", "2");
+        // graph.addEdge("1", "5");
+        // graph.addEdge("1", "6");
+        // graph.addEdge("2", "5");
+        // graph.addEdge("2", "3");
+        // graph.addEdge("3", "6");
+        // graph.addEdge("4", "5");
+        // graph.addEdge("4", "6");
+        // graph.addEdge("4", "7");
+        // graph.addEdge("5", "7");
+        // return graph;
     }
 
     private GridGraph getDefaultGridGraph() {
@@ -306,8 +331,7 @@ public class GraphVisualizationController {
     private void zoomIn() {
         if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
             graphGUI.zoomIn();
-        }
-        else if (mode == ModeGUI.POINT_MODE) {
+        } else if (mode == ModeGUI.POINT_MODE) {
             pointGraphGUI.zoomIn();
         }
     }
@@ -316,8 +340,7 @@ public class GraphVisualizationController {
     private void zoomOut() {
         if (mode == ModeGUI.NODE_AND_EDGES_MODE) {
             graphGUI.zoomOut();
-        }
-        else if (mode == ModeGUI.POINT_MODE) {
+        } else if (mode == ModeGUI.POINT_MODE) {
             pointGraphGUI.zoomOut();
         }
     }

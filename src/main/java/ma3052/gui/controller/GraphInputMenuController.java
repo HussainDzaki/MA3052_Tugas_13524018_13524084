@@ -168,6 +168,8 @@ public class GraphInputMenuController {
         graphGUI = mainController.getGraphGUI();
         gridGraphGUI = mainController.getGridGraphGUI();
         pointGraphGUI = mainController.getPointGraphGUI();
+
+        graphGUI.setOnGraphUpdate(() -> updateListFromGraph());
     }
 
     /**
@@ -304,7 +306,6 @@ public class GraphInputMenuController {
 
     @FXML
     private void handleAdvancedInput() {
-
         try {
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(App.class.getResource("view/AdvancedInput.fxml"));
@@ -320,7 +321,7 @@ public class GraphInputMenuController {
             });
 
             // Create scene
-            Scene scene = new Scene(root, 700, 500);
+            Scene scene = new Scene(root, 900, 600);
 
             // Setup stage
             Stage stage = new Stage();
@@ -328,8 +329,37 @@ public class GraphInputMenuController {
             stage.initOwner(advancedInput.getScene().getWindow());
             stage.setTitle("Advanced Input");
             stage.setScene(scene);
-            stage.setWidth(900);
-            stage.setHeight(600);
+            stage.showAndWait();
+        } catch (IOException e) {
+            mainController.showError(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleGenerateGraph() {
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GraphGenerator.fxml"));
+            Parent root = loader.load();
+            loader.<GraphGeneratorController>getController().setMainController(mainController);
+
+            Parent thisRoot = advancedInput.getScene().getRoot();
+            root.getStyleClass().removeIf((style) -> style.contains("theme"));
+            thisRoot.getStyleClass().forEach((style) -> {
+                if (style.contains("theme")) {
+                    root.getStyleClass().add(style);
+                }
+            });
+
+            // Create scene
+            Scene scene = new Scene(root, 900, 600);
+
+            // Setup stage
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(advancedInput.getScene().getWindow());
+            stage.setTitle("Graph Generator");
+            stage.setScene(scene);
             stage.showAndWait();
         } catch (IOException e) {
             mainController.showError(e.getMessage());
@@ -722,7 +752,7 @@ public class GraphInputMenuController {
         advancedInput.setVisible(true);
         advancedInput.setManaged(true);
 
-        // updateAlgorithmComboForMode();
+        mainController.getGraphAlgorithmMenuController().updateAlgorithmComboForMode();
 
         btnNodeAndEdges.getStyleClass().add("button-secondary-1");
         btnNodeAndEdges.getStyleClass().remove("button-secondary-3");
@@ -767,7 +797,7 @@ public class GraphInputMenuController {
         nodeEdgeListHbox.setVisible(false);
         nodeEdgeListHbox.setManaged(false);
 
-        // updateAlgorithmComboForMode();
+        mainController.getGraphAlgorithmMenuController().updateAlgorithmComboForMode();
 
         addFromFile.setVisible(true);
         addFromFile.setManaged(true);
@@ -813,7 +843,7 @@ public class GraphInputMenuController {
         nodeEdgeListHbox.setVisible(false);
         nodeEdgeListHbox.setManaged(false);
 
-        // updateAlgorithmComboForMode();
+        mainController.getGraphAlgorithmMenuController().updateAlgorithmComboForMode();
 
         addFromFile.setVisible(true);
         addFromFile.setManaged(true);
