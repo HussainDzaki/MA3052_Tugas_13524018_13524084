@@ -248,7 +248,7 @@ public class GraphAlgorithmMenuController {
                     executeGridAlgorithm(selectedAlgorithm);
                     break;
                 case POINT_MODE:
-                    pointGraphGUI.clearGraph();
+                    pointGraphGUI.resetEdges();
                     pointGraphGUI.resetColors();
                     executePointAlgorithm(selectedAlgorithm);
                     break;
@@ -256,7 +256,6 @@ public class GraphAlgorithmMenuController {
                     break;
             }
         } catch (Exception e) {
-            System.out.println("E");
             Platform.runLater(() -> mainController.showError("Algorithm execution error: " + e.getMessage()));
             e.printStackTrace();
         } finally {
