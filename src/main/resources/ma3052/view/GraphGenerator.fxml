@@ -16,7 +16,7 @@
 <?import javafx.scene.image.ImageView?>
 <VBox xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="ma3052.gui.controller.GraphGeneratorController"
-        stylesheets="@../css/App.css,@../css/Lexend.css,@../css/Theme-1.css,@../css/Theme-2.css">
+        stylesheets="@../css/App.css,@../css/Lexend.css,@../css/Theme-1.css,@../css/Theme-2.css,@../css/Theme-3.css">
     <AnchorPane VBox.vgrow="ALWAYS">
         <ScrollPane fx:id="scrollPane" fitToWidth="true" fitToHeight="true" AnchorPane.topAnchor="-1" AnchorPane.rightAnchor="-1" AnchorPane.bottomAnchor="-1" AnchorPane.leftAnchor="-1">
             <padding>

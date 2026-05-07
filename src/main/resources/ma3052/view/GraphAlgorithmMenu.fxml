@@ -50,7 +50,7 @@
                                 showTickLabels="false" showTickMarks="false" 
                                 majorTickUnit="1.0" minorTickCount="0" 
                                 blockIncrement="1.0" snapToTicks="true"/>
-                <Button fx:id="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-secondary-2"/>
+                <Button fx:id   ="executeButton" maxWidth="Infinity" onAction="#handleExecuteAlgorithm" text="Execute" styleClass="button-secondary-2"/>
                 <Button fx:id="resetButton" maxWidth="Infinity" onAction="#handleResetAlgorithm" text="Reset" styleClass="button-secondary-2"/>
             </VBox>
         </VBox>

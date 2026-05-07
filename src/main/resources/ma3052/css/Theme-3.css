@@ -1,219 +1,238 @@
-.theme-1 * {
-    -fx-primary-color-1: #fbbf24; 
-    -fx-primary-color-2: #f59e0b; 
-    -fx-primary-color-3: #d97706; 
-    -fx-secondary-color-1: #4a90e2; 
-    -fx-secondary-color-2: #2b5fa6; 
-    -fx-secondary-color-3: #1e3a5f; 
-    -fx-neutral-color-1: #f5f7fa; 
-    -fx-neutral-color-2: #d1d5db; 
-    -fx-neutral-color-3: #1a2332; 
-    -fx-danger-color-1: #dc2626; 
-    -fx-danger-color-2: #ef4444; 
+.theme-3 * {
+    -fx-primary-color-1: #68B6E8; 
+    -fx-primary-color-2: #007C92; 
+    -fx-primary-color-3: #A2DFF7;
+    -fx-secondary-color-1: #3fd0d4;
+    -fx-secondary-color-2: #3fefcc; 
+    -fx-secondary-color-3: #003A70; 
+    -fx-neutral-color-1: #FFFFFF; 
+    -fx-neutral-color-2: #E0F7FA; 
+    -fx-neutral-color-3: #2C3E50; 
+    -fx-danger-color-1: #ff1919; 
+    -fx-danger-color-2: #ff4032; 
 }
 
-.theme-1-root {
-    background-color: #f5f7fa;
-    -fx-background-color: #f5f7fa;
-    color: #1a2332;
-    fill: #1a2332;
-    -fx-text-fill: #1a2332;
+.theme-3-root {
+    background-color: #E0F7FA;
+    -fx-background-color: #E0F7FA;
+    color: #2C3E50;
+    fill: #2C3E50;
+    -fx-text-fill: #2C3E50;
 }
 
 /* Text colours  */
-.theme-1 .text-secondary-1 {
+.theme-3 .text-secondary-1 {
     color: -fx-secondary-color-1;
     fill: -fx-secondary-color-1;
     -fx-text-fill: -fx-secondary-color-1;
 }
-.theme-1 .text-secondary-2 {
+.theme-3 .text-secondary-2 {
     color: -fx-secondary-color-2;
     fill: -fx-secondary-color-2;
     -fx-text-fill: -fx-secondary-color-2;
 }
-.theme-1 .text-secondary-3 {
+.theme-3 .text-secondary-3 {
     color: -fx-secondary-color-3;
     fill: -fx-secondary-color-3;
     -fx-text-fill: -fx-secondary-color-3;
 }
-.theme-1 .text-primary-1 {
+.theme-3 .text-primary-1 {
     color: -fx-primary-color-1;
     fill: -fx-primary-color-1;
     -fx-text-fill: -fx-primary-color-1;
 }
-.theme-1 .text-primary-2 {
+.theme-3 .text-primary-2 {
     color: -fx-primary-color-2;
     fill: -fx-primary-color-2;
     -fx-text-fill: -fx-primary-color-2;
 }
-.theme-1 .text-primary-3 {
+.theme-3 .text-primary-3 {
     color: -fx-primary-color-3;
     fill: -fx-primary-color-3;
     -fx-text-fill: -fx-primary-color-3;
 }
-.theme-1 .text-neutral-1 {
+.theme-3 .text-neutral-1 {
     color: -fx-neutral-color-1;
     fill: -fx-neutral-color-1;
     -fx-text-fill: -fx-neutral-color-1;
 }
-.theme-1 .text-neutral-2 {
+.theme-3 .text-neutral-2 {
     color: -fx-neutral-color-2;
     fill: -fx-neutral-color-2;
     -fx-text-fill: -fx-neutral-color-2;
 }
-.theme-1 .text-neutral-3 {
+.theme-3 .text-neutral-3 {
+    color: -fx-neutral-color-3;
+    fill: -fx-neutral-color-3;
+    -fx-text-fill: -fx-neutral-color-3;
+}
+.theme-3 .text-neutral-3 {
     color: -fx-neutral-color-3;
     fill: -fx-neutral-color-3;
     -fx-text-fill: -fx-neutral-color-3;
 }
 
 /* Background colours  */
-.theme-1 .bg-root {
-    background-color: -fx-neutral-color-1;
-    -fx-background-color: -fx-neutral-color-1;
-}
-.theme-1 .bg-secondary-1 {
-    background-color: -fx-secondary-color-1;
-    -fx-background-color: -fx-secondary-color-1;
-}
-.theme-1 .bg-secondary-2 {
-    background-color: -fx-secondary-color-2;
-    -fx-background-color: -fx-secondary-color-2;
-}
-.theme-1 .bg-secondary-3 {
-    background-color: -fx-secondary-color-3;
-    -fx-background-color: -fx-secondary-color-3;
-}
-.theme-1 .bg-primary-1 {
-    background-color: -fx-primary-color-1;
-    -fx-background-color: -fx-primary-color-1;
-}
-.theme-1 .bg-primary-2 {
-    background-color: -fx-primary-color-2;
-    -fx-background-color: -fx-primary-color-2;
-}
-.theme-1 .bg-primary-3 {
-    background-color: -fx-primary-color-3;
-    -fx-background-color: -fx-primary-color-3;
-}
-.theme-1 .bg-neutral-1 {
-    background-color: -fx-neutral-color-1;
-    -fx-background-color: -fx-neutral-color-1;
-}
-.theme-1 .bg-neutral-2 {
+.theme-3 .bg-root {
     background-color: -fx-neutral-color-2;
     -fx-background-color: -fx-neutral-color-2;
 }
-.theme-1 .bg-neutral-3 {
+.theme-3 .bg-secondary-1 {
+    background-color: -fx-secondary-color-1;
+    -fx-background-color: -fx-secondary-color-1;
+}
+.theme-3 .bg-secondary-2 {
+    background-color: -fx-secondary-color-2;
+    -fx-background-color: -fx-secondary-color-2;
+}
+.theme-3 .bg-secondary-3 {
+    background-color: -fx-secondary-color-3;
+    -fx-background-color: -fx-secondary-color-3;
+}
+.theme-3 .bg-primary-1 {
+    background-color: -fx-primary-color-1;
+    -fx-background-color: -fx-primary-color-1;
+}
+.theme-3 .bg-primary-2 {
+    background-color: -fx-primary-color-2;
+    -fx-background-color: -fx-primary-color-2;
+}
+.theme-3 .bg-primary-3 {
+    background-color: -fx-primary-color-3;
+    -fx-background-color: -fx-primary-color-3;
+}
+.theme-3 .bg-neutral-1 {
+    background-color: -fx-neutral-color-1;
+    -fx-background-color: -fx-neutral-color-1;
+}
+.theme-3 .bg-neutral-2 {
+    background-color: -fx-neutral-color-2;
+    -fx-background-color: -fx-neutral-color-2;
+}
+.theme-3 .bg-neutral-3 {
     background-color: -fx-neutral-color-3;
     -fx-background-color: -fx-neutral-color-3;
 }
 
 /* Border colours  */
-.theme-1 .border-secondary-1 {
+.theme-3 .border-secondary-1 {
     border-color: -fx-secondary-color-1;
     -fx-border-color: -fx-secondary-color-1;
 }
-.theme-1 .border-secondary-2 {
+.theme-3 .border-secondary-2 {
     border-color: -fx-secondary-color-2;
     -fx-border-color: -fx-secondary-color-2;
 }
-.theme-1 .border-secondary-3 {
+.theme-3 .border-secondary-3 {
     border-color: -fx-secondary-color-3;
     -fx-border-color: -fx-secondary-color-3;
 }
-.theme-1 .border-primary-1 {
+.theme-3 .border-primary-1 {
     border-color: -fx-primary-color-1;
     -fx-border-color: -fx-primary-color-1;
 }
-.theme-1 .border-primary-2 {
+.theme-3 .border-primary-2 {
     border-color: -fx-primary-color-2;
     -fx-border-color: -fx-primary-color-2;
 }
-.theme-1 .border-primary-3 {
+.theme-3 .border-primary-3 {
     border-color: -fx-primary-color-3;
     -fx-border-color: -fx-primary-color-3;
 }
-.theme-1 .border-neutral-1 {
+.theme-3 .border-neutral-1 {
     border-color: -fx-neutral-color-1;
     -fx-border-color: -fx-neutral-color-1;
 }
-.theme-1 .bg-neutral-2 {
+.theme-3 .bg-neutral-2 {
     color: -fx-neutral-color-2;
     fill: -fx-neutral-color-2;
     -fx-text-fill: -fx-neutral-color-2;
 }
-.theme-1 .border-neutral-3 {
+.theme-3 .border-neutral-3 {
     border-color: -fx-neutral-color-3;
     -fx-border-color: -fx-neutral-color-3;
 }
 
 /* Shadows colours */
-.theme-1 .shadow-neutral-1 {
+.theme-3 .shadow-neutral-1 {
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 8, 0.15, 0, 4);
 }
 
-.theme-1 .shadow-neutral-3 {
+.theme-3 .shadow-neutral-3 {
     -fx-effect: dropshadow(gaussian, rgba(26, 35, 50, 0.15), 8, 0.15, 0, 4);
 }
 
 
 /* Button - Modern Style */
-.theme-1 .button {
+.theme-3 .button {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.05, 0, 2);
 }
 
-.theme-1 .button:hover {
+.theme-3 .button:hover {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 6, 0.1, 0, 4);
 }
 
-.theme-1 .button:pressed {
+.theme-3 .button:pressed {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0.05, 0, 1);
 }
 
-.theme-1 .button:focused {
+.theme-3 .button:focused {
     -fx-effect: dropshadow(gaussian, -fx-secondary-color-1, 6, 0.3, 0, 0);
 }
 
-.theme-1 .button-secondary-1 {
+.theme-3 .button-secondary-1 {
     background-color: -fx-secondary-color-1;
     -fx-background-color: -fx-secondary-color-1;
-    -fx-text-fill: -fx-neutral-color-1;
+    -fx-text-fill: -fx-secondary-color-3;
 }
-.theme-1 .button-secondary-1:hover {
-    background-color: #6ba3f5;
-    -fx-background-color: #6ba3f5;
-}
-.theme-1 .button-secondary-2 {
+.theme-3 .button-secondary-1:hover {
     background-color: -fx-secondary-color-2;
     -fx-background-color: -fx-secondary-color-2;
-    -fx-text-fill: -fx-neutral-color-1;
 }
-.theme-1 .button-secondary-2:hover {
-    background-color: -fx-secondary-color-1;
-    -fx-background-color: -fx-secondary-color-1;
+.theme-3 .button-secondary-2 {
+    background-color: -fx-secondary-color-2;
+    -fx-background-color: -fx-secondary-color-2;
+    -fx-text-fill: -fx-secondary-color-3;
 }
-.theme-1 .button-secondary-3 {
+.theme-3 .button-secondary-2 * {
+    -fx-text-fill: -fx-secondary-color-3;
+}
+.theme-3 .button-secondary-2:hover {
     background-color: -fx-secondary-color-3;
     -fx-background-color: -fx-secondary-color-3;
-    -fx-text-fill: -fx-neutral-color-1;
+    -fx-text-fill: -fx-neutral-color-2;
 }
-.theme-1 .button-secondary-3:hover {
+.theme-3 .button-secondary-2:hover * {
+    -fx-text-fill: -fx-neutral-color-2;
+}
+.theme-3 .button-secondary-3 {
+    background-color: -fx-secondary-color-3;
+    -fx-background-color: -fx-secondary-color-3;
+    -fx-text-fill: -fx-neutral-color-2;
+}
+.theme-3 .button-secondary-3 *{
+    -fx-text-fill: -fx-neutral-color-2;
+}
+.theme-3 .button-secondary-3:hover {
     background-color: -fx-secondary-color-2;
     -fx-background-color: -fx-secondary-color-2;
+    -fx-text-fill: -fx-secondary-color-3;
+}
+.theme-3 .button-secondary-3:hover * {
+    -fx-text-fill: -fx-secondary-color-3;
 }
 
-.theme-1 .button-danger {
+.theme-3 .button-danger {
     background-color: -fx-danger-color-1;
     -fx-background-color: -fx-danger-color-1;
     -fx-text-fill: -fx-neutral-color-1;
 }
-.theme-1 .button-danger:hover {
+.theme-3 .button-danger:hover {
     background-color: -fx-danger-color-2;
     -fx-background-color: -fx-danger-color-2;
 }
 
-.theme-1 .text-area {
+.theme-3 .text-area {
     -fx-border-color: -fx-neutral-color-2;
     border-color: -fx-neutral-color-2;
     -fx-background-color: -fx-neutral-color-1;
@@ -223,13 +242,18 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 4, 0.05, 0, 2);
 }
 
-.theme-1 .text-area:focused {
-    border-color: -fx-secondary-color-1;
-    -fx-border-color: -fx-secondary-color-1;
+.theme-3 .text-area:focused {
+    border-color: -fx-secondary-color-2;
+    -fx-border-color: -fx-secondary-color-2;
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.2), 6, 0.1, 0, 2);
 }
 
-.theme-1 .text-field {
+.theme-3 .text-area:hover {
+    border-color: -fx-neutral-color-2;
+    -fx-border-color: -fx-neutral-color-2;
+}
+
+.theme-3 .text-field {
     -fx-border-color: -fx-neutral-color-2;
     border-color: -fx-neutral-color-2;
     -fx-background-color: -fx-neutral-color-1;
@@ -239,18 +263,18 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.06), 2, 0.05, 0, 1);
 }
 
-.theme-1 .text-field:focused {
-    border-color: -fx-secondary-color-1;
-    -fx-border-color: -fx-secondary-color-1;
+.theme-3 .text-field:focused {
+    border-color: -fx-secondary-color-2;
+    -fx-border-color: -fx-secondary-color-2;
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.2), 4, 0.08, 0, 2);
 }
 
-.theme-1 .text-field:hover {
-    border-color: #9ca3af;
-    -fx-border-color: #9ca3af;
+.theme-3 .text-field:hover {
+    border-color: -fx-neutral-color-2;
+    -fx-border-color: -fx-neutral-color-2;
 }
 
-.theme-1 .check-box > .box {
+.theme-3 .check-box > .box {
     background-color: -fx-neutral-color-1;
     -fx-background-color: -fx-neutral-color-1;
     border-color: -fx-neutral-color-2;
@@ -258,25 +282,25 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 2, 0.05, 0, 1);
 }
 
-.theme-1 .check-box > .box:selected {
+.theme-3 .check-box > .box:selected {
     background-color: -fx-secondary-color-1;
     -fx-background-color: -fx-secondary-color-1;
     border-color: -fx-secondary-color-1;
     -fx-border-color: -fx-secondary-color-1;
 }
 
-.theme-1 .separator:horizontal .line {
+.theme-3 .separator:horizontal .line {
     border-color: -fx-neutral-color-3 transparent transparent transparent;
     -fx-border-color: -fx-neutral-color-3 transparent transparent transparent;
 }
 
-.theme-1 .separator:vertical .line {
+.theme-3 .separator:vertical .line {
     border-color: transparent transparent transparent -fx-neutral-color-3;
     -fx-border-color: transparent transparent transparent -fx-neutral-color-3;
 }
 
 /* Slider - Modern Style */
-.theme-1 .slider .track {
+.theme-3 .slider .track {
     background-color: #e5e7eb;
     -fx-background-color: #e5e7eb;
     border-color: transparent;
@@ -288,7 +312,7 @@
     -fx-background-radius: 8;
 }
 
-.theme-1 .slider .thumb {
+.theme-3 .slider .thumb {
     background-color: -fx-secondary-color-1;
     -fx-background-color: -fx-secondary-color-1;
     border-color: transparent;
@@ -298,6 +322,6 @@
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.3), 4, 0.1, 0, 2);
 }
 
-.theme-1 .slider .thumb:hover {
+.theme-3 .slider .thumb:hover {
     -fx-effect: dropshadow(gaussian, rgba(74, 144, 226, 0.4), 6, 0.15, 0, 3);
 }

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx/21.0.2" xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="ma3052.gui.controller.GraphVisualizationController"
-        stylesheets="@../css/App.css,@../css/Theme-1.css,@../css/Theme-2.css,@../css/Lexend.css"
+        stylesheets="@../css/App.css,@../css/Theme-1.css,@../css/Theme-2.css,@../css/Lexend.css,@../css/Theme-3.css"
         styleClass="theme-2">
     <top>
         <HBox prefHeight="80.0" spacing="4" BorderPane.alignment="CENTER" alignment="CENTER" styleClass="bg-primary-1,rounded">
