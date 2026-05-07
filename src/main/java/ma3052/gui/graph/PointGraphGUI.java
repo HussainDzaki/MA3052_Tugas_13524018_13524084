@@ -511,7 +511,7 @@ public class PointGraphGUI {
 
             // Jarak = |ax + by + c| / sqrt(a^2 + b^2)
             double distance = Math.abs((a * pos.getX() + b * pos.getY() + c) / Math.sqrt(a * a + b * b));
-            if (distance < MAX_DISTANCE_FROM_EDGE_TO_CLICK) {
+            if (distance < MAX_DISTANCE_FROM_EDGE_TO_CLICK / canvasScale) {
                 return edgeGUI;
             }
         }
