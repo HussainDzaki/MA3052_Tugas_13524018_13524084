@@ -131,7 +131,7 @@ public class GraphGUI {
                 dummyEdgeGUI = null;
             });
             canvas.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
-                threadPoolExecutor.shutdown();
+                threadPoolExecutor.shutdownNow();
             });
         });
     }
@@ -187,8 +187,16 @@ public class GraphGUI {
         return nodeMap.get(node);
     }
 
+    public List<NodeGUI> getNodeGUIList() {
+        return Collections.unmodifiableList(nodeGUIList);
+    }
+
     public EdgeGUI getEdgeGUI(Edge edge) {
         return edgeMap.get(edge);
+    }
+
+    public List<EdgeGUI> getEdgeGUIList() {
+        return Collections.unmodifiableList(edgeGUIList);
     }
 
     /**
@@ -623,7 +631,7 @@ public class GraphGUI {
      */
     public void stop() {
         isDrawing = false;
-        threadPoolExecutor.shutdown();
+        threadPoolExecutor.shutdownNow();
     }
 
     public String pathToString(List<Node> path) {

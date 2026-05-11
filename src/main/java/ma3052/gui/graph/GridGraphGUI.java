@@ -28,7 +28,7 @@ public class GridGraphGUI {
 
     private volatile boolean isDrawing = true;
     private double cellSize = 20; // Size of each cell in pixels
-    
+
     // Animation state
     private volatile int[][] islandMap = null;
     private volatile int[][] finalIslandMap = null;
@@ -47,7 +47,7 @@ public class GridGraphGUI {
 
         Platform.runLater(() -> {
             canvas.getScene().getWindow().setOnCloseRequest(event -> {
-                threadPoolExecutor.shutdown();
+                threadPoolExecutor.shutdownNow();
             });
         });
     }
@@ -116,9 +116,9 @@ public class GridGraphGUI {
             for (int j = 0; j < cols; j++) {
                 double x = startX + j * cellSize;
                 double y = startY + i * cellSize;
-                
+
                 Color cellColor;
-                
+
                 // Determine which map to use
                 int[][] mapToUse = null;
                 if (isAnimating && islandMap != null) {
@@ -126,7 +126,7 @@ public class GridGraphGUI {
                 } else if (finalIslandMap != null) {
                     mapToUse = finalIslandMap;
                 }
-                
+
                 // If using animation map, apply colors
                 if (mapToUse != null) {
                     if (mapToUse[i][j] == -1) {
@@ -151,7 +151,7 @@ public class GridGraphGUI {
                         cellColor = WATER_COLOR;
                     }
                 }
-                
+
                 graphicsContext.setFill(cellColor);
                 graphicsContext.fillRect(x, y, cellSize, cellSize);
 
@@ -185,9 +185,8 @@ public class GridGraphGUI {
      */
     public void stop() {
         isDrawing = false;
-        threadPoolExecutor.shutdown();
+        threadPoolExecutor.shutdownNow();
     }
-
 
     /**
      * Set island map for animation visualization
@@ -195,35 +194,35 @@ public class GridGraphGUI {
     public void setIslandMap(int[][] map) {
         this.islandMap = map;
     }
-    
+
     /**
      * Get current island map
      */
     public int[][] getIslandMap() {
         return this.islandMap;
     }
-    
+
     /**
      * Set final island map to persist after animation
      */
     public void setFinalIslandMap(int[][] map) {
         this.finalIslandMap = map;
     }
-    
+
     /**
      * Get final island map
      */
     public int[][] getFinalIslandMap() {
         return this.finalIslandMap;
     }
-    
+
     /**
      * Set animation state
      */
     public void setAnimating(boolean animating) {
         this.isAnimating = animating;
     }
-    
+
     /**
      * Check if currently animating
      */
@@ -234,7 +233,7 @@ public class GridGraphGUI {
     /**
      * Get Canvas
      */
-    public Canvas getCanvas(){
+    public Canvas getCanvas() {
         return this.canvas;
     }
 }
