@@ -343,7 +343,7 @@ public class GraphAlgorithmMenuController {
                     case "Random Starting Node":
                         TravellingSalesmanAnimation.animate(graphGUI);
                         break;
-                    case "Check All Starting Node":
+                    case "Best of All Starting Node":
                         TravellingSalesmanAnimation.animateBest(graphGUI);
                         break;
                     default:
@@ -396,7 +396,7 @@ public class GraphAlgorithmMenuController {
                     case "Random Starting Node":
                         TravellingSalesmanAnimation.animate(mainController.getPointGraphGUI());
                         break;
-                    case "Check All Starting Node":
+                    case "Best of All Starting Node":
                         TravellingSalesmanAnimation.animateBest(mainController.getPointGraphGUI());
                         break;
                     default:
@@ -449,7 +449,7 @@ public class GraphAlgorithmMenuController {
                         optionVbox.setManaged(true);
 
                         optionCombo.getItems().clear();
-                        optionCombo.getItems().addAll("Random Starting Node", "Check All Starting Node");
+                        optionCombo.getItems().addAll("Random Starting Node", "Best of All Starting Node");
                         optionCombo.setValue(optionCombo.getItems().getFirst());
 
                         break;
@@ -466,7 +466,7 @@ public class GraphAlgorithmMenuController {
                         optionVbox.setManaged(true);
 
                         optionCombo.getItems().clear();
-                        optionCombo.getItems().addAll("Random Starting Node", "Check All Starting Node");
+                        optionCombo.getItems().addAll("Random Starting Node", "Best of All Starting Node");
                         optionCombo.setValue(optionCombo.getItems().getFirst());
                 }
             default:
