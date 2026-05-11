@@ -32,9 +32,9 @@ public class TravellingSalesmanAnimation {
 
     // Node Colors
     private static final Color HAMILTONIAN_COLOR = Color.web("#4a90e2");
-    private static final Color SELECTED_NODE = Color.web("#f59e0b");
-    private static final Color TWO_OPT_COLOR = Color.web("#fbbf24");
-    private static final Color RESULT_COLOR = Color.web("#ffd53d");
+    private static final Color SELECTED_NODE = Color.web("#ffca4f");
+    private static final Color TWO_OPT_COLOR = Color.web("#ffca4f");
+    private static final Color RESULT_COLOR = Color.web("#ffca4f");
 
     // Edge Colors
 
@@ -45,7 +45,8 @@ public class TravellingSalesmanAnimation {
     private static final Color EDGE_RESULT_COLOR = Color.web("#da6e09");
 
     public static void setAnimationStepTime(long animationStepTime) {
-        TravellingSalesmanAnimation.animationStepTime = animationStepTime;
+        TravellingSalesmanAnimation.animationStepTime = Math.max(1, animationStepTime);
+        ;
     }
 
     /**
@@ -267,7 +268,7 @@ public class TravellingSalesmanAnimation {
             if (edgeGUI != null) {
                 Platform.runLater(() -> {
                     edgeGUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                    nodeGUI.setColor(HAMILTONIAN_COLOR);
+                    nodeGUI.setBorderColor(HAMILTONIAN_COLOR);
                 });
             }
 
@@ -310,18 +311,6 @@ public class TravellingSalesmanAnimation {
                         final EdgeGUI edge12GUI = graphGUI.getEdgeGUI(node1, node2);
                         final EdgeGUI edge34GUI = graphGUI.getEdgeGUI(node3, node4);
 
-                        // Platform.runLater(() -> {
-                        // nodeGUI1.setColor(SELECTED_NODE);
-                        // nodeGUI2.setColor(SELECTED_NODE);
-                        // nodeGUI3.setColor(SELECTED_NODE);
-                        // nodeGUI4.setColor(SELECTED_NODE);
-                        // if (edge12GUI != null)
-                        // edge12GUI.setLineColor(EDGE_SELECTED_COLOR);
-                        // if (edge34GUI != null)
-                        // edge34GUI.setLineColor(EDGE_SELECTED_COLOR);
-                        // });
-                        // Thread.sleep(animationStepTime);
-
                         double currentDist = graph.getDistance(node1, node2) + graph.getDistance(node3, node4);
                         double newDist = graph.getDistance(node1, node3) + graph.getDistance(node2, node4);
 
@@ -336,10 +325,10 @@ public class TravellingSalesmanAnimation {
 
                             // Show new edges in EXPLORE color
                             Platform.runLater(() -> {
-                                nodeGUI1.setColor(TWO_OPT_COLOR);
-                                nodeGUI2.setColor(TWO_OPT_COLOR);
-                                nodeGUI3.setColor(TWO_OPT_COLOR);
-                                nodeGUI4.setColor(TWO_OPT_COLOR);
+                                nodeGUI1.setBorderColor(TWO_OPT_COLOR);
+                                nodeGUI2.setBorderColor(TWO_OPT_COLOR);
+                                nodeGUI3.setBorderColor(TWO_OPT_COLOR);
+                                nodeGUI4.setBorderColor(TWO_OPT_COLOR);
                                 if (edge13GUI != null)
                                     edge13GUI.setLineColor(EDGE_SELECTED_COLOR);
                                 if (edge24GUI != null)
@@ -361,10 +350,10 @@ public class TravellingSalesmanAnimation {
 
                             // STEP 3: Reset Colors After Comparison
                             Platform.runLater(() -> {
-                                nodeGUI1.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI2.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI3.setColor(HAMILTONIAN_COLOR);
-                                nodeGUI4.setColor(HAMILTONIAN_COLOR);
+                                nodeGUI1.setBorderColor(HAMILTONIAN_COLOR);
+                                nodeGUI2.setBorderColor(HAMILTONIAN_COLOR);
+                                nodeGUI3.setBorderColor(HAMILTONIAN_COLOR);
+                                nodeGUI4.setBorderColor(HAMILTONIAN_COLOR);
                                 if (edge13GUI != null)
                                     edge13GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
                                 if (edge24GUI != null)
@@ -377,18 +366,6 @@ public class TravellingSalesmanAnimation {
                             if (edge34GUI != null) {
                                 graphGUI.removeEdge(edge34GUI.getEdge());
                             }
-                        } else {
-                            // STEP 3: Reset Colors After Comparison
-                            // Platform.runLater(() -> {
-                            // nodeGUI1.setColor(HAMILTONIAN_COLOR);
-                            // nodeGUI2.setColor(HAMILTONIAN_COLOR);
-                            // nodeGUI3.setColor(HAMILTONIAN_COLOR);
-                            // nodeGUI4.setColor(HAMILTONIAN_COLOR);
-                            // if (edge12GUI != null)
-                            // edge12GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                            // if (edge34GUI != null)
-                            // edge34GUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
-                            // });
                         }
                     }
                 }
@@ -409,7 +386,7 @@ public class TravellingSalesmanAnimation {
                 if (edgeGUI != null) {
                     Platform.runLater(() -> {
                         edgeGUI.setLineColor(EDGE_RESULT_COLOR);
-                        nodeGUI.setColor(RESULT_COLOR);
+                        nodeGUI.setBorderColor(RESULT_COLOR);
                     });
                 }
 
@@ -430,5 +407,153 @@ public class TravellingSalesmanAnimation {
             e.printStackTrace();
         }
 
+    }
+
+    public static void animateBest(GraphGUI graphGUI) {
+        if (GraphVisualizationController.instance == null || graphGUI == null) {
+            return;
+        }
+
+        Graph graph = graphGUI.getGraph();
+        List<Node> bestCycle = null;
+        double bestTotalCost = 0;
+        for (Node node : graph.getNodeList()) {
+            List<Node> currentCycle = TravellingSalesman.solve(graph, node);
+
+            double totalCost = 0;
+            for (int i = 0; i < currentCycle.size(); i++) {
+                Edge edge1 = graph.getEdge(currentCycle.get(i), currentCycle.get((i + 1) % currentCycle.size()));
+                Edge edge2 = graph.getEdge(currentCycle.get((i + 1) % currentCycle.size()), currentCycle.get(i));
+                if (edge1 != null) {
+                    totalCost += edge1.getWeight();
+                } else {
+                    totalCost += edge2.getWeight();
+                }
+            }
+
+            GraphVisualizationController.instance.logMessage("Starting from node: " + node.getNodeName());
+
+            Platform.runLater(() -> {
+                graphGUI.resetColors();
+
+                for (int i = 0; i < currentCycle.size(); i++) {
+                    Node currentNode = currentCycle.get(i);
+                    Node nextNode = currentCycle.get((i + 1) % (currentCycle.size()));
+                    graphGUI.getEdgeGUI(graph.getEdge(currentNode, nextNode)).setLineColor(EDGE_HAMILTONIAN_COLOR);
+                }
+
+                for (NodeGUI nodeGUI : graphGUI.getNodeGUIList()) {
+                    nodeGUI.setColor(HAMILTONIAN_COLOR);
+                }
+            });
+
+            try {
+                Thread.sleep(animationStepTime);
+            } catch (Exception e) {
+                Thread.currentThread().interrupt();
+            }
+
+            GraphVisualizationController.instance.logMessage("Total Distance: " + totalCost);
+
+            if (bestCycle == null || bestTotalCost > totalCost) {
+                GraphVisualizationController.instance.logMessage("NEW BEST!");
+                bestCycle = currentCycle;
+                bestTotalCost = totalCost;
+            }
+
+            GraphVisualizationController.instance.logMessage("");
+        }
+
+        final List<Node> finalCycle = bestCycle;
+        Platform.runLater(() -> {
+            graphGUI.resetColors();
+
+            for (int i = 0; i < finalCycle.size(); i++) {
+                Node currentNode = finalCycle.get(i);
+                Node nextNode = finalCycle.get((i + 1) % (finalCycle.size()));
+                graphGUI.getEdgeGUI(graph.getEdge(currentNode, nextNode)).setLineColor(EDGE_RESULT_COLOR);
+            }
+            for (NodeGUI nodeGUI : graphGUI.getNodeGUIList()) {
+                nodeGUI.setColor(RESULT_COLOR);
+            }
+        });
+
+        GraphVisualizationController.instance.logMessage("-------- Result --------");
+        GraphVisualizationController.instance.logMessage("Total Distance: " + bestTotalCost);
+    }
+
+    public static void animateBest(PointGraphGUI graphGUI) {
+        if (GraphVisualizationController.instance == null || graphGUI == null) {
+            return;
+        }
+
+        PointGraph graph = graphGUI.getGraph();
+        List<Node> bestCycle = null;
+        double bestTotalCost = 0;
+        for (Node node : graph.getNodeList()) {
+            List<Node> currentCycle = TravellingSalesman.solve(graph, node);
+
+            double totalCost = 0;
+            for (int i = 0; i < currentCycle.size(); i++) {
+                totalCost += graph.getDistance(currentCycle.get(i), currentCycle.get((i + 1) % currentCycle.size()));
+            }
+
+            GraphVisualizationController.instance.logMessage("Starting from node: " + node.getNodeName());
+
+            Platform.runLater(() -> {
+                graphGUI.resetEdges();
+                graphGUI.resetColors();
+
+                for (int i = 0; i < currentCycle.size(); i++) {
+                    Node currentNode = currentCycle.get(i);
+                    Node nextNode = currentCycle.get((i + 1) % (currentCycle.size()));
+                    graphGUI.addEdge(currentNode, nextNode);
+                }
+
+                for (NodeGUI nodeGUI : graphGUI.getNodeGUIList()) {
+                    nodeGUI.setBorderColor(HAMILTONIAN_COLOR);
+                }
+                for (EdgeGUI edgeGUI : graphGUI.getEdgeGUIList()) {
+                    edgeGUI.setLineColor(EDGE_HAMILTONIAN_COLOR);
+                }
+            });
+
+            try {
+                Thread.sleep(animationStepTime);
+            } catch (Exception e) {
+                Thread.currentThread().interrupt();
+            }
+
+            GraphVisualizationController.instance.logMessage("Total Distance: " + totalCost);
+
+            if (bestCycle == null || bestTotalCost > totalCost) {
+                GraphVisualizationController.instance.logMessage("NEW BEST!");
+                bestCycle = currentCycle;
+                bestTotalCost = totalCost;
+            }
+
+            GraphVisualizationController.instance.logMessage("");
+        }
+
+        final List<Node> finalCycle = bestCycle;
+        Platform.runLater(() -> {
+            graphGUI.resetEdges();
+            graphGUI.resetColors();
+
+            for (int i = 0; i < finalCycle.size(); i++) {
+                Node currentNode = finalCycle.get(i);
+                Node nextNode = finalCycle.get((i + 1) % (finalCycle.size()));
+                graphGUI.addEdge(currentNode, nextNode);
+            }
+            for (NodeGUI nodeGUI : graphGUI.getNodeGUIList()) {
+                nodeGUI.setBorderColor(RESULT_COLOR);
+            }
+            for (EdgeGUI edgeGUI : graphGUI.getEdgeGUIList()) {
+                edgeGUI.setLineColor(EDGE_RESULT_COLOR);
+            }
+        });
+
+        GraphVisualizationController.instance.logMessage("-------- Result --------");
+        GraphVisualizationController.instance.logMessage("Total Distance: " + bestTotalCost);
     }
 }

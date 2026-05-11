@@ -21,7 +21,7 @@ public class ComponentAnimation {
      private static volatile long animationStepTime = 500; // in milliseconds
 
      public static void setAnimationStepTime(long animationStepTime) {
-          ComponentAnimation.animationStepTime = animationStepTime;
+          ComponentAnimation.animationStepTime = Math.max(1, animationStepTime);
      }
 
      public static void animate(GraphGUI graphGUI) {

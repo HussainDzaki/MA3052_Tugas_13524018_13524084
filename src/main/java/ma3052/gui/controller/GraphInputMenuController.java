@@ -25,6 +25,7 @@ import ma3052.gui.controller.GraphVisualizationController.ModeGUI;
 import ma3052.gui.graph.GraphGUI;
 import ma3052.gui.graph.GridGraphGUI;
 import ma3052.gui.graph.PointGraphGUI;
+import javafx.scene.control.Button;
 
 import java.io.*;
 import java.util.*;
@@ -69,12 +70,12 @@ public class GraphInputMenuController {
     // Buttons
     @FXML
     private Button clearButton;
-
     @FXML
     private Button addFromFile;
-
     @FXML
     private Button advancedInput;
+    @FXML
+    private Button graphGenerator;
 
     // Node and edge list
     @FXML
@@ -752,6 +753,9 @@ public class GraphInputMenuController {
         advancedInput.setVisible(true);
         advancedInput.setManaged(true);
 
+        graphGenerator.setVisible(true);
+        graphGenerator.setManaged(true);
+
         mainController.getGraphAlgorithmMenuController().updateAlgorithmComboForMode();
 
         btnNodeAndEdges.getStyleClass().add("button-secondary-1");
@@ -805,6 +809,9 @@ public class GraphInputMenuController {
         advancedInput.setVisible(false);
         advancedInput.setManaged(false);
 
+        graphGenerator.setVisible(false);
+        graphGenerator.setManaged(false);
+
         btnNodeAndEdges.getStyleClass().remove("button-secondary-1");
         btnNodeAndEdges.getStyleClass().add("button-secondary-3");
         btnSwitchToGrid.getStyleClass().remove("button-secondary-3");
@@ -850,6 +857,9 @@ public class GraphInputMenuController {
 
         advancedInput.setVisible(false);
         advancedInput.setManaged(false);
+
+        graphGenerator.setVisible(false);
+        graphGenerator.setManaged(false);
 
         btnNodeAndEdges.getStyleClass().remove("button-secondary-1");
         btnNodeAndEdges.getStyleClass().add("button-secondary-3");

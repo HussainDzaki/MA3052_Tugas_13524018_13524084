@@ -21,7 +21,7 @@ public class TraversalAnimation {
     private static volatile long animationStepTime = 500; // in milliseconds
 
     public static void setAnimationStepTime(long animationStepTime) {
-        TraversalAnimation.animationStepTime = animationStepTime;
+        TraversalAnimation.animationStepTime = Math.max(1, animationStepTime);
     }
 
     public static void animateDFS(GraphGUI graphGUI, String startNode) {

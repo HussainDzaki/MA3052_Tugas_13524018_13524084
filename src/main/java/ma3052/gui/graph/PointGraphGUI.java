@@ -1,6 +1,7 @@
 package ma3052.gui.graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +133,7 @@ public class PointGraphGUI {
                 dummyEdgeGUI = null;
             });
             canvas.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
-                threadPoolExecutor.shutdown();
+                threadPoolExecutor.shutdownNow();
             });
         });
     }
@@ -219,8 +220,16 @@ public class PointGraphGUI {
         return nodeMap.get(node);
     }
 
+    public List<NodeGUI> getNodeGUIList() {
+        return Collections.unmodifiableList(nodeGUIList);
+    }
+
     public EdgeGUI getEdgeGUI(Edge edge) {
         return edgeMap.get(edge);
+    }
+
+    public List<EdgeGUI> getEdgeGUIList() {
+        return Collections.unmodifiableList(edgeGUIList);
     }
 
     /**
@@ -511,7 +520,7 @@ public class PointGraphGUI {
 
             // Jarak = |ax + by + c| / sqrt(a^2 + b^2)
             double distance = Math.abs((a * pos.getX() + b * pos.getY() + c) / Math.sqrt(a * a + b * b));
-            if (distance < MAX_DISTANCE_FROM_EDGE_TO_CLICK) {
+            if (distance < MAX_DISTANCE_FROM_EDGE_TO_CLICK / canvasScale) {
                 return edgeGUI;
             }
         }
@@ -680,7 +689,7 @@ public class PointGraphGUI {
      */
     public void stop() {
         isDrawing = false;
-        threadPoolExecutor.shutdown();
+        threadPoolExecutor.shutdownNow();
     }
 
     public String pathToString(List<Node> path) {

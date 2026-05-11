@@ -22,16 +22,17 @@ import java.util.Set;
  */
 public class IslandAnimation {
     private static volatile long animationStepTime = 300; // in milliseconds
-    
+
     public static void setAnimationStepTime(long animationStepTime) {
-        IslandAnimation.animationStepTime = animationStepTime;
+        IslandAnimation.animationStepTime = Math.max(1, animationStepTime);
     }
 
     /**
      * Animate island detection using DFS
+     * 
      * @param gridGraphGUI The grid graph GUI component
-     * @param landChar The character representing land ('#')
-     * @param onComplete Callback when animation completes
+     * @param landChar     The character representing land ('#')
+     * @param onComplete   Callback when animation completes
      */
     public static void animate(GridGraphGUI gridGraphGUI, char landChar, Runnable onComplete) {
         if (gridGraphGUI == null || gridGraphGUI.getGridGraph() == null)
@@ -52,9 +53,10 @@ public class IslandAnimation {
 
     /**
      * Animate largest/biggest island detection using BFS
+     * 
      * @param gridGraphGUI The grid graph GUI component
-     * @param landChar The character representing land ('#')
-     * @param onComplete Callback when animation completes
+     * @param landChar     The character representing land ('#')
+     * @param onComplete   Callback when animation completes
      */
     public static void animateLargestComponent(GridGraphGUI gridGraphGUI, char landChar, Runnable onComplete) {
         if (gridGraphGUI == null || gridGraphGUI.getGridGraph() == null)
@@ -75,8 +77,9 @@ public class IslandAnimation {
 
     /**
      * Animate largest/biggest island detection using BFS
+     * 
      * @param gridGraphGUI The grid graph GUI component
-     * @param landChar The character representing land ('#')
+     * @param landChar     The character representing land ('#')
      */
     public static void animateLargestComponent(GridGraphGUI gridGraphGUI, char landChar) throws InterruptedException {
         if (gridGraphGUI == null || gridGraphGUI.getGridGraph() == null)
@@ -94,11 +97,13 @@ public class IslandAnimation {
     /**
      * Perform the actual island animation using BFS
      */
-    private static void performIslandAnimation(GridGraphGUI gridGraphGUI, GridGraph gridGraph, char landChar) throws InterruptedException {
+    private static void performIslandAnimation(GridGraphGUI gridGraphGUI, GridGraph gridGraph, char landChar)
+            throws InterruptedException {
         int rows = gridGraph.getRowSize();
         int cols = gridGraph.getColSize();
-        
-        // Map to store which island each cell belongs to (-1 = water, 0+ = island number)
+
+        // Map to store which island each cell belongs to (-1 = water, 0+ = island
+        // number)
         int[][] islandMap = new int[rows][cols];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -109,87 +114,87 @@ public class IslandAnimation {
                 }
             }
         }
-        
+
         // Signal animation start
         Platform.runLater(() -> {
             gridGraphGUI.setAnimating(true);
             gridGraphGUI.setIslandMap(islandMap);
         });
-        
+
         Set<Long> globalVisited = new HashSet<>();
         int islandCount = 0;
         List<Set<Pair<Integer, Integer>>> islands = new ArrayList<>();
-        
+
         // Perform BFS for each unvisited land cell
         for (int i = 0; i < rows; i++) {
             if (Thread.currentThread().isInterrupted())
                 break;
-                
+
             for (int j = 0; j < cols; j++) {
                 if (Thread.currentThread().isInterrupted())
                     break;
-                    
+
                 Node node = gridGraph.getNode(i, j);
                 if (gridGraph.getNodeType(node) != landChar || globalVisited.contains(node.getNodeID())) {
                     continue;
                 }
-                
+
                 // Found a new island - perform BFS
                 Set<Pair<Integer, Integer>> currentIsland = new HashSet<>();
                 Queue<Pair<Integer, Integer>> bfsQueue = new LinkedList<>();
                 bfsQueue.add(new Pair<>(i, j));
-                
+
                 int currentIslandNumber = islandCount;
                 islands.add(currentIsland);
-                
+
                 while (!bfsQueue.isEmpty()) {
                     if (Thread.currentThread().isInterrupted())
                         break;
-                        
+
                     Pair<Integer, Integer> pos = bfsQueue.poll();
                     int row = pos.getKey();
                     int col = pos.getValue();
-                    
+
                     Node currentNode = gridGraph.getNode(row, col);
-                    
+
                     if (globalVisited.contains(currentNode.getNodeID())) {
                         continue;
                     }
-                    
+
                     globalVisited.add(currentNode.getNodeID());
                     islandMap[row][col] = currentIslandNumber;
                     currentIsland.add(new Pair<>(row, col));
-                    
+
                     // Update GridGraphGUI with new island map
                     final int[][] mapCopy = deepCopyIslandMap(islandMap);
                     Platform.runLater(() -> {
                         gridGraphGUI.setIslandMap(mapCopy);
                     });
-                    
+
                     Thread.sleep((long) (animationStepTime));
-                    
+
                     // Add adjacent land cells to queue
                     // Check up, down, left, right (4-directional)
-                    int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-                    
+                    int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
                     for (int[] dir : directions) {
                         int newRow = row + dir[0];
                         int newCol = col + dir[1];
-                        
+
                         if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
                             Node adjacentNode = gridGraph.getNode(newRow, newCol);
-                            if (gridGraph.getNodeType(adjacentNode) == landChar && 
-                                !globalVisited.contains(adjacentNode.getNodeID())) {
+                            if (gridGraph.getNodeType(adjacentNode) == landChar &&
+                                    !globalVisited.contains(adjacentNode.getNodeID())) {
                                 bfsQueue.add(new Pair<>(newRow, newCol));
                             }
                         }
                     }
                 }
-                
+
                 islandCount++;
             }
         }
-        
+
         // Final update
         Platform.runLater(() -> {
             gridGraphGUI.setIslandMap(islandMap);
@@ -198,14 +203,15 @@ public class IslandAnimation {
             gridGraphGUI.setFinalIslandMap(islandMap);
         });
     }
-    
+
     /**
      * Perform animation to find and highlight the largest island(s) using BFS
      */
-    private static void performLargestComponentAnimation(GridGraphGUI gridGraphGUI, GridGraph gridGraph, char landChar) throws InterruptedException {
+    private static void performLargestComponentAnimation(GridGraphGUI gridGraphGUI, GridGraph gridGraph, char landChar)
+            throws InterruptedException {
         int rows = gridGraph.getRowSize();
         int cols = gridGraph.getColSize();
-        
+
         // Map to store which island each cell belongs to
         int[][] islandMap = new int[rows][cols];
         for (int i = 0; i < rows; i++) {
@@ -217,86 +223,86 @@ public class IslandAnimation {
                 }
             }
         }
-        
+
         // Signal animation start
         Platform.runLater(() -> {
             gridGraphGUI.setAnimating(true);
             gridGraphGUI.setIslandMap(islandMap);
         });
-        
+
         Set<Long> globalVisited = new HashSet<>();
         int islandCount = 0;
         int largestSize = 0;
         List<Integer> largestIslandNumbers = new ArrayList<>(); // List to store all islands with max size
         List<Integer> islandSizes = new ArrayList<>(); // Track size of each island
-        
+
         // Find all islands and track the largest using BFS
         for (int i = 0; i < rows; i++) {
             if (Thread.currentThread().isInterrupted())
                 break;
-                
+
             for (int j = 0; j < cols; j++) {
                 if (Thread.currentThread().isInterrupted())
                     break;
-                    
+
                 Node node = gridGraph.getNode(i, j);
                 if (gridGraph.getNodeType(node) != landChar || globalVisited.contains(node.getNodeID())) {
                     continue;
                 }
-                
+
                 // Found a new island - perform BFS
                 Queue<Pair<Integer, Integer>> bfsQueue = new LinkedList<>();
                 bfsQueue.add(new Pair<>(i, j));
-                
+
                 int currentIslandNumber = islandCount;
                 int currentSize = 0;
-                
+
                 while (!bfsQueue.isEmpty()) {
                     if (Thread.currentThread().isInterrupted())
                         break;
-                        
+
                     Pair<Integer, Integer> pos = bfsQueue.poll();
                     int row = pos.getKey();
                     int col = pos.getValue();
-                    
+
                     Node currentNode = gridGraph.getNode(row, col);
-                    
+
                     if (globalVisited.contains(currentNode.getNodeID())) {
                         continue;
                     }
-                    
+
                     globalVisited.add(currentNode.getNodeID());
                     islandMap[row][col] = currentIslandNumber;
                     currentSize++;
-                    
+
                     // Update GridGraphGUI with new island map
                     final int[][] mapCopy = deepCopyIslandMap(islandMap);
                     Platform.runLater(() -> {
                         gridGraphGUI.setIslandMap(mapCopy);
                     });
-                    
+
                     Thread.sleep((long) (animationStepTime));
-                    
+
                     // Add adjacent land cells to queue
-                    int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-                    
+                    int[][] directions = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
                     for (int[] dir : directions) {
                         int newRow = row + dir[0];
                         int newCol = col + dir[1];
-                        
+
                         if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
                             Node adjacentNode = gridGraph.getNode(newRow, newCol);
-                            if (gridGraph.getNodeType(adjacentNode) == landChar && 
-                                !globalVisited.contains(adjacentNode.getNodeID())) {
+                            if (gridGraph.getNodeType(adjacentNode) == landChar &&
+                                    !globalVisited.contains(adjacentNode.getNodeID())) {
                                 bfsQueue.add(new Pair<>(newRow, newCol));
                             }
                         }
                     }
                 }
-                
+
                 // Track island size
                 islandSizes.add(currentSize);
-                
+
                 // Track all islands with the largest size
                 if (currentSize > largestSize) {
                     largestSize = currentSize;
@@ -305,11 +311,11 @@ public class IslandAnimation {
                 } else if (currentSize == largestSize) {
                     largestIslandNumbers.add(currentIslandNumber); // Add to list if same size
                 }
-                
+
                 islandCount++;
             }
         }
-        
+
         // Highlight only the largest island(s) - color them distinctly
         // Color all other islands as default green (land color = -3)
         int[][] finalMap = new int[rows][cols];
@@ -327,7 +333,7 @@ public class IslandAnimation {
                 }
             }
         }
-        
+
         // Final update - show largest island(s) in color, all other islands in green
         Platform.runLater(() -> {
             gridGraphGUI.setIslandMap(finalMap);
@@ -335,7 +341,7 @@ public class IslandAnimation {
             gridGraphGUI.setFinalIslandMap(finalMap);
         });
     }
-    
+
     /**
      * Helper method to deep copy island map
      */

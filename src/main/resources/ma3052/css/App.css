@@ -41,11 +41,10 @@
 .button {
     font-family: 'Lexend Bold';
     -fx-font-family: 'Lexend Bold';
-    font-size: 13;
     -fx-background-radius: 8;
     padding: 4 8;
     -fx-padding: 6 12;
-    cursor: hand;
+    cursor: pointer;
     -fx-cursor: hand;
     border-radius: 8;
     -fx-border-radius: 8;

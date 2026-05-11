@@ -17,6 +17,8 @@ import ma3052.core.algorithm.TravellingSalesman;
 import java.util.*;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 public class GraphAlgorithmMenuController {
     private GraphVisualizationController mainController;
@@ -26,24 +28,34 @@ public class GraphAlgorithmMenuController {
 
     @FXML
     private Button executeButton;
-
+    @FXML
+    private Button resetButton;
+    @FXML
+    private Label labelSpeedSlider;
     @FXML
     private Slider speedSlider;
 
     @FXML
+    private VBox startNodeVbox;
+    @FXML
     private Label labelStartNode;
-
     @FXML
     private TextField startNodeInput;
 
     @FXML
+    private VBox endNodeVbox;
+    @FXML
     private Label labelEndNode;
-
     @FXML
     private TextField endNodeInput;
 
     @FXML
-    private Label labelSpeedSlider;
+    private VBox optionVbox;
+    @FXML
+    private Label labelOption;
+    @FXML
+    private ComboBox<String> optionCombo;
+
     @FXML
     private TextArea logArea;
 
@@ -86,7 +98,7 @@ public class GraphAlgorithmMenuController {
         Platform.runLater(() -> {
             switchAlgorithm(algorithmCombo.getValue());
             executeButton.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
-                threadPoolExecutor.shutdown();
+                threadPoolExecutor.shutdownNow();
             });
         });
     }
@@ -126,8 +138,7 @@ public class GraphAlgorithmMenuController {
                         "Djikstra",
                         "Travelling Salesman",
                         "Maximum Matching",
-                        "Time Labeling"
-                    );
+                        "Time Labeling");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -157,27 +168,14 @@ public class GraphAlgorithmMenuController {
         }
 
         String selectedAlgorithm = algorithmCombo.getValue();
-        String startNodeName = null;
-        String endNodeName = null;
 
-        // Validate mode-specific requirements
-        if (mainController.getMode() == ModeGUI.NODE_AND_EDGES_MODE) {
-            startNodeName = startNodeInput.getText().trim();
-            endNodeName = endNodeInput.getText().trim();
-            logMessage("═══════════════════════════════════");
-            logMessage("Starting " + selectedAlgorithm + " from node: " + startNodeName);
-            logMessage("═══════════════════════════════════");
-        }
-        if (mainController.getMode() == ModeGUI.POINT_MODE) {
-            logMessage("═══════════════════════════════════");
-            logMessage("Starting " + selectedAlgorithm);
-            logMessage("═══════════════════════════════════");
-        }
+        // Start message
+        logMessage("═══════════════════════════════════");
+        logMessage("Starting " + selectedAlgorithm);
+        logMessage("═══════════════════════════════════");
 
         // Run animation in background thread
-        final String finalStartNode = startNodeName;
-        final String finalEndNode = endNodeName;
-        threadPoolExecutor.schedule(() -> executeAlgorithm(selectedAlgorithm, finalStartNode, finalEndNode), 0,
+        threadPoolExecutor.schedule(() -> executeAlgorithm(selectedAlgorithm), 0,
                 TimeUnit.MILLISECONDS);
     }
 
@@ -240,13 +238,13 @@ public class GraphAlgorithmMenuController {
     /**
      * Execute the selected algorithm based on mode and algorithm type
      */
-    private void executeAlgorithm(String selectedAlgorithm, String startNodeName, String endNodeName) {
+    private void executeAlgorithm(String selectedAlgorithm) {
         try {
             mainController.setAnimating(true);
             switch (mainController.getMode()) {
                 case NODE_AND_EDGES_MODE:
                     graphGUI.resetColors();
-                    executeNodeAndEdgesAlgorithm(selectedAlgorithm, startNodeName, endNodeName);
+                    executeNodeAndEdgesAlgorithm(selectedAlgorithm);
                     break;
                 case GRID_MODE:
                     executeGridAlgorithm(selectedAlgorithm);
@@ -270,7 +268,9 @@ public class GraphAlgorithmMenuController {
     /**
      * Execute algorithms for Node and Edges mode
      */
-    private void executeNodeAndEdgesAlgorithm(String algorithm, String startNodeName, String endNodeName) {
+    private void executeNodeAndEdgesAlgorithm(String algorithm) {
+        String startNodeName = startNodeInput.getText().trim();
+        String endNodeName = endNodeInput.getText().trim();
         switch (algorithm) {
             case "DFS Traversal":
                 if (!validateStartingNode(startNodeName)) {
@@ -339,7 +339,17 @@ public class GraphAlgorithmMenuController {
                 }
                 DijkstraAnimation.animate(graphGUI, startNodeName, endNodeName);
             case "Travelling Salesman":
-                TravellingSalesmanAnimation.animate(graphGUI);
+                switch (optionCombo.getValue()) {
+                    case "Random Starting Node":
+                        TravellingSalesmanAnimation.animate(graphGUI);
+                        break;
+                    case "Best of All Starting Node":
+                        TravellingSalesmanAnimation.animateBest(graphGUI);
+                        break;
+                    default:
+                        TravellingSalesmanAnimation.animate(graphGUI);
+                        break;
+                }
                 break;
             case "Maximum Matching":
                 BipartiteMatchingAnimation.animateHopCroftKarp(graphGUI);
@@ -382,77 +392,66 @@ public class GraphAlgorithmMenuController {
     private void executePointAlgorithm(String algorithm) {
         switch (algorithm) {
             case "Travelling Salesman":
-                TravellingSalesmanAnimation.animate(mainController.getPointGraphGUI());
-                break;
-
-            default:
+                switch (optionCombo.getValue()) {
+                    case "Random Starting Node":
+                        TravellingSalesmanAnimation.animate(mainController.getPointGraphGUI());
+                        break;
+                    case "Best of All Starting Node":
+                        TravellingSalesmanAnimation.animateBest(mainController.getPointGraphGUI());
+                        break;
+                    default:
+                        TravellingSalesmanAnimation.animate(mainController.getPointGraphGUI());
+                        break;
+                }
                 break;
         }
     }
 
     public void switchAlgorithm(String algorithm) {
+        startNodeVbox.setVisible(false);
+        startNodeVbox.setManaged(false);
+        endNodeVbox.setVisible(false);
+        endNodeVbox.setManaged(false);
+        optionVbox.setVisible(false);
+        optionVbox.setManaged(false);
+
         switch (mainController.getMode()) {
             case NODE_AND_EDGES_MODE:
                 switch (algorithm) {
                     case "DFS Traversal":
-                        startNodeInput.setVisible(true);
-                        startNodeInput.setManaged(true);
-                        labelStartNode.setVisible(true);
-                        labelStartNode.setManaged(true);
-                        endNodeInput.setVisible(false);
-                        endNodeInput.setManaged(false);
-                        labelEndNode.setVisible(false);
-                        labelEndNode.setManaged(false);
+                        startNodeVbox.setVisible(true);
+                        startNodeVbox.setManaged(true);
                         break;
                     case "BFS Traversal":
-                        startNodeInput.setVisible(true);
-                        startNodeInput.setManaged(true);
-                        labelStartNode.setVisible(true);
-                        labelStartNode.setManaged(true);
-                        endNodeInput.setVisible(false);
-                        endNodeInput.setManaged(false);
-                        labelEndNode.setVisible(false);
-                        labelEndNode.setManaged(false);
+                        startNodeVbox.setVisible(true);
+                        startNodeVbox.setManaged(true);
                         break;
                     case "DFS Path Search":
-                        startNodeInput.setVisible(true);
-                        startNodeInput.setManaged(true);
-                        labelStartNode.setVisible(true);
-                        labelStartNode.setManaged(true);
-                        endNodeInput.setVisible(true);
-                        endNodeInput.setManaged(true);
-                        labelEndNode.setVisible(true);
-                        labelEndNode.setManaged(true);
+                        startNodeVbox.setVisible(true);
+                        startNodeVbox.setManaged(true);
+                        endNodeVbox.setVisible(true);
+                        endNodeVbox.setManaged(true);
                         break;
                     case "BFS Path Search":
-                        startNodeInput.setVisible(true);
-                        startNodeInput.setManaged(true);
-                        labelStartNode.setVisible(true);
-                        labelStartNode.setManaged(true);
-                        endNodeInput.setVisible(true);
-                        endNodeInput.setManaged(true);
-                        labelEndNode.setVisible(true);
-                        labelEndNode.setManaged(true);
+                        startNodeVbox.setVisible(true);
+                        startNodeVbox.setManaged(true);
+                        endNodeVbox.setVisible(true);
+                        endNodeVbox.setManaged(true);
                         break;
                     case "Djikstra":
-                        startNodeInput.setVisible(true);
-                        startNodeInput.setManaged(true);
-                        labelStartNode.setVisible(true);
-                        labelStartNode.setManaged(true);
-                        endNodeInput.setVisible(true);
-                        endNodeInput.setManaged(true);
-                        labelEndNode.setVisible(true);
-                        labelEndNode.setManaged(true);
+                        startNodeVbox.setVisible(true);
+                        startNodeVbox.setManaged(true);
+                        endNodeVbox.setVisible(true);
+                        endNodeVbox.setManaged(true);
                         break;
-                    default:
-                        startNodeInput.setVisible(false);
-                        startNodeInput.setManaged(false);
-                        labelStartNode.setVisible(false);
-                        labelStartNode.setManaged(false);
-                        endNodeInput.setVisible(false);
-                        endNodeInput.setManaged(false);
-                        labelEndNode.setVisible(false);
-                        labelEndNode.setManaged(false);
+                    case "Travelling Salesman":
+                        optionVbox.setVisible(true);
+                        optionVbox.setManaged(true);
+
+                        optionCombo.getItems().clear();
+                        optionCombo.getItems().addAll("Random Starting Node", "Best of All Starting Node");
+                        optionCombo.setValue(optionCombo.getItems().getFirst());
+
                         break;
                 }
                 break;
@@ -460,6 +459,16 @@ public class GraphAlgorithmMenuController {
             case GRID_MODE:
                 break;
 
+            case POINT_MODE:
+                switch (algorithm) {
+                    case "Travelling Salesman":
+                        optionVbox.setVisible(true);
+                        optionVbox.setManaged(true);
+
+                        optionCombo.getItems().clear();
+                        optionCombo.getItems().addAll("Random Starting Node", "Best of All Starting Node");
+                        optionCombo.setValue(optionCombo.getItems().getFirst());
+                }
             default:
                 break;
         }

@@ -21,7 +21,7 @@ public class ConnectivityAnimation {
      private static volatile long animationStepTime = 500; // in milliseconds
 
      public static void setAnimationStepTime(long animationStepTime) {
-          ConnectivityAnimation.animationStepTime = animationStepTime;
+          ConnectivityAnimation.animationStepTime = Math.max(1, animationStepTime);
      }
 
      public static void animate(GraphGUI graphGUI) {

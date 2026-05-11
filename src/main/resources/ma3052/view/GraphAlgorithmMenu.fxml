@@ -28,23 +28,27 @@
         <!-- Algorithm Execution Section -->
         <VBox spacing="10">
             <VBox>
-                <Label text="Algorithm" styleClass="h2,text-secondary-3,lexend-bold"/>
+                <Label text="Algorithm" styleClass="h2,text-neutral-3,lexend-bold"/>
                 <Separator/>
             </VBox>
             <VBox spacing="5">
-                <Label text="Algorithm Type:" styleClass="text-secondary-3,lexend-bold"/>
-                <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" styleClass="bg-neutral-1,border-medium,border-neutral-3,rounded"/>
+                <Label text="Algorithm Type:" styleClass="text-neutral-3,lexend-bold"/>
+                <ComboBox fx:id="algorithmCombo" prefWidth="Infinity" styleClass="bg-neutral-1,rounded"/>
             </VBox>
-            <VBox spacing="5">
-                <Label fx:id="labelStartNode" text="Start Node:" styleClass="text-secondary-3,lexend-bold" />
+            <VBox spacing="5" fx:id="startNodeVbox">
+                <Label fx:id="labelStartNode" text="Start Node:" styleClass="text-neutral-3,lexend-bold" />
                 <TextField fx:id="startNodeInput" promptText="Enter starting node" />
             </VBox>
-            <VBox spacing="5">
-                <Label fx:id="labelEndNode" text="End Node:" styleClass="text-secondary-3,lexend-bold"/>
+            <VBox spacing="5" fx:id="endNodeVbox">
+                <Label fx:id="labelEndNode" text="End Node:" styleClass="text-neutral-3,lexend-bold"/>
                 <TextField fx:id="endNodeInput" promptText="Enter ending node" />
             </VBox>
+            <VBox spacing="5" fx:id="optionVbox">
+                <Label fx:id="labelOption" text="Algorithm Option:" styleClass="text-neutral-3,lexend-bold"/>
+                <ComboBox fx:id="optionCombo" prefWidth="Infinity" styleClass="bg-neutral-1,rounded"/>
+            </VBox>
             <VBox spacing="10">
-                <Label fx:id="labelSpeedSlider" text="Speed: (x1)" styleClass="text-secondary-3,lexend-bold" />
+                <Label fx:id="labelSpeedSlider" text="Speed: (x1)" styleClass="text-neutral-3,lexend-bold" />
                 <Slider fx:id="speedSlider" 
                                 max="8" min="-2" value="0"
                                 showTickLabels="false" showTickMarks="false" 
@@ -56,7 +60,7 @@
         </VBox>
         <VBox spacing="10">
             <VBox>
-                <Label text="Execution Log" styleClass="h2,text-secondary-3,lexend-bold" />
+                <Label text="Execution Log" styleClass="h2,text-neutral-3,lexend-bold" />
                 <Separator/>
             </VBox>
             <TextArea fx:id="logArea" editable="false" prefHeight="585.0" prefWidth="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
