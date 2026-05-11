@@ -37,15 +37,15 @@ public class DijkstraAnimation {
     private static volatile long animationStepTime = 500; // in milliseconds
 
     // Node colors
-    private static final Color UNVISITED_COLOR = Color.web("#ffffff");     // Putih 
-    private static final Color PROCESSING_COLOR = Color.web("#ffaa3b");    // Oranye
-    private static final Color RELAXED_COLOR = Color.web("#3b82f6");       // Biru
-    private static final Color SETTLED_COLOR = Color.web("#ffea3e");       // Kuning
-    private static final Color PATH_COLOR = Color.web("#2dab00");          // Hijau
-    private static final Color NO_PATH_COLOR = Color.web("#cc0631");       // Merah
+    private static final Color UNVISITED_COLOR = Color.web("#ffffff"); // Putih
+    private static final Color PROCESSING_COLOR = Color.web("#ffaa3b"); // Oranye
+    private static final Color RELAXED_COLOR = Color.web("#3b82f6"); // Biru
+    private static final Color SETTLED_COLOR = Color.web("#ffea3e"); // Kuning
+    private static final Color PATH_COLOR = Color.web("#2dab00"); // Hijau
+    private static final Color NO_PATH_COLOR = Color.web("#cc0631"); // Merah
 
     public static void setAnimationStepTime(long animationStepTime) {
-        DijkstraAnimation.animationStepTime = animationStepTime;
+        DijkstraAnimation.animationStepTime = Math.max(1, animationStepTime);
     }
 
     public static void animate(GraphGUI graphGUI, String startNode, String endNode) {
@@ -56,7 +56,7 @@ public class DijkstraAnimation {
             Graph graph = graphGUI.getGraph();
             Node sourceNode = graph.getNode(startNode);
             Node destinationNode = graph.getNode(endNode);
-            
+
             if (sourceNode == null || destinationNode == null) {
                 GraphVisualizationController.instance.logMessage("ERROR: Invalid nodes");
                 return;
@@ -71,7 +71,7 @@ public class DijkstraAnimation {
             logMessage("═════════════════");
             logMessage("INITIALIZING DIJKSTRA ALGORITHM");
             logMessage("═════════════════");
-            
+
             for (Node node : graph.getNodeList()) {
                 if (node == sourceNode) {
                     tabelVertex.put(node, 0.0);
@@ -111,21 +111,22 @@ public class DijkstraAnimation {
                         nodeGUIProcessing.setColor(PROCESSING_COLOR);
                     }
                 });
-                
+
                 double currDist = tabelVertex.get(currNode);
                 logMessage("[PICK] Node " + currNode.getNodeName() + " dipilih, jarak = " + formatDistance(currDist));
-                
+
                 Thread.sleep(animationStepTime);
 
                 settledNodes.add(currNode);
-                
+
                 // SETTLED: Change to yellow
                 Platform.runLater(() -> {
                     if (nodeGUIProcessing != null) {
                         nodeGUIProcessing.setColor(SETTLED_COLOR);
                     }
                 });
-                logMessage("[SETTLED] Node " + currNode.getNodeName() + " selesai, jarak final = " + formatDistance(currDist));
+                logMessage("[SETTLED] Node " + currNode.getNodeName() + " selesai, jarak final = "
+                        + formatDistance(currDist));
                 Thread.sleep(animationStepTime / 2);
 
                 // RELAXATION: Process neighbors
@@ -150,16 +151,17 @@ public class DijkstraAnimation {
                                 relaxedNodeGUI.setColor(RELAXED_COLOR);
                             }
                         });
-                        
+
                         String oldDist = formatDistance(currentNeighborDist);
-                        logMessage("[RELAX] " + currNode.getNodeName() + " -> " + neighbor.getNodeName() + 
-                                   " diperbarui: " + oldDist + " -> " + formatDistance(distToNeighbor));
-                        
+                        logMessage("[RELAX] " + currNode.getNodeName() + " -> " + neighbor.getNodeName() +
+                                " diperbarui: " + oldDist + " -> " + formatDistance(distToNeighbor));
+
                         Thread.sleep(animationStepTime / 2);
                     } else {
                         // SKIP: No update
-                        logMessage("[SKIP] " + currNode.getNodeName() + " -> " + neighbor.getNodeName() + 
-                                   " tidak diperbarui (" + formatDistance(distToNeighbor) + " ≥ " + formatDistance(currentNeighborDist) + ")");
+                        logMessage("[SKIP] " + currNode.getNodeName() + " -> " + neighbor.getNodeName() +
+                                " tidak diperbarui (" + formatDistance(distToNeighbor) + " ≥ "
+                                + formatDistance(currentNeighborDist) + ")");
                         Thread.sleep(100);
                     }
                 }
@@ -180,7 +182,7 @@ public class DijkstraAnimation {
                         noPathNode.setColor(NO_PATH_COLOR);
                     }
                 });
-                
+
                 Thread.sleep(animationStepTime);
                 logMessage("[NO PATH] " + destinationNode.getNodeName() + " tidak dapat dijangkau!");
                 logMessage("═════════════════════");
@@ -208,7 +210,7 @@ public class DijkstraAnimation {
                         pathNodeGUI.setBorderColor(Color.DARKGREEN);
                     }
                 });
-                
+
                 logMessage("[PATH] Node " + nodeNow.getNodeName() + " bagian dari jalur");
                 Thread.sleep(animationStepTime / 2);
 

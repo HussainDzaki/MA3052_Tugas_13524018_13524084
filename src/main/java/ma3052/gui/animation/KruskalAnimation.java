@@ -17,7 +17,7 @@ public class KruskalAnimation {
     private static volatile long animationStepTime = 500; // in milliseconds
 
     public static void setAnimationStepTime(long animationStepTime) {
-        KruskalAnimation.animationStepTime = animationStepTime;
+        KruskalAnimation.animationStepTime = Math.max(1, animationStepTime);
     }
 
     public static void animate(GraphGUI graphGUI) {

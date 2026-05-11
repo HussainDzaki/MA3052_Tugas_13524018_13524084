@@ -20,7 +20,7 @@ public class PathAnimation {
     private static volatile long animationStepTime = 500; // in milliseconds
 
     public static void setAnimationStepTime(long animationStepTime) {
-        PathAnimation.animationStepTime = animationStepTime;
+        PathAnimation.animationStepTime = Math.max(1, animationStepTime);
     }
 
     public static void animateDFS(GraphGUI graphGUI, String startNode, String endNode) {
