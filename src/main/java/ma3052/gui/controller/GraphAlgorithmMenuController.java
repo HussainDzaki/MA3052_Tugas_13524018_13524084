@@ -92,6 +92,7 @@ public class GraphAlgorithmMenuController {
                 DijkstraAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 TravellingSalesmanAnimation.setAnimationStepTime(Math.round(500 / multiplier));
                 BipartiteMatchingAnimation.setAnimationStepTime(Math.round(500 / multiplier));
+                BandwidthAnimation.setAnimationStepTime(Math.round(500 / multiplier));
             });
         }
 
@@ -138,7 +139,8 @@ public class GraphAlgorithmMenuController {
                         "Djikstra",
                         "Travelling Salesman",
                         "Maximum Matching",
-                        "Time Labeling");
+                        "Time Labeling",
+                        "Minimum Bandwidth");
                 break;
             case GRID_MODE:
                 algorithmCombo.getItems().addAll(
@@ -356,6 +358,9 @@ public class GraphAlgorithmMenuController {
                 break;
             case "Time Labeling":
                 BipartiteMatchingAnimation.animateHopCroftKarpTimeLabeling(graphGUI);
+                break;
+            case "Minimum Bandwidth":
+                BandwidthAnimation.animate(graphGUI);
                 break;
             default:
                 break;
