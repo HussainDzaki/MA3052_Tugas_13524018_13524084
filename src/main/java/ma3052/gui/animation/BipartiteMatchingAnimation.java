@@ -33,23 +33,28 @@ public class BipartiteMatchingAnimation {
     private Map<Integer, Node> indexToNodeU;
     private Map<Integer, Node> indexToNodeV;
     private Map<Node, Integer> nodeToIndexU;
+    private Map<Node, Integer> nodeToIndexV;
     private GraphGUI graphGUI;
     private Graph graph;
+    private Set<String> exploredEdges; // Track explored edges for visualization
 
     private static final Color MATCHED_COLOR = Color.web("#ff3b83");
-    private static final Color MATCHED_COLOR_EDGE = Color.web("#ff3636");
+    private static final Color MATCHED_COLOR_EDGE = Color.web("rgb(255, 40, 6)");
+    private static final Color BFS_EXPLORE_COLOR = Color.web("#FFE66D"); // Yellow for BFS exploration
+    private static final Color DFS_EXPLORE_COLOR = Color.web("#1c9b4f"); // Teal for DFS exploration
+    private static final Color AUGMENTING_PATH_COLOR = Color.web("#78cdfe"); // Light blue for augmenting path
 
     // Predefined color palette for different periods
     private static final Color[] COLOR_PALETTE = {
             Color.web("#FF6B6B"), // Red
-            Color.web("#F7DC6F"), // Yellow
-            Color.web("#FFA07A"), // Light Salmon
-            Color.web("#4ECDC4"), // Teal
+            Color.web("#10ab41"), // Yellow
+            Color.web("#bf4616"), // Light Salmon
+            Color.web("#1e4193"), // Teal
             Color.web("#45B7D1"), // Blue
-            Color.web("#98D8C8"), // Mint
-            Color.web("#BB8FCE"), // Purple
-            Color.web("#85C1E2"), // Sky Blue
-            Color.web("#F8B88B"), // Peach
+            Color.web("#0b8e6d"), // Mint
+            Color.web("#9d3ac7"), // Purple
+            Color.web("#9bdcff"), // Sky Blue
+            Color.web("#ff9950"), // Peach
             Color.web("#52C77D"), // Green
     };
 
@@ -87,6 +92,8 @@ public class BipartiteMatchingAnimation {
         this.indexToNodeU = new HashMap<>();
         this.indexToNodeV = new HashMap<>();
         this.nodeToIndexU = new HashMap<>();
+        this.nodeToIndexV = new HashMap<>();
+        this.exploredEdges = new HashSet<>();
     }
 
     public static void animateHopCroftKarp(GraphGUI graphGUI) {
@@ -180,6 +187,7 @@ public class BipartiteMatchingAnimation {
         }
 
         for (int i = 0; i < setV.size(); i++) {
+            nodeToIndexV.put(setV.get(i), i + 1);
             indexToNodeV.put(i + 1, setV.get(i));
         }
 
@@ -189,36 +197,34 @@ public class BipartiteMatchingAnimation {
             Node dest = edge.getDestination();
 
             Integer uIdx = nodeToIndexU.get(source);
-            Integer vIdx = nodeToIndexU.get(dest);
+            Integer vIdx = nodeToIndexV.get(dest);
 
             // One must be in U, one must be in V
-            if (uIdx != null && vIdx == null) {
-                // source is in U, find dest in V
-                for (int v = 1; v <= n; v++) {
-                    if (indexToNodeV.get(v).equals(dest)) {
-                        adj[uIdx].add(v);
-                        break;
-                    }
-                }
-            } else if (vIdx != null && uIdx == null) {
-                // dest is in U, find source in V
-                for (int v = 1; v <= n; v++) {
-                    if (indexToNodeV.get(v).equals(source)) {
-                        adj[vIdx].add(v);
-                        break;
-                    }
+            if (uIdx != null && vIdx != null) {
+                // source is in U, dest is in V
+                adj[uIdx].add(vIdx);
+            } else {
+                // Try the other direction: dest in U, source in V
+                uIdx = nodeToIndexU.get(dest);
+                vIdx = nodeToIndexV.get(source);
+                if (uIdx != null && vIdx != null) {
+                    adj[uIdx].add(vIdx);
                 }
             }
         }
 
-        // Run matching algorithm with animation
+        // Run matching algorithm WITH intermediate visualization
         int matchingCount = 0;
         while (bfs()) {
             for (int u = 1; u <= m; u++) {
                 if (pairU[u] == NIL && dfs(u)) {
                     matchingCount++;
-                    animateMatch(u, pairU[u]);
+                    // Highlight the augmenting path found
+                    highlightAugmentingPath(u);
                     sleep(animationStepTime);
+                    // Clear exploration colors for next iteration
+                    clearExplorationColors();
+                    exploredEdges.clear();
                 }
             }
         }
@@ -227,6 +233,26 @@ public class BipartiteMatchingAnimation {
         logMessage("Hopcroft-Karp Algorithm Completed!");
         logMessage("Total Maximum Matching: " + matchingCount);
         logMessage("══════════════════");
+        
+        // Display final matching result visually and in log
+        sleep(500);
+        for (int u = 1; u <= m; u++) {
+            if (pairU[u] != NIL) {
+                Node nodeU = indexToNodeU.get(u);
+                Node nodeV = indexToNodeV.get(pairU[u]);
+                if (nodeU != null && nodeV != null) {
+                    // Display edge with matched color
+                    Platform.runLater(() -> {
+                        EdgeGUI edgeGUI = graphGUI.getEdgeGUI(nodeU, nodeV);
+                        if (edgeGUI != null) {
+                            edgeGUI.setLineColor(MATCHED_COLOR_EDGE);
+                        }
+                    });
+                    sleep(animationStepTime / 2);
+                    logMessage("Match: " + nodeU.getNodeName() + " - " + nodeV.getNodeName());
+                }
+            }
+        }
     }
 
     private void runtimeLabelingWithHopcroftKarp() {
@@ -291,6 +317,7 @@ public class BipartiteMatchingAnimation {
         }
 
         for (int i = 0; i < setV.size(); i++) {
+            nodeToIndexV.put(setV.get(i), i + 1);
             indexToNodeV.put(i + 1, setV.get(i));
         }
 
@@ -323,21 +350,18 @@ public class BipartiteMatchingAnimation {
                 Node dest = edge.getDestination();
 
                 Integer uIdx = nodeToIndexU.get(source);
-                Integer vIdx = nodeToIndexU.get(dest);
+                Integer vIdx = nodeToIndexV.get(dest);
 
-                if (uIdx != null && vIdx == null) {
-                    for (int v = 1; v <= n; v++) {
-                        if (indexToNodeV.get(v).equals(dest)) {
-                            adj[uIdx].add(v);
-                            break;
-                        }
-                    }
-                } else if (vIdx != null && uIdx == null) {
-                    for (int v = 1; v <= n; v++) {
-                        if (indexToNodeV.get(v).equals(source)) {
-                            adj[vIdx].add(v);
-                            break;
-                        }
+                // One must be in U, one must be in V
+                if (uIdx != null && vIdx != null) {
+                    // source is in U, dest is in V
+                    adj[uIdx].add(vIdx);
+                } else {
+                    // Try the other direction: dest in U, source in V
+                    uIdx = nodeToIndexU.get(dest);
+                    vIdx = nodeToIndexV.get(source);
+                    if (uIdx != null && vIdx != null) {
+                        adj[uIdx].add(vIdx);
                     }
                 }
             }
@@ -431,6 +455,66 @@ public class BipartiteMatchingAnimation {
         });
     }
 
+    private void clearVisualization() {
+        Platform.runLater(() -> {
+            // Clear all node colors to default (WHITE)
+            for (Node node : graph.getNodeList()) {
+                NodeGUI nodeGUI = graphGUI.getNodeGUI(node);
+                if (nodeGUI != null) {
+                    nodeGUI.setColor(Color.WHITE);
+                }
+            }
+            // Clear all edge colors to default (BLACK)
+            for (Edge edge : graph.getEdgeList()) {
+                EdgeGUI edgeGUI = graphGUI.getEdgeGUI(edge.getSource(), edge.getDestination());
+                if (edgeGUI != null) {
+                    edgeGUI.setLineColor(Color.BLACK);
+                }
+            }
+        });
+        sleep(100);
+    }
+
+    private void highlightAugmentingPath(int u) {
+        Platform.runLater(() -> {
+            // Trace back through the augmenting path and highlight it
+            int v = pairU[u];
+            if (v != NIL) {
+                Node nodeU = indexToNodeU.get(u);
+                Node nodeV = indexToNodeV.get(v);
+                
+                if (nodeU != null && nodeV != null) {
+                    EdgeGUI edgeGUI = graphGUI.getEdgeGUI(nodeU, nodeV);
+                    if (edgeGUI != null) {
+                        edgeGUI.setLineColor(AUGMENTING_PATH_COLOR);
+                    }
+                }
+            }
+        });
+    }
+
+    private void clearExplorationColors() {
+        Platform.runLater(() -> {
+            // Clear all edge colors back to BLACK (revert BFS/DFS/augmenting path colors)
+            for (Edge edge : graph.getEdgeList()) {
+                EdgeGUI edgeGUI = graphGUI.getEdgeGUI(edge.getSource(), edge.getDestination());
+                if (edgeGUI != null) {
+                    edgeGUI.setLineColor(Color.BLACK);
+                }
+            }
+        });
+        sleep(100);
+    }
+
+    private void colorEdgeExploration(Node nodeU, Node nodeV, Color color) {
+        Platform.runLater(() -> {
+            EdgeGUI edgeGUI = graphGUI.getEdgeGUI(nodeU, nodeV);
+            if (edgeGUI != null) {
+                edgeGUI.setLineColor(color);
+            }
+        });
+    }
+
     private void sleep(long millis) {
         try {
             Thread.sleep(millis);
@@ -457,6 +541,22 @@ public class BipartiteMatchingAnimation {
                 for (int i : adj[u]) {
                     int v = i;
                     if (dist[pairV[v]] == INF) {
+                        // Visualize BFS exploration
+                        Node nodeU = indexToNodeU.get(u);
+                        Node nodeV = indexToNodeV.get(v);
+                        if (nodeU != null && nodeV != null) {
+                            String edgeKey = nodeU.getNodeName() + "-" + nodeV.getNodeName();
+                            if (!exploredEdges.contains(edgeKey)) {
+                                exploredEdges.add(edgeKey);
+                                colorEdgeExploration(nodeU, nodeV, BFS_EXPLORE_COLOR);
+                                try {
+                                    Thread.sleep(animationStepTime / 4);
+                                } catch (InterruptedException e) {
+                                    Thread.currentThread().interrupt();
+                                }
+                            }
+                        }
+                        
                         dist[pairV[v]] = dist[u] + 1;
                         Q.add(pairV[v]);
                     }
@@ -471,10 +571,27 @@ public class BipartiteMatchingAnimation {
             for (int i : adj[u]) {
                 int v = i;
                 if (dist[pairV[v]] == dist[u] + 1) {
+                    // Visualize DFS exploration
+                    Node nodeU = indexToNodeU.get(u);
+                    Node nodeV = indexToNodeV.get(v);
+                    if (nodeU != null && nodeV != null) {
+                        colorEdgeExploration(nodeU, nodeV, DFS_EXPLORE_COLOR);
+                        try {
+                            Thread.sleep(animationStepTime / 4);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                    
                     if (dfs(pairV[v])) {
                         pairV[v] = u;
                         pairU[u] = v;
                         return true;
+                    }
+                    
+                    // Backtrack - revert edge color
+                    if (nodeU != null && nodeV != null) {
+                        colorEdgeExploration(nodeU, nodeV, Color.BLACK);
                     }
                 }
             }
