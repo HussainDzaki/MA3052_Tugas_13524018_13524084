@@ -139,7 +139,7 @@ public class GraphAlgorithmMenuController {
                         "Djikstra",
                         "Travelling Salesman",
                         "Maximum Matching",
-                        "Time Labeling",
+                        "Time Tabling",
                         "Minimum Bandwidth");
                 break;
             case GRID_MODE:
@@ -340,6 +340,7 @@ public class GraphAlgorithmMenuController {
                     return;
                 }
                 DijkstraAnimation.animate(graphGUI, startNodeName, endNodeName);
+                break;
             case "Travelling Salesman":
                 switch (optionCombo.getValue()) {
                     case "Random Starting Node":
@@ -356,8 +357,8 @@ public class GraphAlgorithmMenuController {
             case "Maximum Matching":
                 BipartiteMatchingAnimation.animateHopCroftKarp(graphGUI);
                 break;
-            case "Time Labeling":
-                BipartiteMatchingAnimation.animateHopCroftKarpTimeLabeling(graphGUI);
+            case "Time Tabling":
+                BipartiteMatchingAnimation.animateHopCroftKarpTimeTabling(graphGUI);
                 break;
             case "Minimum Bandwidth":
                 BandwidthAnimation.animate(graphGUI);

@@ -103,10 +103,10 @@ public class BipartiteMatchingAnimation {
         }).start();
     }
 
-    public static void animateHopCroftKarpTimeLabeling(GraphGUI graphGUI) {
+    public static void animateHopCroftKarpTimeTabling(GraphGUI graphGUI) {
         new Thread(() -> {
             BipartiteMatchingAnimation animation = new BipartiteMatchingAnimation(graphGUI);
-            animation.runtimeLabelingWithHopcroftKarp();
+            animation.runtimeTablingWithHopcroftKarp();
         }).start();
     }
 
@@ -233,7 +233,7 @@ public class BipartiteMatchingAnimation {
         logMessage("Hopcroft-Karp Algorithm Completed!");
         logMessage("Total Maximum Matching: " + matchingCount);
         logMessage("══════════════════");
-        
+
         // Display final matching result visually and in log
         sleep(500);
         for (int u = 1; u <= m; u++) {
@@ -255,12 +255,12 @@ public class BipartiteMatchingAnimation {
         }
     }
 
-    private void runtimeLabelingWithHopcroftKarp() {
+    private void runtimeTablingWithHopcroftKarp() {
         List<Node> nodes = graph.getNodeList();
 
         // Check if graph is bipartite
         if (!CycleDetector.isBipartite(graph)) {
-            logMessage("Graph is not bipartite! Cannot perform time labeling.");
+            logMessage("Graph is not bipartite! Cannot perform time tabling.");
             return;
         }
 
@@ -327,7 +327,7 @@ public class BipartiteMatchingAnimation {
         Map<Edge, Integer> finalSchedule = new HashMap<>();
 
         logMessage("══════════════════");
-        logMessage("Time Labeling with Hopcroft-Karp");
+        logMessage("Time Tabling with Hopcroft-Karp");
         logMessage("══════════════════");
 
         while (!remainingEdges.isEmpty()) {
@@ -410,7 +410,7 @@ public class BipartiteMatchingAnimation {
         }
 
         logMessage("═════════════════════");
-        logMessage("Time Labeling Completed!");
+        logMessage("Time Tabling Completed!");
         logMessage("Total Periods Required: " + (color - 1));
         logMessage("══════════════════════");
     }
@@ -482,7 +482,7 @@ public class BipartiteMatchingAnimation {
             if (v != NIL) {
                 Node nodeU = indexToNodeU.get(u);
                 Node nodeV = indexToNodeV.get(v);
-                
+
                 if (nodeU != null && nodeV != null) {
                     EdgeGUI edgeGUI = graphGUI.getEdgeGUI(nodeU, nodeV);
                     if (edgeGUI != null) {
@@ -556,7 +556,7 @@ public class BipartiteMatchingAnimation {
                                 }
                             }
                         }
-                        
+
                         dist[pairV[v]] = dist[u] + 1;
                         Q.add(pairV[v]);
                     }
@@ -582,13 +582,13 @@ public class BipartiteMatchingAnimation {
                             Thread.currentThread().interrupt();
                         }
                     }
-                    
+
                     if (dfs(pairV[v])) {
                         pairV[v] = u;
                         pairU[u] = v;
                         return true;
                     }
-                    
+
                     // Backtrack - revert edge color
                     if (nodeU != null && nodeV != null) {
                         colorEdgeExploration(nodeU, nodeV, Color.BLACK);
