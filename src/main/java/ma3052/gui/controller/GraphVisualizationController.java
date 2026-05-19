@@ -185,13 +185,13 @@ public class GraphVisualizationController {
         graphGUI.setMode(GraphGUI.Mode.Lock);
         pointGraphGUI.setMode(PointGraphGUI.Mode.Lock);
         Platform.runLater(() -> {
-            btnLockMode.getStyleClass().remove("button-secondary-3");
+            btnLockMode.getStyleClass().removeAll("button-secondary-3");
             btnLockMode.getStyleClass().add("button-secondary-1");
-            btnAddMode.getStyleClass().remove("button-secondary-1");
+            btnAddMode.getStyleClass().removeAll("button-secondary-1");
             btnAddMode.getStyleClass().add("button-secondary-3");
-            btnDeleteMode.getStyleClass().remove("button-secondary-1");
+            btnDeleteMode.getStyleClass().removeAll("button-secondary-1");
             btnDeleteMode.getStyleClass().add("button-secondary-3");
-            btnEditMode.getStyleClass().remove("button-secondary-1");
+            btnEditMode.getStyleClass().removeAll("button-secondary-1");
             btnEditMode.getStyleClass().add("button-secondary-3");
         });
     }
@@ -204,13 +204,13 @@ public class GraphVisualizationController {
         graphGUI.setMode(GraphGUI.Mode.Add);
         pointGraphGUI.setMode(PointGraphGUI.Mode.Add);
         Platform.runLater(() -> {
-            btnLockMode.getStyleClass().remove("button-secondary-1");
+            btnLockMode.getStyleClass().removeAll("button-secondary-1");
             btnLockMode.getStyleClass().add("button-secondary-3");
-            btnAddMode.getStyleClass().remove("button-secondary-3");
+            btnAddMode.getStyleClass().removeAll("button-secondary-3");
             btnAddMode.getStyleClass().add("button-secondary-1");
-            btnDeleteMode.getStyleClass().remove("button-secondary-1");
+            btnDeleteMode.getStyleClass().removeAll("button-secondary-1");
             btnDeleteMode.getStyleClass().add("button-secondary-3");
-            btnEditMode.getStyleClass().remove("button-secondary-1");
+            btnEditMode.getStyleClass().removeAll("button-secondary-1");
             btnEditMode.getStyleClass().add("button-secondary-3");
         });
     }
@@ -223,13 +223,13 @@ public class GraphVisualizationController {
         graphGUI.setMode(GraphGUI.Mode.Delete);
         pointGraphGUI.setMode(PointGraphGUI.Mode.Delete);
         Platform.runLater(() -> {
-            btnLockMode.getStyleClass().remove("button-secondary-1");
+            btnLockMode.getStyleClass().removeAll("button-secondary-1");
             btnLockMode.getStyleClass().add("button-secondary-3");
-            btnAddMode.getStyleClass().remove("button-secondary-1");
+            btnAddMode.getStyleClass().removeAll("button-secondary-1");
             btnAddMode.getStyleClass().add("button-secondary-3");
-            btnDeleteMode.getStyleClass().remove("button-secondary-3");
+            btnDeleteMode.getStyleClass().removeAll("button-secondary-3");
             btnDeleteMode.getStyleClass().add("button-secondary-1");
-            btnEditMode.getStyleClass().remove("button-secondary-1");
+            btnEditMode.getStyleClass().removeAll("button-secondary-1");
             btnEditMode.getStyleClass().add("button-secondary-3");
         });
     }
@@ -240,13 +240,13 @@ public class GraphVisualizationController {
         // if (graphGUI.getMode() == GraphGUI.Mode.Edit)
         // return;
         // graphGUI.setMode(GraphGUI.Mode.Edit);
-        // btnLockMode.getStyleClass().remove("button-secondary-1");
+        // btnLockMode.getStyleClass().removeAll("button-secondary-1");
         // btnLockMode.getStyleClass().add("button-secondary-3");
-        // btnAddMode.getStyleClass().remove("button-secondary-1");
+        // btnAddMode.getStyleClass().removeAll("button-secondary-1");
         // btnAddMode.getStyleClass().add("button-secondary-3");
-        // btnDeleteMode.getStyleClass().remove("button-secondary-1");
+        // btnDeleteMode.getStyleClass().removeAll("button-secondary-1");
         // btnDeleteMode.getStyleClass().add("button-secondary-3");
-        // btnEditMode.getStyleClass().remove("button-secondary-3");
+        // btnEditMode.getStyleClass().removeAll("button-secondary-3");
         // btnEditMode.getStyleClass().add("button-secondary-1");
     }
 

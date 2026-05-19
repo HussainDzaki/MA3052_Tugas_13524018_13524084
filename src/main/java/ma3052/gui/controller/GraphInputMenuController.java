@@ -759,10 +759,10 @@ public class GraphInputMenuController {
         mainController.getGraphAlgorithmMenuController().updateAlgorithmComboForMode();
 
         btnNodeAndEdges.getStyleClass().add("button-secondary-1");
-        btnNodeAndEdges.getStyleClass().remove("button-secondary-3");
+        btnNodeAndEdges.getStyleClass().removeAll("button-secondary-3");
         btnSwitchToGrid.getStyleClass().add("button-secondary-3");
-        btnSwitchToGrid.getStyleClass().remove("button-secondary-1");
-        btnSwitchToPoint.getStyleClass().remove("button-secondary-1");
+        btnSwitchToGrid.getStyleClass().removeAll("button-secondary-1");
+        btnSwitchToPoint.getStyleClass().removeAll("button-secondary-1");
         btnSwitchToPoint.getStyleClass().add("button-secondary-3");
 
         graphGUI.setGraph(graphGUI.getGraph()); // Refresh the graph view
@@ -812,11 +812,11 @@ public class GraphInputMenuController {
         graphGenerator.setVisible(false);
         graphGenerator.setManaged(false);
 
-        btnNodeAndEdges.getStyleClass().remove("button-secondary-1");
+        btnNodeAndEdges.getStyleClass().removeAll("button-secondary-1");
         btnNodeAndEdges.getStyleClass().add("button-secondary-3");
-        btnSwitchToGrid.getStyleClass().remove("button-secondary-3");
+        btnSwitchToGrid.getStyleClass().removeAll("button-secondary-3");
         btnSwitchToGrid.getStyleClass().add("button-secondary-1");
-        btnSwitchToPoint.getStyleClass().remove("button-secondary-1");
+        btnSwitchToPoint.getStyleClass().removeAll("button-secondary-1");
         btnSwitchToPoint.getStyleClass().add("button-secondary-3");
 
         graphGUI.getCanvas().setManaged(false);
@@ -861,11 +861,11 @@ public class GraphInputMenuController {
         graphGenerator.setVisible(false);
         graphGenerator.setManaged(false);
 
-        btnNodeAndEdges.getStyleClass().remove("button-secondary-1");
+        btnNodeAndEdges.getStyleClass().removeAll("button-secondary-1");
         btnNodeAndEdges.getStyleClass().add("button-secondary-3");
-        btnSwitchToGrid.getStyleClass().remove("button-secondary-1");
+        btnSwitchToGrid.getStyleClass().removeAll("button-secondary-1");
         btnSwitchToGrid.getStyleClass().add("button-secondary-3");
-        btnSwitchToPoint.getStyleClass().remove("button-secondary-3");
+        btnSwitchToPoint.getStyleClass().removeAll("button-secondary-3");
         btnSwitchToPoint.getStyleClass().add("button-secondary-1");
 
         graphGUI.getCanvas().setManaged(false);
