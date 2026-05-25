@@ -26,3 +26,4 @@ replay_pid*
 # ignore file folder
 *.vscode
 target/
+bin/

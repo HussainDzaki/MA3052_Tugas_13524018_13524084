@@ -23,7 +23,7 @@ public class App extends Application {
         loadFonts();
 
         // Load the FXML file
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GraphVisualization.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GraphVisualization.fxml"));
         Parent root = loader.load();
 
         Preferences prefs = Preferences.userNodeForPackage(App.class);
