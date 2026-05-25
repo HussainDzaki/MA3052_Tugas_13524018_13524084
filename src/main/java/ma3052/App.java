@@ -42,9 +42,9 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
-        primaryStage.setMaximized(true);
         primaryStage.getIcons().add(icon);
         primaryStage.show();
+        primaryStage.setMaximized(true);
     }
 
     /**
