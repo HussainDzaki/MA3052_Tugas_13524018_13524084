@@ -24,8 +24,8 @@ build-exe: package
 	jpackage --type exe ${JPACKAGE_BASE} --module-path ${WINDOWS_MODULE_PATH} --icon favicon.ico ${WINDOWS_FLAGS} --win-upgrade-uuid ${UUID}
 
 build-dmg: package
-	jpackage --type dmg ${JPACKAGE_BASE} --module-path ${MAC_MODULE_PATH}
+	jpackage --type dmg ${JPACKAGE_BASE} --module-path ${MAC_MODULE_PATH} --icon favicon.ico 
 
 build-pkg: package
-	jpackage --type pkg ${JPACKAGE_BASE} --module-path ${MAC_MODULE_PATH}
+	jpackage --type pkg ${JPACKAGE_BASE} --module-path ${MAC_MODULE_PATH} --icon favicon.ico 
 	  
