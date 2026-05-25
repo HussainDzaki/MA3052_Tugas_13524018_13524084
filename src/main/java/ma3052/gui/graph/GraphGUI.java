@@ -359,7 +359,8 @@ public class GraphGUI {
             dummyEdgeGUI.draw(graphicsContext, graph.isDirected());
         }
         for (EdgeGUI edgeGUI : edgeGUIList) {
-            edgeGUI.draw(graphicsContext, graph.isDirected());
+            edgeGUI.draw(graphicsContext, graph.isDirected(), graph.isDirected()
+                    && graph.hasEdge(edgeGUI.getEdge().getDestination(), edgeGUI.getEdge().getSource()));
         }
     }
 

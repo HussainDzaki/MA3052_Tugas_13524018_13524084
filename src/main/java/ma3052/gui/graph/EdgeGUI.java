@@ -8,6 +8,16 @@ import javafx.scene.text.FontWeight;
 import ma3052.core.graph.Edge;
 
 public class EdgeGUI {
+    public enum WeightPosition {
+        OnEdge,
+        OutsideEdge,
+    }
+
+    public enum WeightRotation {
+        FollowRotation,
+        NoRotation
+    }
+
     // Edge
     private Edge edge;
     private NodeGUI sourceGUI;
@@ -19,6 +29,8 @@ public class EdgeGUI {
     private Color textColor;
     private double arrowHeadSize;
     private boolean drawWeight;
+    private WeightPosition weightPosition;
+    private WeightRotation weightRotation;
 
     // Physics config
     private static final double SPRING_CONSTANT = 200;
@@ -87,22 +99,45 @@ public class EdgeGUI {
         this.drawWeight = drawWeight;
     }
 
+    public void setWeightPosition(WeightPosition weightPosition) {
+        this.weightPosition = weightPosition;
+    }
+
+    public void setWeightRotation(WeightRotation weightRotation) {
+        this.weightRotation = weightRotation;
+    }
+
     public void draw(GraphicsContext context, boolean isDirected) {
+        draw(context, isDirected, false);
+    }
+
+    public void draw(GraphicsContext context, boolean isDirected, boolean isOffseted) {
+        context.save();
+
         Point2D angleVector = sourceGUI.getPosition().subtract(destinationGUI.getPosition());
         double angleRad = Math.atan2(angleVector.getY(), angleVector.getX());
+
+        Point2D sourcePosition = sourceGUI.getPosition();
+        Point2D destinationPosition = destinationGUI.getPosition();
+
+        if (isOffseted) {
+            Point2D offset = new Point2D(Math.sin(angleRad), -Math.cos(angleRad)).multiply(4 + lineWidth);
+            sourcePosition = sourcePosition.add(offset);
+            destinationPosition = destinationPosition.add(offset);
+        }
 
         // Draw line between two nodes
         context.setStroke(lineColor);
         context.setLineWidth(lineWidth);
         context.strokeLine(
-                sourceGUI.getPosition().getX(), sourceGUI.getPosition().getY(),
-                destinationGUI.getPosition().getX(), destinationGUI.getPosition().getY());
+                sourcePosition.getX(), sourcePosition.getY(),
+                destinationPosition.getX(), destinationPosition.getY());
 
         if (isDirected) {
             // Draw arrow head
             Point2D offset1 = new Point2D(Math.cos(angleRad), Math.sin(angleRad))
                     .multiply(destinationGUI.getRadius());
-            Point2D point1 = destinationGUI.getPosition().add(offset1);
+            Point2D point1 = destinationPosition.add(offset1);
 
             Point2D offset2 = new Point2D(Math.cos(angleRad + Math.toRadians(30)),
                     Math.sin(angleRad + Math.toRadians(30))).multiply(arrowHeadSize);
@@ -123,21 +158,47 @@ public class EdgeGUI {
             return;
 
         if (drawWeight) {
-            // Draw weight text in the middle
-            Point2D middlePosition = sourceGUI.getPosition().add(destinationGUI.getPosition()).multiply(0.5);
-            Point2D offset = new Point2D(Math.sin(angleRad), -Math.cos(angleRad)).multiply(15 + lineWidth);
+            String weightString;
+            double weight = edge.getWeight();
+            if (Math.abs(weight - ((int) weight)) < 1e-6) {
+                weightString = Integer.toString((int) weight);
+            } else if (Double.isInfinite(weight)) {
+                if (weight > 0) {
+                    weightString = "∞";
+                } else {
+                    weightString = "-∞";
+                }
+            } else {
+                weightString = String.format("%.2f", weight);
+            }
 
-            String weightString = Double.toString(edge.getWeight());
             weightString = weightString.replace("Infinity", "∞");
-            double textX = middlePosition.getX() + offset.getX();
-            double textY = middlePosition.getY() + offset.getY();
+            double weightWidth = weightString.length() * 7;
+
+            // Draw weight text in the middle
+            Point2D middlePosition = sourcePosition.add(destinationPosition).multiply(0.5);
+            Point2D widthOffset = new Point2D(Math.cos(angleRad), Math.sin(angleRad)).multiply(weightWidth / 2);
+            Point2D heightOffset = new Point2D(Math.sin(angleRad), -Math.cos(angleRad)).multiply(12 + lineWidth / 2);
+
+            double rotatedAngleRad = (angleRad + Math.PI * 3 / 2) % Math.PI - Math.PI / 2;
+            if (Math.abs(angleRad - rotatedAngleRad) < 1e-6) {
+                widthOffset = widthOffset.multiply(-1);
+                heightOffset = heightOffset.subtract(heightOffset.normalize().multiply(7));
+            }
+
+            double textX = middlePosition.getX() + widthOffset.getX() + heightOffset.getX();
+            double textY = middlePosition.getY() + widthOffset.getY() + heightOffset.getY();
 
             context.setFill(textColor);
-            context.setFont(Font.font("Consolas", FontWeight.BOLD, 12));
-            context.fillText(weightString, textX, textY);
+            context.setFont(Font.font("Cascadia Code Regular", FontWeight.NORMAL, 12));
 
-            // TODO: bikin tulisan ga overlap dengan edge kalo mau
+            context.translate(textX, textY);
+            context.rotate(Math.toDegrees(rotatedAngleRad));
+
+            context.fillText(weightString, 0, 0);
         }
+
+        context.restore();
     }
 
     public void update() {

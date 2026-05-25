@@ -191,8 +191,20 @@ public class NodeGUI {
             context.setFont(Font.font("Cascadia Code Regular", FontWeight.NORMAL, 12));
 
             // Center the text
-            String valueString = Double.toString(node.getValue());
-            valueString = valueString.replace("Infinity", "∞");
+            String valueString;
+            double value = node.getValue();
+            if (Math.abs(value - ((int) value)) < 1e-6) {
+                valueString = Integer.toString((int) value);
+            } else if (Double.isInfinite(value)) {
+                if (value > 0) {
+                    valueString = "∞";
+                } else {
+                    valueString = "-∞";
+                }
+            } else {
+                valueString = String.format("%.2f", value);
+            }
+
             double valueWidth = valueString.length() * 7;
             double valueX = position.getX() - valueWidth / 2;
             double valueY = position.getY() + 5;
@@ -204,8 +216,22 @@ public class NodeGUI {
             context.setFont(Font.font("Cascadia Code Regular", FontWeight.NORMAL, 12));
 
             // Draw value in the center
-            String valueString = Double.toString(node.getValue());
-            valueString = valueString.replace("Infinity", "∞");
+            String valueString;
+            double value = node.getValue();
+            if (Math.abs(value - ((int) value)) < 1e-6) {
+                valueString = Integer.toString((int) value);
+            } else if (Double.isInfinite(value)) {
+                if (value > 0) {
+                    valueString = "∞";
+                } else {
+                    valueString = "-∞";
+                }
+            } else {
+                valueString = String.format("%.2f", value);
+            }
+
+            valueString = node.getNodeName() + ":" + valueString;
+
             double valueWidth = valueString.length() * 7;
             double valueX = position.getX() - valueWidth / 2;
             double valueY = position.getY() + 5;
@@ -213,11 +239,11 @@ public class NodeGUI {
             context.fillText(valueString, valueX, valueY);
 
             // Draw name in the top center outside the node
-            double nameWidth = node.getNodeName().length() * 7;
-            double nameX = position.getX() - nameWidth / 2;
-            double nameY = position.getY() + 10 + radius + borderWidth;
+            // double nameWidth = node.getNodeName().length() * 7;
+            // double nameX = position.getX() - nameWidth / 2;
+            // double nameY = position.getY() - 10 - radius - borderWidth;
 
-            context.fillText(node.getNodeName(), nameX, nameY);
+            // context.fillText(node.getNodeName(), nameX, nameY);
         }
 
     }
