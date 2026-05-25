@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -21,6 +22,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         loadFonts();
+
+        Image icon = new Image(App.class.getResourceAsStream("image/icon.jpeg"));
 
         // Load the FXML file
         FXMLLoader loader = new FXMLLoader(App.class.getResource("view/GraphVisualization.fxml"));
@@ -40,6 +43,7 @@ public class App extends Application {
         primaryStage.setWidth(1280);
         primaryStage.setHeight(720);
         primaryStage.setMaximized(true);
+        primaryStage.getIcons().add(icon);
         primaryStage.show();
     }
 
