@@ -305,29 +305,16 @@ public class GraphAlgorithmMenuController {
                 ComponentAnimation.animate(graphGUI);
                 break;
             case "Bipartite Checker":
-                logMessage("The Graph is "
-                        + (CycleDetector.isBipartite(graphGUI.getGraph()) ? " Bipartite" : "NOT Bipartite"));
+                CycleDetectorAnimation.animateIsBipartite(graphGUI);
                 break;
             case "Find Diameter":
-                List<Node> res = CycleDetector.getDiameterPath(graphGUI.getGraph());
-                logMessage("The Graph have diameter " + Integer.toString(res.size() - 1));
-                logMessage("Have the diameter path : " + CycleDetector.getResultPathString(res));
+                CycleDetectorAnimation.animateFindDiameter(graphGUI);
                 break;
             case "Have Cycle Checker":
-                List<Node> cyclePath;
-                if (graphGUI.getGraph().isDirected()) {
-                    cyclePath = CycleDetector.getDirectedCyclePath(graphGUI.getGraph());
-
-                } else {
-                    cyclePath = CycleDetector.getUndirectedCyclePath(graphGUI.getGraph());
-                }
-                logMessage("The graph have the cycle path : " + CycleDetector.getResultPathString(cyclePath));
+                CycleDetectorAnimation.animateHaveACycle(graphGUI);
                 break;
             case "Find Smallest Cycle":
-                List<Node> girthPath;
-                girthPath = CycleDetector.getGirthPath(graphGUI.getGraph());
-                logMessage("The Graph have cycle size: " + Integer.toString(girthPath.size() - 1));
-                logMessage("Have the cycle path: " + CycleDetector.getResultPathString(girthPath));
+                CycleDetectorAnimation.animateHaveSmallestCycle(graphGUI);
                 break;
             case "Kruskal's Algorithm":
                 KruskalAnimation.animate(graphGUI);
