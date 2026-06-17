@@ -57,11 +57,11 @@
                 </HBox>
                 <HBox maxWidth="850" maxHeight="600">
                     <VBox HBox.hgrow="ALWAYS" prefWidth="40"/>
-                    <HBox styleClass="border-thick,border-neutral-3">
+                    <StackPane styleClass="border-thick,border-neutral-3">
                         <Canvas fx:id="graphCanvas1" width="750.0" height="600.0"/>
                         <Canvas fx:id="graphCanvas2" width="750.0" height="600.0"/>
                         <Canvas fx:id="graphCanvas3" width="750.0" height="600.0"/>
-                    </HBox>
+                    </StackPane>
                     <VBox HBox.hgrow="ALWAYS" alignment="BOTTOM_LEFT" spacing="5">
                         <padding>
                             <Insets left="4"/>
